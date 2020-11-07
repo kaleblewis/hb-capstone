@@ -27,13 +27,13 @@ class Preference(db.Model):
     __tablename__ = 'preferences'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     preferred_app_lang = db.Column(db.String(50))
     default_subtitle = db.Column(db.String)
     default_dubbing = db.Column(db.String)
     default_genre = db.Column(db.String)
     default_release_date = db.Column(db.String(20))
-    default_duration = db.Column(db.int(20))
+    default_duration = db.Column(db.Integer)
 
     user = db.relationship('User', backref='preferences')
 
@@ -47,7 +47,7 @@ class QueryHistory(db.Model):
     __tablename__ = 'query_history'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     query_run_date_time = db.Column(db.DateTime)
     query_string = db.Column(db.String)                                                         # ? should this be "text" or "string"
     payload = db.Column(db.String)                                                              # ? should this be "text" or "string"
@@ -55,7 +55,7 @@ class QueryHistory(db.Model):
     param_dubbing = db.Column(db.String)
     param_genre = db.Column(db.String)
     param_release_date = db.Column(db.String(20))
-    param_duration = db.Column(db.int(20))
+    param_duration = db.Column(db.Integer)
     param_total_seasons = db.Column(db.String(20))
 
     user = db.relationship('User', backref='query_history')
