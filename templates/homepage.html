@@ -2,4 +2,55 @@
 
 {% block title %}{% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+
+
+    {% if session['name'] is defined %}
+
+        <!-- *** TEST TO VERIFY SESSION['NAME'] *** 
+        *** SESSION['NAME'] IS CURRENTLY EQUAL TO:  {{ session['name'] }} *** -->
+
+    {% else %}
+
+        <h2>Create your Account</h2>
+        <form action="/users" method="POST">
+            <div class="form-group">
+            
+                <label for="name-field"></label>
+                <input type="text"
+                    id="name-input"
+                    name="name-input"
+                    placeholder="What's your name, friend?"
+                    required
+                    autofocus />
+
+                <label for="email-field"></label>
+                <input type="text"
+                    id="email-input"
+                    name="email-input"
+                    placeholder="enter your email address"
+                    required
+                    autofocus />
+
+                <label for="password-field"></label>
+                <input type="password"
+                    id="password-input"
+                    name="password-input"
+                    placeholder="select a secure password"
+                    required
+                    autofocus />
+
+                <!-- <p> Email <input type="text" name="email"></p>
+                <p> Password <input type="password" name="password"></p>
+                <p><input type="submit"></p> -->
+
+                <input type="submit" value="Create your Account" />
+
+            </div>
+        </form>
+
+
+    {% endif %}
+
+
+{% endblock %}
