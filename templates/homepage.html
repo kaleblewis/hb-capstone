@@ -4,26 +4,67 @@
 
 {% block body %}
 
+    {% if session['name'] is defined or session['loggedIn'] is defined %}    
+    <!-- if cookie exists -->
 
-    {% if session['name'] is defined %}
+        {% if session['name'] == 'no-account-found-please-create-account' %}
+        <!-- and the cookie is set to this wonky value because you need to see the login screen -->
 
-        <!-- *** TEST TO VERIFY SESSION['NAME'] *** 
-        *** SESSION['NAME'] IS CURRENTLY EQUAL TO:  {{ session['name'] }} *** -->
+            <form action='/newuser' method="POST">
+                <div class="form-group">
+                
+                    <label for="name-field"></label>
+                    <input type="text"
+                        id="name-input"
+                        name="name-input"
+                        placeholder="What's your name, friend?"
+                        required
+                        autofocus />
+
+                    <label for="email-field"></label>
+                    <input type="text"
+                        id="email-input"
+                        name="email-input"
+                        placeholder="enter your email address"
+                        required
+                        autofocus />
+
+                    <label for="password-field"></label>        
+                    <input type="new-password"
+                        id="password-input"
+                        name="password-input"
+                        placeholder="select a secure password"
+                        required
+                        autofocus />
+
+                    <input type="new-password-2"
+                        id="password-input-2"
+                        name="password-input-2"
+                        placeholder="please re-type your password"
+                        required
+                        autofocus />
+
+                    <input type="submit" value="Create your Account" />
+
+                </div>
+            </form>
+
+            {% else %}     
+            <!-- if cookie exists -->   
+
+            *** TEST TO VERIFY SESSION['NAME'] *** 
+            <br>*** SESSION['NAME'] IS CURRENTLY EQUAL TO:  {{ session['name'] }} ***
+            <br>*** SESSION['email'] IS CURRENTLY EQUAL TO:  {{ session['email'] }} ***
+            <br>*** SESSION['isNew'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} ***
+            <br>*** SESSION['loggedIn'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} ***
+            {% endif %}
 
     {% else %}
-
-        <h2>Create your Account</h2>
-        <form action="/users" method="POST">
+    <!-- if you need to login -->
+       
+        <form action='/login' method="POST">
             <div class="form-group">
             
-                <label for="name-field"></label>
-                <input type="text"
-                    id="name-input"
-                    name="name-input"
-                    placeholder="What's your name, friend?"
-                    required
-                    autofocus />
-
                 <label for="email-field"></label>
                 <input type="text"
                     id="email-input"
@@ -32,25 +73,22 @@
                     required
                     autofocus />
 
-                <label for="password-field"></label>
-                <input type="new-password"
+                <label for="password-field"></label>        
+                <input type="current-password"
                     id="password-input"
                     name="password-input"
-                    placeholder="select a secure password"
+                    placeholder="password"
                     required
                     autofocus />
 
-                <!-- <p> Email <input type="text" name="email"></p>
-                <p> Password <input type="password" name="password"></p>
-                <p><input type="submit"></p> -->
+                <input type="submit" value="login" />
 
-                <input type="submit" value="Create your Account" />
+                <!--// TODO: update to collect password twice and verify they match -->
+                <!--// TODO: update to collect username + password, then only fallback to all fields if new user -->
 
             </div>
         </form>
 
-
     {% endif %}
-
 
 {% endblock %}
