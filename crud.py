@@ -50,6 +50,8 @@ def create_user(name, email, password):
 
     """
     
+    # TODO: add steps to first check if unique user exists based on email, if so, fail gracefully and simply log them in to their existing account w/o creating new user
+
     user = User(fname=name, 
                 email=email, 
                 password=password,

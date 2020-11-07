@@ -93,7 +93,7 @@ def register_user():
     elif new_user:
 
         if new_user.password == password:
-            flash(f"Thanks, {fname} but you already have an account with that same password")
+            flash(f"Thanks, {fname} but you already have an account with that same password")  #TODO debug issue where fplks receive the 
             flash(f"You have successfully logged in to your account")           # // TODO fix bug msg scenario where someone gets stuck in loop if they enter existing Username/password within /newuser
             session['name'] = fname
             session['email'] = email
