@@ -8,7 +8,7 @@
             {% endblock %}
             </title>
 
-        <!-- <link href="/static/css/site.css" rel="stylesheet"> -->
+        <link href="/static/css/site.css" rel="stylesheet">
         <link rel="icon" href="/favicon.ico" sizes="32x32">
 
         {% block head %}
@@ -25,6 +25,33 @@
 
     </head>
     <body>
+        {% block navbar%}
+            <div class="navbar">
+                <a href="/">Home</a>
+                <a href="">search for a specific movie</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Recommendations
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#">return-1-result</a>
+                        <a href="#">find something i feel like watching</a>
+                        <a href="#">previous recommendations</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">profile
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                        <div class="dropdown-content">
+                            <a href="#">preferences</a>
+                            <a href="#">log out</a>
+                        </div>
+                </div>
+            </div>
+        {% endblock %}
+
+
         {% for msg in get_flashed_messages() %}
             <p class="flash-msg">
                 {{ msg }}
