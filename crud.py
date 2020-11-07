@@ -48,6 +48,9 @@ def create_user(name, email, password):
     >>> create_user('jane', 'jane.doe@email.com', 'password1234567890123')
     # TODO: update docstring
 
+    if user already exists, do not duplicate, simply log them in instead:
+    >>> create_user('jane', 'jane.doe@email.com', 'password1')
+    # TODO: update docstring
     """
     
     # TODO: add steps to first check if unique user exists based on email, if so, fail gracefully and simply log them in to their existing account w/o creating new user

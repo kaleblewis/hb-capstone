@@ -1,6 +1,7 @@
 """Server for online viewing recommendations app."""
 
 import crud
+import query
 from model import connect_to_db
 import datetime
 from flask import (Flask, render_template, request, flash, session, redirect)
@@ -117,6 +118,71 @@ def register_user():
         session['loggedIn'] = True                                               #this way we can display dynamic content to users who are new to the site
                                                                                 # TODO password counter: reset counter when login successful:  session['password-counter'] = 0 
         return redirect('/')
+
+
+@app.route('/recommendations')
+def recommendations_page():
+    """View recommendations page"""
+
+    try:
+        session['loggedIn'] = True
+        return render_template("recommendations.html")                             
+    except KeyError:
+        return render_template('homepage.html')                                 # TODO debug: when user clicks form homepage, to recommendations, and homepage re-renders *OR* redirects, jinja kicks an error even though page loads fine directly""
+                                                                                                # # jinja2.exceptions.UndefinedError: 'flask.sessions.SecureCookieSession object' has no attribute 'name'
+                                                                                                # ....
+                                                                                                #  File "/home/vagrant/src/project/env/lib/python3.6/site-packages/flask/templating.py", line 120, in _render
+                                                                                                # rv = template.render(context)
+                                                                                                # File "/home/vagrant/src/project/env/lib/python3.6/site-packages/jinja2/environment.py", line 1090, in render
+                                                                                                # self.environment.handle_exception()
+                                                                                                # File "/home/vagrant/src/project/env/lib/python3.6/site-packages/jinja2/environment.py", line 832, in handle_exception
+                                                                                                # reraise(*rewrite_traceback_stack(source=source))
+                                                                                                # File "/home/vagrant/src/project/env/lib/python3.6/site-packages/jinja2/_compat.py", line 28, in reraise
+                                                                                                # Open an interactive python shell in this frameraise value.with_traceback(tb)
+                                                                                                # File "/home/vagrant/src/project/templates/homepage.html", line 1, in top-level template code
+                                                                                                # {% extends 'base.html' %}
+                                                                                                # File "/home/vagrant/src/project/templates/base.html", line 62, in top-level template code
+                                                                                                # {% block body %}
+                                                                                                # File "/home/vagrant/src/project/templates/homepage.html", line 10, in block "body"
+                                                                                                # {% if session['name'] == 'no-account-found-please-create-account' %}
+                                                                                                # jinja2.exceptions.UndefinedError: 'flask.sessions.SecureCookieSession object' has no attribute 'name'
+
+
+
+@app.route('/search', methods=['POST'])
+def render_specific_movie():
+    """Serve up results based on specific input parameters"""
+    
+    #query.search_specific_movie(....include params here....)
+
+    return render_template("recommendations.html")    
+
+
+@app.route('/random', methods=['POST'])
+def render_random_top_results():                        
+    """Serve up 3 randomly selected results"""
+    
+    #query.search_random_top_results(....include params here....)
+
+    return render_template("recommendations.html")    
+
+
+@app.route('/newrecommendations', methods=['POST'])
+def render_all_movies_based_on_preferences_and_mood(): 
+    """Serve up top 10 recommended results"""
+
+    #query.search_all_movies_based_on_preferences_and_mood(....include params here....)
+
+    return render_template("recommendations.html")    
+
+
+@app.route('/previousrecommendations')
+def render_all_query_history():                                                    # TODO:  what params?
+    """Render all of a users's previous searches from the QueryHistory table"""
+
+    #query.search_all_query_history(....include params here....)
+
+    return render_template("recommendations.html")    
 
 
 if __name__ == '__main__':
