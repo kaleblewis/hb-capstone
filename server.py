@@ -1,7 +1,6 @@
 """Server for online viewing recommendations app."""
 
 import crud
-import query
 from model import connect_to_db
 import datetime
 from flask import (Flask, render_template, request, flash, session, redirect)
@@ -151,36 +150,36 @@ def recommendations_page():
 
 @app.route('/search', methods=['POST'])
 def render_specific_movie():
-    """Serve up results based on specific input parameters"""
+    """Serve up results based on user's specific input parameters"""
     
-    #query.search_specific_movie(....include params here....)
+    #crud.search_specific_movie(....include params here....)
 
     return render_template("recommendations.html")    
 
 
 @app.route('/random', methods=['POST'])
-def render_random_top_results():                        
-    """Serve up 3 randomly selected results"""
+def render_random_top_3_results():                        
+    """Serve up top 3 randomly selected results"""
     
-    #query.search_random_top_results(....include params here....)
+    #crud.search_random_top_3_results(....include params here....)
 
     return render_template("recommendations.html")    
 
 
 @app.route('/newrecommendations', methods=['POST'])
-def render_all_movies_based_on_preferences_and_mood(): 
-    """Serve up top 10 recommended results"""
+def render_x_movies_based_on_y_preferences():                                          # TODO:  what params?
+    """Serve up top X recommended results based on Y preferences"""
 
-    #query.search_all_movies_based_on_preferences_and_mood(....include params here....)
+    #crud.search_x_movies_based_on_y_preferences(....include params here....)
 
     return render_template("recommendations.html")    
 
 
 @app.route('/previousrecommendations')
-def render_all_query_history():                                                    # TODO:  what params?
+def get_all_query_history():                                                
     """Render all of a users's previous searches from the QueryHistory table"""
 
-    #query.search_all_query_history(....include params here....)
+    #crud.search_all_query_history(....include params here....)
 
     return render_template("recommendations.html")    
 

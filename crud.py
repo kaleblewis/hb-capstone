@@ -164,13 +164,14 @@ def search_random_top_3_results():                                              
     pass                                                                        # TODO:  complete function stub 
 
 
-def search_x_movies_based_on_y_mood():                                          # TODO:  what params?
+def search_x_movies_based_on_y_preferences():                                          # TODO:  what params?
     """Allow user to search for top X number of results 
     
     Should return top ranked result based on both:
         1.) user default preferences (if any)
         2.) content's avg review score ( sort by --> decending )
         3.) if/when score is tied, then randomize to select only top 10
+        4.) returning X qty selected by user
 
     """                                                                         # TODO:  update docstring with doctests 
 
