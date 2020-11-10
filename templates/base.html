@@ -4,12 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
             <title>
-            {% block title %}
-            {% endblock %}
+            {% block title %}{% endblock %}
             </title>
 
         <link href="/static/css/site.css" rel="stylesheet">
-        <link rel="icon" href="/favicon.ico" sizes="32x32">
+        <link rel="icon" href="/static/favicon.ico" sizes="32x32">
 
         {% block head %}
         {% endblock %}
@@ -26,45 +25,145 @@
     </head>
     <body>
         {% block navbar%}
-            <div class="navbar">
-                <a href="/">Home</a>
-                <a href="/recommendations">search for a specific movie</a>
-                <div class="dropdown">
-                    <button class="dropbtn">Recommendations
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="/recommendations">return-1-result</a>
-                        <a href="/recommendations">find something i feel like watching</a>
-                        <a href="/recommendations">previous recommendations</a>
+        <div class="navbar">
+
+                <div class="login">
+                    {% block login %}
+
+                    {% if session['name'] is defined or session['loggedIn'] is defined %}    
+                        <!-- if cookie exists -->
+
+                            {% if session['name'] == 'no-account-found-please-create-account' %}
+                            <!-- and the cookie is set to this wonky value because you need to see the login screen -->
+
+                                <form action='/newuser' method="POST">
+                                    <div class="form-group">
+                                    
+                                        <label for="name-field"></label>
+                                        <input type="text"
+                                            id="name-input"
+                                            name="name-input"
+                                            placeholder="What's your name, friend?"
+                                            required
+                                            autofocus />
+
+                                        <label for="email-field"></label>
+                                        <input type="text"
+                                            id="email-input"
+                                            name="email-input"
+                                            placeholder="enter your email address"
+                                            required
+                                            autofocus />
+
+                                        <label for="password-field"></label>        
+                                        <input type="new-password"
+                                            id="password-input"
+                                            name="password-input"
+                                            placeholder="select a secure password"
+                                            required
+                                            autofocus />
+
+                                        <input type="new-password-2"
+                                            id="password-input-2"
+                                            name="password-input-2"
+                                            placeholder="please re-type your password"
+                                            required
+                                            autofocus />
+
+                                        <input type="submit" value="Create your Account" />
+
+                                    </div>
+                                </form>
+
+                                {% elif session['loggedIn'] is defined %}     
+                                <!-- if login cookie exists -->   
+
+
+                                <!-- *** TEST TO VERIFY SESSION['NAME'] *** 
+                                <br>*** SESSION['NAME'] IS CURRENTLY EQUAL TO:  {{ session['name'] }} ***
+                                <br>*** SESSION['email'] IS CURRENTLY EQUAL TO:  {{ session['email'] }} ***
+                                <br>*** SESSION['isNew'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} ***
+                                <br>*** SESSION['loggedIn'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} *** -->
+                               
+                                
+                                    <a href="/">Home</a>
+                                    <a href="/recommendations">search for a specific movie</a>
+                                    <div class="dropdown">
+                                        <button class="dropbtn">Recommendations
+                                            <i class="fa fa-caret-down"></i>
+                                        </button>
+                                        <div class="dropdown-content">
+                                            <a href="/recommendations">return-1-result</a>
+                                            <a href="/recommendations">find something i feel like watching</a>
+                                            <a href="/recommendations">previous recommendations</a>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="dropbtn" href="/profile">profile
+                                            <i class="fa fa-caret-down"></i>
+                                        </button>
+                                            <div class="dropdown-content">
+                                                <a href="/profile">preferences</a>
+                                                <a href="#">log out</a>
+                                            </div>
+
+                                        
+                                            
+                                {% endif %}
+                                    
+                                    
+
+                        {% else %}
+                        <!-- if you need to login -->
+                        
+                            <form action='/login' method="POST">
+                                <div class="form-group">
+                                
+                                    <label for="email-field"></label>
+                                    <input type="text"
+                                        id="email-input"
+                                        name="email-input"
+                                        placeholder="enter your email address"
+                                        required
+                                        autofocus />
+
+                                    <label for="password-field"></label>        
+                                    <input type="current-password"
+                                        id="password-input"
+                                        name="password-input"
+                                        placeholder="password"
+                                        required
+                                        autofocus />
+
+                                    <input type="submit" value="login" />
+
+                                    <!--// TODO: update to collect password twice and verify they match -->
+                                    <!--// TODO: update to collect username + password, then only fallback to all fields if new user -->
+                                </div>
+                            </form>
+                        {% endif %}
                     </div>
+                    {% endblock %}
+                 </div>
+                    {% endblock %}
+
+
+                        
                 </div>
-                <div class="dropdown">
-                    <button class="dropbtn">profile
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                        <div class="dropdown-content">
-                            <a href="#">preferences</a>
-                            <a href="#">log out</a>
-                        </div>
-                </div>
-            </div>
-        {% endblock %}
+                
+            {% for msg in get_flashed_messages() %}
+                <p class="flash-msg" style="color:#FB3530">
+                    {{ msg }}
+                </p>
+            {% endfor %}
 
+            <!-- Include the page's content with this block. -->
+            {% block body %}
+            {% endblock %}
 
-        {% for msg in get_flashed_messages() %}
-            <p class="flash-msg">
-                {{ msg }}
-            </p>
-         {% endfor %}
-
-        <!-- Include the page's content with this block. -->
-        {% block body %}
-        {% endblock %}
-
-        <!-- Include any page-specific Javascript using this block. -->
-        {% block js %}
-        {% endblock %}
+            <!-- Include any page-specific Javascript using this block. -->
+            {% block js %}
+            {% endblock %}
 
     </body>
 </html>

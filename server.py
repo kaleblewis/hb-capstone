@@ -4,38 +4,24 @@ import crud
 from model import connect_to_db
 import os
 import datetime
-from flask import (Flask, render_template, request, flash, session, redirect)
+from flask import (Flask, render_template, request, flash, session, redirect, 
+    url_for)
+from flask.json import jsonify
 from jinja2 import StrictUndefined
-from google.oauth2 import service_account
-import google.oauth2.credentials
+# from google.oauth2 import service_account
+# import google.oauth2.credentials
 
 
 app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
-app.secret_key = service_account.Credentials.from_service_account_file(
-    'secrets.sh')
-credentials = google.oauth2.credentials.Credentials(
-    'access_token',
-    refresh_token='refresh_token',
-    token_uri='token_uri',
-    client_id='client_id',
-    client_secret='client_secret')
-
-
-# store = google-auth.file.Storage(cred_path)
-# credentials = store.get()
-
-# # Writing credentials
-# creds = client.AccessTokenCredentials(access_token, user_agent)
-# creds.access_token = access_token
-# creds.refresh_token = refresh_token
-# creds.client_id = client_id
-# creds.client_secret = client_secret
-
-# # For some reason it does not save all the credentials,
-# # so write them to a json file manually instead
-# with open(credential_path, "w") as f:
-#     f.write(creds.to_json)
+app.secret_key = '''service_account.Credentials.from_service_account_file(
+    'secrets.sh')'''
+# credentials = google.oauth2.credentials.Credentials(
+#     'access_token',
+#     refresh_token='refresh_token',
+#     token_uri='token_uri',
+#     client_id='client_id',
+#     client_secret='client_secret')
 
 
 @app.route('/')
@@ -58,13 +44,19 @@ def all_users():
     return render_template('all_users.html', users=users)
 
 
-@app.route('/user')                                                             #@maybe render a more unique route? ('/users/<id>')
-def show_user(id):
-    """Show details on a particular user."""
+@app.route('/profile')                                                             #@maybe render a more unique route? ('/users/<id>')
+def show_user():
+    """Show details for one particular user."""
 
-    user = crud.get_user_by_id(id)
+    login_user = crud.get_user_by_email(session['email'])
 
-    return render_template('user.html', user=user)
+    if login_user:
+        return render_template('profile.html', user=login_user)  
+
+    else:
+        flash(f'Your account was not found, please login or create an account')
+        session['name'] = 'no-account-found-please-create-account'
+        return redirect('/')
 
 
 @app.route('/login', methods=['POST'])
@@ -78,10 +70,11 @@ def user_login():
     if login_user:
         if login_user.password == password:
             flash('Success')
-            session['name'] = fname
+            session['name'] = login_user.fname
             session['email'] = email
             session['isNew'] = False
-            session['loggedIn'] = True    
+            session['loggedIn'] = True
+            return redirect('/')    
 
         else:
             flash(f'Wrong password, try again')
@@ -132,6 +125,7 @@ def register_user():
             session['name'] = fname
             session['email'] = email
             session['isNew'] = False
+            session['loggedIn'] = False
             return redirect('/login')
 
     else:
