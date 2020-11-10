@@ -117,6 +117,7 @@ def register_user():
             session['name'] = fname
             session['email'] = email
             session['isNew'] = False
+            session['loggedIn'] = True
             return redirect('/')
 
         else:
