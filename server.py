@@ -2,14 +2,40 @@
 
 import crud
 from model import connect_to_db
+import os
 import datetime
 from flask import (Flask, render_template, request, flash, session, redirect)
 from jinja2 import StrictUndefined
+from google.oauth2 import service_account
+import google.oauth2.credentials
 
 
 app = Flask(__name__)
-app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
+app.secret_key = service_account.Credentials.from_service_account_file(
+    'secrets.sh')
+credentials = google.oauth2.credentials.Credentials(
+    'access_token',
+    refresh_token='refresh_token',
+    token_uri='token_uri',
+    client_id='client_id',
+    client_secret='client_secret')
+
+
+# store = google-auth.file.Storage(cred_path)
+# credentials = store.get()
+
+# # Writing credentials
+# creds = client.AccessTokenCredentials(access_token, user_agent)
+# creds.access_token = access_token
+# creds.refresh_token = refresh_token
+# creds.client_id = client_id
+# creds.client_secret = client_secret
+
+# # For some reason it does not save all the credentials,
+# # so write them to a json file manually instead
+# with open(credential_path, "w") as f:
+#     f.write(creds.to_json)
 
 
 @app.route('/')
@@ -187,3 +213,4 @@ def get_all_query_history():
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
+
