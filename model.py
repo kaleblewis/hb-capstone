@@ -12,14 +12,33 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    netflix_id = db.Column(db.String) #ForeignKey Netflix
     fname = db.Column(db.String(50))
     email = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(20))
     user_since = db.Column(db.DateTime)
+    mobile = db.Column(db.String(15))
+    SMS_allowed = db.Column(db.DateTime)
+    SMS_allowed_date = db.Column(db.DateTime)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} email={self.email}>'
-        
+
+
+class UserNetwork(db.Model):
+    """A User's social connections with other Users."""
+
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    requestor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    requestee_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    status = db.Column(db.String(20))
+    connection_date = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} id={self.id} status={self.status}>'
+
 
 class Preference(db.Model):
     """A user's default preferences."""
