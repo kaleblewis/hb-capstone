@@ -76,19 +76,69 @@ def get_all_users():
     return User.query.all()
 
 
-# def get_user_by_id(id):
-#     """Return a user by primary key.
-    
-#     >>> get_user_by_id(1)
-#     <User id=1 email=jane.doe@email.com>
-#     """
-
-#     return User.query.get(id)
-
-
 def get_user_by_email(email):
+    """Return a user by unique email address.
+    
+    >>> get_user_by_email(jane.doe@email.com)
+    <User id=1 email=jane.doe@email.com>
+    """
 
-    return User.query.filter(User.email == email).first()
+    return User.query.filter(User.email == email).first()                       
+
+
+#*############################################################################*#
+#*#                      USER CONNECTIONS OPERATIONS                         #*#
+#*############################################################################*#
+
+def add_user_connection(requestor_id, requestee_id):                            # TODO:  what params?
+    """Create and store a user's social network connection invitation.
+
+    # TODO: update docstring with doctest
+    """
+
+    user_connection = Connections(                                              # TODO:  what params?
+        requestor_id = requestor_id,
+        requestee_id = requestee_id,
+        status = "Pending",
+        connection_date = datetime.datetime.now()
+        )                   
+
+    db.session.add(user_connection)
+    db.session.commit()
+
+    return user_connection
+
+def update_user_connection_by_id(connection_id):
+    """Update a User Connection by primary key
+
+    # TODO: update docstring with doctest
+    """
+
+    pass
+
+
+def get_connections_by_user(user_id):                                           # TODO: implement new feature later to update/"approve" pending connection requests
+    """Return all of a User's requested connections.
+
+    Should return all requested connections, regardless of outcome/status.
+
+    # TODO: update docstring with doctest
+    """
+
+    return Connections.query.filter(Connections.requestor_id == user_id)
+
+    
+def get_pending_connections_by_user(user):                                      # TODO: implement new feature later to approve pending connection requests
+    """Return all pending connections where User is the Requestee.
+
+    Should return only the connections where:
+        Connections.Requestee_ID == User.ID
+        Connections.status = "Pending"
+
+    # TODO: update docstring with doctest
+    """
+
+    pass                                                    
 
 
 #*############################################################################*#
@@ -98,7 +148,7 @@ def get_user_by_email(email):
 def add_user_preference_to_preferences():                                       # TODO:  what params?
     """Create and store a collection of User's default preferences"""
 
-    user_preferences = QueryHistory(user=user, movie=movie, score=score         # TODO:  what params?
+    user_preferences = Preferences(user=user, movie=movie, score=score         # TODO:  what params?
                                     # id = db.Column(db.Integer, autoincrement=True, primary_key=True)
                                     # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
                                     # preferred_app_lang = db.Column(db.String(50))

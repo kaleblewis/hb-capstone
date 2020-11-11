@@ -25,10 +25,10 @@ class User(db.Model):
         return f'<{self.__class__.__name__} id={self.id} email={self.email}>'
 
 
-class UserNetwork(db.Model):
+class Connections(db.Model):
     """A User's social connections with other Users."""
 
-    __tablename__ = 'users'
+    __tablename__ = 'connections'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     requestor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
