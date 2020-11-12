@@ -2,4 +2,29 @@
 
 {% block title %}{% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+
+    <div id="search-result" class="row">
+    
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 title-summary">
+
+              <div class="content">
+                  <h3> {{ current_recommendations['imdbtitle'] }} </h3><b> ( {{ current_recommendations['released'][-4:] }}  )</b>
+                  
+                    <p> 🕐 {{ current_recommendations['runtime'] }} | 🎬 {{ current_recommendations['totalseasons'] }} | 🔰 {{ current_recommendations['rated'] }}  </p>|  
+
+                    <p>IMDb: ⭐ ⭐ ⭐ ⭐ ⚫  | Netflix: ⭐ ⭐ ⭐ ⭐ ⭐  | Rotten Tomatoes: 🍅 🍅 🍅 🍅 ⚫</p>    
+
+                    <p>🏆 {{ current_recommendations['awards'] }}</p>
+
+                    <p><b>Synopsis:</b>   <em>{{ current_recommendations['plot'] }}</em></p>
+                    
+                    <ul>
+                        <li><a href="https://www.imdb.com/title/{{ current_recommendations['imdbid'] }}"> Read more on imdb </a></li>
+                        <li><a href="https://www.netflix.com/title/{{ current_recommendations['filmid'] }}"> Watch now on Netflix </a></li>
+                    </ul>
+              </div>
+          </div>
+    </div>
+
+{% endblock %}
