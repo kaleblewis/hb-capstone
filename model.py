@@ -49,7 +49,7 @@ class Preference(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     preferred_app_lang = db.Column(db.String(50))
     default_subtitle = db.Column(db.String)
-    default_dubbing = db.Column(db.String)
+    default_audio = db.Column(db.String)
     default_genre = db.Column(db.String)
     default_release_date_start = db.Column(db.String(20))
     default_release_date_end = db.Column(db.String(20))
@@ -72,7 +72,7 @@ class QueryHistory(db.Model):
     query_string = db.Column(db.String)                                                         # ? should this be "text" or "string"
     payload = db.Column(db.String)                                                              # ? should this be "text" or "string"
     param_subtitle = db.Column(db.String)
-    param_dubbing = db.Column(db.String)
+    param_audio = db.Column(db.String)
     param_genre = db.Column(db.String)
     param_release_date = db.Column(db.String(20))
     param_duration = db.Column(db.Integer)
