@@ -2,6 +2,9 @@
 
 from model import db, User, Preference, QueryHistory, connect_to_db
 import datetime
+import os
+import sys
+from pprint import pprint
 
 
 #*############################################################################*#
@@ -155,7 +158,7 @@ def get_connections_by_user(user):                                              
 #*############################################################################*#
 
 def add_user_preference_to_preferences(user, param_subtitle="",                 # TODO:  what params?
-    param_dubbing="", param_genre="", param_release_date_start="", 
+    param_audio="", param_genre="", param_release_date_start="", 
     param_release_date_end="", param_duration="", param_total_seasons=""):
     """Create and store a collection of User's default preferences"""
 
@@ -165,7 +168,7 @@ def add_user_preference_to_preferences(user, param_subtitle="",                 
         query_string = query_string,
         payload = payload,
         param_subtitle = param_subtitle,
-        param_dubbing = param_dubbing,
+        param_audio = param_audio,
         param_genre = param_genre,
         param_release_date_start = param_release_date_start,
         param_release_date_end = param_release_date_end,
@@ -201,18 +204,97 @@ def get_user_preferences_all_time(user):
 #*#                            QUERY OPERATIONS                              #*#
 #*############################################################################*#
 
-# def search_specific_movie():                                                    # TODO:  what params?
-#     """Allow user to search for content based on specific input parameters      # ? is there a better, more general term than "movie", TV shows count, too
+def search_by_title(str):
+    """ Pass movie title to unofficial imdb API to receive imdb 'id'.
+
+    should begin with two alpha chars
+
+    >>> search_by_title('the last unicorn')
+    tt0084237
+    """
+    imdb_query_param = quote(str)
+
+    imdb_url = f"https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/{imdb_query_param}"
+    # example looks like of a full url: 
+    # "https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/the%20last%20unicorn"
+
+    imdb_headers = (os.environ['search_by_title_TOKEN'])
+
+    imdb_response = requests.request("GET", imdb_url, headers=imdb_headers)
+
+    imdb_list = []
+    imdb_payload = json.loads(imdb_response.text)
+    imdb_list.append(imdb_payload)
+
+    imdb_dictionary = (imdb_list[0])
+
+    return imdb_dictionary['id']
+
+    for item in payload(imdb_list):
+        print(imdb_dictionary['imdbtitle'])
+
+
+def search_by_id(str):
+    """ Pass 'imdbid' to *unofficial* netflix API to receive netflix 'filmid'.
+
+    Accepts string of alpha and numeric chars
+        accepts parameter: 'imdbid' which begins with two alpha chars
+        returns result: 'filmid' netflix id does not contain alpha chars
+
+    >>> search_by_id('tt0084237')
+    60035334
+
+    >>> search_by_id(search_by_title('the last unicorn'))
+    60035334
+    """
+
+    url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
+
+    querystring = {"t":"getimdb","q":f"{str}"}
+
+    headers = (os.environ['search_by_id_TOKEN'])
+
+    n_response = requests.request("GET", url, headers=headers, params=querystring)
+
+    n_list = []
+    n_payload = json.loads(n_response.text)
+    n_list.append(n_payload)
+
+    n_dictionary = (n_list[0])
+
+    return n_dictionary['filmid']
     
-#     """                                                                         # TODO:  update docstring with doctests      
-
-#     pass                                                                        # TODO:  complete function stub 
+# print(search_by_id(search_by_title('the last unicorn')))
 
 
-# def get_single_result_by_id(movie_id):
-#     """Return a single movie by primary key."""
+def get_by_filmid(str):
+    """ Pass netflix 'filmid' to receive Title Details.
 
-#     pass                                                                        # TODO:  complete function stub 
+    >>> get_by_filmid('60035334')
+    {"RESULT":{"nfinfo":{"image1":"https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg","title":"The Last Unicorn","synopsis":"This animated tale follows a unicorn who believes she may be the last of her species and is searching high and low for someone just like her.","matlevel":"35","matlabel":"Contains nothing in theme, language, nudity, sex, violence or other matters that, in the view of the Rating Board, would offend parents whose younger children view the motion picture","avgrating":"3.8214536","type":"movie","updated":"","unogsdate":"2015-07-10 01:09:00","released":"1982","netflixid":"60035334","runtime":"1h32m","image2":"https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg","download":"1"},"imdbinfo":{"rating":"7.5","votes":"23234","metascore":"70","genre":"Animation, Adventure, Drama, Family, Fantasy","awards":"1 nomination.","runtime":"92 min","plot":"From a riddle-speaking butterfly, a unicorn learns that she is supposedly the last of her kind, all the others having been herded away by the Red Bull. The unicorn sets out to discover the truth behind the butterfly&amp;#39;s words. She is eventually joined on her quest by Schmendrick, a second-rate magician, and Molly Grue, a now middle-aged woman who dreamed all her life of seeing a unicorn. Their journey leads them far from home, all the way to the castle of King Haggard...","country":"UK, France, West Germany, Japan, USA","language":"English, German","imdbid":"tt0084237"},"mgname":["Animal Tales","Family Sci-Fi & Fantasy","Children & Family Films","Films for ages 8 to 10","Films based on childrens books","Films for ages 11 to 12"],"Genreid":["5507","52849","783","561","10056","6962"],"people":[{"actor":["Alan Arkin","Jeff Bridges","Mia Farrow","Tammy Grimes","Angela Lansbury","Robert Klein","Keenan Wynn","Christopher Lee","Rene Auberjonois","Paul Frees","Jack Lester","Brother Theodore","Don Messick","Ed Peck","Kenneth Jennings","Nellie Bellflower"]},{"creator":["Peter S. Beagle"]},{"director":["Jules Bass","Arthur Rankin Jr."]}],"country":[]}}
+
+    >>> search_by_id(search_by_title('the last unicorn'))
+    60035334
+    """
+    url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
+
+    #querystring = {"t":"loadvideo","q":f"{str}"}                               # TODO:  rawr!  figure out how to unpack dicts that are 3-layers deep
+    querystring = {"t":"getimdb","q":f"{str}"}                                  # this one is the imdb info, not the netflix info
+
+    headers = (os.environ['get_by_filmid_TOKEN'])
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    imdb_list = []
+    imdb_payload = json.loads(response.text)
+    imdb_list.append(imdb_payload)
+
+    imdb_dictionary = (imdb_list[0])
+
+    return imdb_dictionary
+
+#* TO RETURN A MOVIE BASED ON A STRING OF IT'S TITLE:
+#current_result = get_by_filmid((search_by_id(search_by_title('the last unicorn'))))
 
 
 # def search_random_top_3_results():                                                 # TODO:  what params?
@@ -247,7 +329,7 @@ def get_user_preferences_all_time(user):
 #*############################################################################*#
 
 def add_query_to_query_history(user, query_string, 
-    payload, param_subtitle="", param_dubbing="", param_genre="", 
+    payload, param_subtitle="", param_audio="", param_genre="", 
     param_release_date_start="", param_release_date_end="", param_duration="", 
     param_total_seasons=""):          # TODO:  what params?
     """Create a new entry in Query History with query results                   # TODO: update docstring with doctest
@@ -258,7 +340,7 @@ def add_query_to_query_history(user, query_string,
         query_string = query_string,
         payload = payload,
         param_subtitle = param_subtitle,
-        param_dubbing = param_dubbing,
+        param_audio = param_audio,
         param_genre = param_genre,
         param_release_date_start = param_release_date_start,
         param_release_date_end = param_release_date_end,
