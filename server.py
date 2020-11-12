@@ -16,6 +16,7 @@ app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
 app.secret_key = '''service_account.Credentials.from_service_account_file(
     'secrets.sh')'''
+#netflix api key =  ~approx:  os.environ....  (import sys <?)
 # credentials = google.oauth2.credentials.Credentials(
 #     'access_token',
 #     refresh_token='refresh_token',
@@ -170,12 +171,13 @@ def recommendations_page():
 
 
 @app.route('/search', methods=['POST'])
-def render_specific_movie():
-    """Serve up results based on user's specific input parameters"""
+def render_specific_movie(search_terms):
+    """Serve up *one* search result based on user's specific input parameters"""
     
-    #crud.search_specific_movie(....include params here....)
+    search_result = get_by_filmid((search_by_id(search_by_title(search_terms))))
 
-    return render_template("recommendations.html")    
+    return render_template("recommendations.html", 
+        current_recommendations=search_result)    
 
 
 @app.route('/random', methods=['POST'])
