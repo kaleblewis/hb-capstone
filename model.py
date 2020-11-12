@@ -12,14 +12,14 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    netflix_id = db.Column(db.String) #ForeignKey Netflix
+    # netflix_id = db.Column(db.String) #ForeignKey Netflix
     fname = db.Column(db.String(50))
     email = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(20))
     user_since = db.Column(db.DateTime)
-    mobile = db.Column(db.String(15))
-    SMS_allowed = db.Column(db.DateTime)
-    SMS_allowed_date = db.Column(db.DateTime)
+    # mobile = db.Column(db.String(15))
+    # SMS_allowed = db.Column(db.DateTime)
+    # SMS_allowed_date = db.Column(db.DateTime)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} email={self.email}>'
@@ -37,7 +37,7 @@ class Connections(db.Model):
     connection_date = db.Column(db.DateTime)
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} status={self.status}>'
+        return f'<{self.__class__.__name__} id={self.id} status={self.status} requestor_id:{self.requestor_id} requestee_id:{self.requestee_id}>'
 
 
 class Preference(db.Model):
@@ -51,7 +51,8 @@ class Preference(db.Model):
     default_subtitle = db.Column(db.String)
     default_dubbing = db.Column(db.String)
     default_genre = db.Column(db.String)
-    default_release_date = db.Column(db.String(20))
+    default_release_date_start = db.Column(db.String(20))
+    default_release_date_end = db.Column(db.String(20))
     default_duration = db.Column(db.Integer)
 
     user = db.relationship('User', backref='preferences')

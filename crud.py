@@ -90,14 +90,23 @@ def get_user_by_email(email):
 #*#                      USER CONNECTIONS OPERATIONS                         #*#
 #*############################################################################*#
 
-def add_user_connection(user, requestee_id):                                    # TODO:  what params?
+def add_user_connection(user, requestee):                                       # // TODO:  what params?
     """Create and store a user's social network connection invitation.
 
-    # TODO: update docstring with doctest
+    new connection should get created:
+    >>> add_user_connection(1, 2)
+    <connections id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+
+    user shouldn't be both requestor and requestee                              # TODO:  add in this logic with if statement?
+    >>> add_user_connection(1, 2)
+    <connections id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+
+    only one record should exist per requestor+requestee+status combination     # TODO:  add in this logic with if statement?
+    >>> add_user_connection(1, 2)
+    <connections id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
     """
 
-    user_connection = Connections(                                              # TODO:  what params?
-        requestor_id = (User.query.get(id)),
+    user_connection = Connections(                                              # // TODO:  what params?
         requestee_id = requestee_id,
         status = "Pending",
         connection_date = datetime.datetime.now()
@@ -145,9 +154,9 @@ def get_connections_by_user(user):                                              
 #*#                      USER PREFERENCES OPERATIONS                         #*#
 #*############################################################################*#
 
-def add_user_preference_to_preferences(user, param_subtitle="", 
-    param_dubbing="", param_genre="", param_release_date="", param_duration="", 
-    param_total_seasons=""):                                                    # TODO:  what params?
+def add_user_preference_to_preferences(user, param_subtitle="",                 # TODO:  what params?
+    param_dubbing="", param_genre="", param_release_date_start="", 
+    param_release_date_end="", param_duration="", param_total_seasons=""):
     """Create and store a collection of User's default preferences"""
 
     user_preferences = Preferences(user_id = db.Column(db.Integer, 
@@ -158,7 +167,8 @@ def add_user_preference_to_preferences(user, param_subtitle="",
         param_subtitle = param_subtitle,
         param_dubbing = param_dubbing,
         param_genre = param_genre,
-        param_release_date = param_release_date,
+        param_release_date_start = param_release_date_start,
+        param_release_date_end = param_release_date_end,
         param_duration = param_duration,
         param_total_seasons = param_total_seasons
         )                          
@@ -238,7 +248,8 @@ def get_user_preferences_all_time(user):
 
 def add_query_to_query_history(user, query_string, 
     payload, param_subtitle="", param_dubbing="", param_genre="", 
-    param_release_date="", param_duration="", param_total_seasons=""):          # TODO:  what params?
+    param_release_date_start="", param_release_date_end="", param_duration="", 
+    param_total_seasons=""):          # TODO:  what params?
     """Create a new entry in Query History with query results                   # TODO: update docstring with doctest
     """
 
@@ -249,7 +260,8 @@ def add_query_to_query_history(user, query_string,
         param_subtitle = param_subtitle,
         param_dubbing = param_dubbing,
         param_genre = param_genre,
-        param_release_date = param_release_date,
+        param_release_date_start = param_release_date_start,
+        param_release_date_end = param_release_date_end,
         param_duration = param_duration,
         param_total_seasons = param_total_seasons
         )                   
