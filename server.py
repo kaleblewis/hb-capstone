@@ -4,9 +4,6 @@ import crud
 from model import connect_to_db
 import os
 import datetime
-import requests
-import json
-from urllib.parse import quote
 from flask import (Flask, render_template, request, flash, session, redirect, 
     url_for)
 from flask.json import jsonify
@@ -181,8 +178,16 @@ def render_specific_movie():
     search_term = request.form.get('search-input')
     search_result = crud.get_by_filmid((crud.search_by_id(crud.search_by_title(search_term))))
 
-    return render_template("recommendations.html", 
-        current_recommendations=search_result)    
+    if search_result['imdbid'] != '':
+        flash(f"{search_term}")
+        return render_template("recommendations.html", 
+        current_recommendations=search_result)
+
+    else:
+        flash(f"...crickets chirping....  	🦗")
+        flash(f"Try a different search term, {session['name']}")
+        return redirect('/')    
+
 
 
 @app.route('/random', methods=['POST'])

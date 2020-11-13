@@ -9,8 +9,11 @@
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 title-summary">
 
               <div class="content">
-                  <!-- <img src={{ current_recommendations['poster'] }}> -->
-                  <h2> {{ current_recommendations['imdbid'] }}</h2> <b> ( {{ current_recommendations['released'][-4:] }}  )</b>
+        
+                {% if 'USA' in current_recommendations['country'] %}
+                    <div class="search-result">
+                    <img src="{{ current_recommendations['poster'] }}" width="30" height="50">
+                    <b> ( {{ current_recommendations['released'][-4:] }}  )</b>
                   
                     <p> 🕐 {{ current_recommendations['runtime'] }} | 🎬 {{ current_recommendations['totalseasons'] }} | 🔰 {{ current_recommendations['rated'] }}  </p>
                     <p> 🎭 {{ current_recommendations['genre'] }} </p>
@@ -25,6 +28,17 @@
                         <li><a href="https://www.imdb.com/title/{{ current_recommendations['imdbid'] }}"> Read more on imdb </a></li>
                         <li><a href="https://www.netflix.com/title/{{ current_recommendations['filmid'] }}"> Watch now on Netflix </a></li>
                     </ul>
+                    </div>
+
+                {% else %}
+                    <p> crickets chirping.... <b>try a different search term, friend</h3></p>
+                    <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/7aae406a-1051-4f7c-a2a1-17f54a84b888/d5zzvn1-507fd3fb-6aef-4753-b01e-f9fb84e0f07c.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvN2FhZTQwNmEtMTA1MS00ZjdjLWEyYTEtMTdmNTRhODRiODg4XC9kNXp6dm4xLTUwN2ZkM2ZiLTZhZWYtNDc1My1iMDFlLWY5ZmI4NGUwZjA3Yy5naWYifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.Fq17Wh2vSet9TSV7PV_mk54SlBpZiF43rJOK_IhQhbc">
+                    
+                
+                {% endif %}
+
+
+                
               </div>
           </div>
     </div>
