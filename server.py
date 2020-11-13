@@ -61,21 +61,33 @@ def show_user():
         return redirect('/')
 
 
+@app.route("/login", methods=["GET"])
+def show_login():
+    """Show login form."""
+
+    return redirect('/')  
+
 @app.route('/login', methods=['POST'])
 def user_login():
 
     email = request.form.get('email-input')
     password = request.form.get('password-input')
+    create = request.form.get('create-input')
+    login = request.form.get('login-input')
 
     login_user = crud.get_user_by_email(email)
 
-    if login_user:
+    if login:
+        session['name'] = 'no-account-found-please-create-account'
+        return redirect('/')
+
+    elif login_user:
         if login_user.password == password:
             flash('Success')
             session['name'] = login_user.fname
             session['email'] = email
             session['isNew'] = False
-            session['loggedIn'] = True
+            session['logged_in'] = True
             return redirect('/')    
 
         else:
@@ -94,6 +106,11 @@ def user_login():
                                                                                             # (wrap all of the login code here?)
                                                                                         # else:
                                                                                         #     flash(f'You will be able to reload this page and try again in 5 minutes')           
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    flash('You have logged out successfully')
+    return render_template('homepage.html') 
 
 
 @app.route('/newuser', methods=['POST'])
@@ -106,7 +123,7 @@ def register_user():
     password2 = request.form.get('password-input-2')
 
     new_user = crud.get_user_by_email(email)
-
+    
     if password != password2:
         flash(f"The passwords you entered do not match, please try again")
         return redirect('/')
@@ -119,7 +136,7 @@ def register_user():
             session['name'] = fname
             session['email'] = email
             session['isNew'] = False
-            session['loggedIn'] = True
+            session['logged_in'] = True
             return redirect('/')
 
         else:
@@ -128,7 +145,7 @@ def register_user():
             session['name'] = fname
             session['email'] = email
             session['isNew'] = False
-            session['loggedIn'] = False
+            session['logged_in'] = False
             return redirect('/login')
 
     else:
@@ -137,7 +154,7 @@ def register_user():
         session['name'] = fname
         session['email'] = email
         session['isNew'] = True  
-        session['loggedIn'] = True                                               #this way we can display dynamic content to users who are new to the site
+        session['logged_in'] = True                                               #this way we can display dynamic content to users who are new to the site
                                                                                 # TODO password counter: reset counter when login successful:  session['password-counter'] = 0 
         return redirect('/')
 
@@ -147,7 +164,7 @@ def recommendations_page():
     """View recommendations page"""
 
     try:
-        session['loggedIn'] = True
+        session['logged_in'] = True
         return render_template("recommendations.html")                             
     except KeyError:
         return render_template('homepage.html')                                 # TODO debug: when user clicks form homepage, to recommendations, and homepage re-renders *OR* redirects, jinja kicks an error even though page loads fine directly""
@@ -185,8 +202,9 @@ def render_specific_movie():
 
     else:
         flash(f"...crickets chirping....  	🦗")
-        flash(f"Try a different search term, {session['name']}")
-        return redirect('/')    
+        flash(f"try a different search term, {session['name']}?")
+        return redirect('/')                                                    # TODO:  debug why this works successfully if searching from '/' page
+                                                                                #        but results in keyerror on [imdbID] if User is searching from '/search' page 
 
 
 

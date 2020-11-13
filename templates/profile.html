@@ -3,9 +3,15 @@
 {% block title %} My Profile {% endblock %}
 
 {% block body %}
-    <div id='app'></div>
+    <h1> {{ user.fname }} </h1>
+
+    <p><b>Username:</b> {{ user.email }} </p>
+    <p><b>Preferred name:</b> {{ user.fname }} </p>
+    <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p>
+    <p><b>Linked accounts:</b>  </p>
+
 {% endblock %}
 
 {% block js %}
-	<script src="/static/js/profile.jsx" type="text/jsx"></script>
+	
 {% endblock %}

@@ -36,102 +36,64 @@
                 <div class="login">
                     {% block login %}
 
-                    {% if session['name'] is defined or session['loggedIn'] is defined %}    
+                    {% try session['logged_in'] %}    
                         <!-- if cookie exists -->
 
-                            {% if session['name'] == 'no-account-found-please-create-account' %}
-                            <!-- and the cookie is set to this wonky value because you need to see the login screen -->
+                        <!-- *** TEST TO VERIFY SESSION['NAME'] *** 
+                        <br>*** SESSION['NAME'] IS CURRENTLY EQUAL TO:  {{ session['name'] }} ***
+                        <br>*** SESSION['email'] IS CURRENTLY EQUAL TO:  {{ session['email'] }} ***
+                        <br>*** SESSION['isNew'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} ***
+                        <br>*** SESSION['logged_in'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} *** -->
+                    
+                        <a href="/">home</a>
+                        <a> <form action='/search' method="POST">
+                            <div class="form-group">
+                                <label for="search-field"></label>
+                                <input type="search"
+                                    id="search-input"
+                                    name="search-input"
+                                    placeholder="search by movie title"
+                                    required
+                                    autofocus />
+                                <input type="submit" value="🔍" />
+                                </div>
+                            </form>
+                            </a>
+                        <div class="dropdown">
+                            <button class="dropbtn"><s>recommendations
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a href="/recommendations">return-1-result</a>
+                                <a href="/recommendations">find something i feel like watching</a>
+                                <a href="/recommendations">previous recommendations</s></a>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="dropbtn" href="/profile">profile
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                                <div class="dropdown-content">
+                                    <a href="/profile">preferences</a>
+                                    <a href="/logout"><s>log out</s></a>
+                                </div>
 
-                                <form action='/newuser' method="POST">
-                                    <div class="form-group">
-                                    
-                                        <label for="name-field"></label>
-                                        <input type="text"
-                                            id="name-input"
-                                            name="name-input"
-                                            placeholder="What's your name, friend?"
-                                            required
-                                            autofocus />
-
-                                        <label for="email-field"></label>
-                                        <input type="text"
-                                            id="email-input"
-                                            name="email-input"
-                                            placeholder="enter your email address"
-                                            required
-                                            autofocus />
-
-                                        <label for="password-field"></label>        
-                                        <input type="new-password"
-                                            id="password-input"
-                                            name="password-input"
-                                            placeholder="select a secure password"
-                                            required
-                                            autofocus />
-
-                                        <input type="new-password-2"
-                                            id="password-input-2"
-                                            name="password-input-2"
-                                            placeholder="please re-type your password"
-                                            required
-                                            autofocus />
-
-                                        <input type="submit" value="Create your Account" />
-
-                                    </div>
-                                </form>
-
-                                {% elif session['loggedIn'] is defined %}     
-                                <!-- if login cookie exists -->   
-
-                                <!-- *** TEST TO VERIFY SESSION['NAME'] *** 
-                                <br>*** SESSION['NAME'] IS CURRENTLY EQUAL TO:  {{ session['name'] }} ***
-                                <br>*** SESSION['email'] IS CURRENTLY EQUAL TO:  {{ session['email'] }} ***
-                                <br>*** SESSION['isNew'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} ***
-                                <br>*** SESSION['loggedIn'] IS CURRENTLY EQUAL TO:  {{ session['isNew'] }} *** -->
-                               
+                    {% except UndefinedError %}
                                 
-                                    <a href="/">home</a>
-                                    <a> <form action='/search' method="POST">
-                                        <div class="form-group">
-                                            <label for="search-field"></label>
-                                            <input type="search"
-                                                id="search-input"
-                                                name="search-input"
-                                                placeholder="search by movie title"
-                                                required
-                                                autofocus />
-                                            <input type="submit" value="🔍" />
-                                            </div>
-                                        </form>
-                                        </a>
-                                    <div class="dropdown">
-                                        <button class="dropbtn"><s>recommendations
-                                            <i class="fa fa-caret-down"></i>
-                                        </button>
-                                        <div class="dropdown-content">
-                                            <a href="/recommendations">return-1-result</a>
-                                            <a href="/recommendations">find something i feel like watching</a>
-                                            <a href="/recommendations">previous recommendations</s></a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="dropbtn" href="/profile">profile
-                                            <i class="fa fa-caret-down"></i>
-                                        </button>
-                                            <div class="dropdown-content">
-                                                <a href="/profile">preferences</a>
-                                                <a href="#"><s>log out</s></a>
-                                            </div>
-                                            
-                                {% endif %} 
+                        {% elif session['name'] == 'no-account-found-please-create-account' %}
+                        <!-- and the cookie is set to this wonky value because you need to see the login screen -->
 
-                        {% else %}
-                        <!-- if you need to login -->
-                        
-                            <form action='/login' method="POST">
+                            <form action='/newuser' method="POST">
                                 <div class="form-group">
                                 
+                                    <label for="name-field"></label>
+                                    <input type="text"
+                                        id="name-input"
+                                        name="name-input"
+                                        placeholder="What's your name, friend?"
+                                        required
+                                        autofocus />
+
                                     <label for="email-field"></label>
                                     <input type="text"
                                         id="email-input"
@@ -141,20 +103,53 @@
                                         autofocus />
 
                                     <label for="password-field"></label>        
-                                    <input type="current-password"
+                                    <input type="new-password"
                                         id="password-input"
                                         name="password-input"
-                                        placeholder="password"
+                                        placeholder="select a secure password"
                                         required
                                         autofocus />
 
-                                    <input type="submit" value="login" />
+                                    <input type="new-password-2"
+                                        id="password-input-2"
+                                        name="password-input-2"
+                                        placeholder="please re-type your password"
+                                        required
+                                        autofocus />
 
-                                    <!--// TODO: update to collect password twice and verify they match -->
-                                    <!--// TODO: update to collect username + password, then only fallback to all fields if new user -->
+                                    <input type="submit" value="Create your Account" />
+
                                 </div>
                             </form>
-                        {% endif %}
+
+                            {% else %}
+                            <!-- if you need to login -->
+                            
+                                <form action='/login' method="POST">
+                                    <div class="form-group">
+                                    
+                                        <label for="email-field"></label>
+                                        <input type="text"
+                                            id="email-input"
+                                            name="email-input"
+                                            placeholder="enter your email address"
+                                            autofocus />
+
+                                        <label for="password-field"></label>        
+                                        <input type="current-password"
+                                            id="password-input"
+                                            name="password-input"
+                                            placeholder="password"
+                                            autofocus />
+
+                                        <input type="submit" value="login" id="login-input"/>
+                                        <input type="submit" value= "create account" id="create-input"/>
+                                
+                                    </div>
+                                </form>
+                            {% endif %}
+
+                            {% endblock %}
                     </div>
                     {% endblock %}
                  </div>
