@@ -62,8 +62,9 @@ def show_user():
 
 
 @app.route("/login", methods=["GET"])
-def show_login():
-    """Show login form."""
+def login_redirect():
+    """Show login form."""     
+    # mostly just so that the route doesn't bomb out if someone enters it manually                     
 
     return redirect('/')  
 
@@ -72,16 +73,10 @@ def user_login():
 
     email = request.form.get('email-input')
     password = request.form.get('password-input')
-    create = request.form.get('create-input')
-    login = request.form.get('login-input')
 
     login_user = crud.get_user_by_email(email)
 
-    if login:
-        session['name'] = 'no-account-found-please-create-account'
-        return redirect('/')
-
-    elif login_user:
+    if login_user:
         if login_user.password == password:
             flash('Success')
             session['name'] = login_user.fname
@@ -97,23 +92,34 @@ def user_login():
             return redirect('/')
 
     else:
-        flash(f'Your account was not found, please create one')
-        session['name'] = 'no-account-found-please-create-account'
-        return redirect('/')
+        flash(f'please create an account')
+        return redirect('/newuser')
 
                                                                                 # TODO password counter: build login lockout with auto refresh later
                                                                                         # if session exists ['password-counter'] < 6:
                                                                                             # (wrap all of the login code here?)
                                                                                         # else:
                                                                                         #     flash(f'You will be able to reload this page and try again in 5 minutes')           
-@app.route("/logout")
-def logout():
+
+@app.route("/existinguser", methods=["GET"])
+def show_login():
+    """Show sign-up form."""
+
     session['logged_in'] = False
-    flash('You have logged out successfully')
-    return render_template('homepage.html') 
+    session['name'] = ''
+    return redirect('/')  
 
 
-@app.route('/newuser', methods=['POST'])
+@app.route("/newuser", methods=["GET"])
+def show_sign_up():
+    """Show sign-up form."""
+
+    session['name'] = 'no-account-found-please-create-account'
+    session['logged_in'] = False
+    return redirect('/')  
+
+
+@app.route('/createuser', methods=['POST'])
 def register_user():
     """Create new user"""
 
@@ -122,17 +128,17 @@ def register_user():
     password = request.form.get('password-input')
     password2 = request.form.get('password-input-2')
 
-    new_user = crud.get_user_by_email(email)
+    existing_user = crud.get_user_by_email(email)
     
     if password != password2:
         flash(f"The passwords you entered do not match, please try again")
         return redirect('/')
 
-    elif new_user:
+    elif existing_user:
 
-        if new_user.password == password:
-            flash(f"Thanks, {fname} but you already have an account with that same password")  #TODO debug issue where fplks receive the 
-            flash(f"You have successfully logged in to your account")           # // TODO fix bug msg scenario where someone gets stuck in loop if they enter existing Username/password within /newuser
+        if existing_user.password == password:
+            flash(f"Thanks, {fname} but you already have an account with that same password")
+            flash(f"You have successfully logged in to your existing account")
             session['name'] = fname
             session['email'] = email
             session['isNew'] = False
@@ -146,7 +152,7 @@ def register_user():
             session['email'] = email
             session['isNew'] = False
             session['logged_in'] = False
-            return redirect('/login')
+            return redirect('/')
 
     else:
         crud.create_user(fname, email, password)
@@ -157,6 +163,13 @@ def register_user():
         session['logged_in'] = True                                               #this way we can display dynamic content to users who are new to the site
                                                                                 # TODO password counter: reset counter when login successful:  session['password-counter'] = 0 
         return redirect('/')
+
+
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    flash('You have logged out successfully')
+    return render_template('homepage.html') 
 
 
 @app.route('/recommendations')
@@ -187,7 +200,6 @@ def recommendations_page():
                                                                                                 # jinja2.exceptions.UndefinedError: 'flask.sessions.SecureCookieSession object' has no attribute 'name'
 
 
-
 @app.route('/search', methods=['POST'])
 def render_specific_movie():
     """Serve up *one* search result based on user's specific input parameters"""
@@ -205,7 +217,6 @@ def render_specific_movie():
         flash(f"try a different search term, {session['name']}?")
         return redirect('/')                                                    # TODO:  debug why this works successfully if searching from '/' page
                                                                                 #        but results in keyerror on [imdbID] if User is searching from '/search' page 
-
 
 
 @app.route('/random', methods=['POST'])
