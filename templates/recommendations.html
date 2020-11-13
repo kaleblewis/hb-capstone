@@ -5,11 +5,12 @@
 {% block body %}
 
     <div id="search-result" class="row">
-    
+
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 title-summary">
 
               <div class="content">
-                  <h3> {{ current_recommendations['imdbtitle'] }} </h3><b> ( {{ current_recommendations['released'][-4:] }}  )</b>
+                  <!-- <img src={{ current_recommendations['poster'] }}> -->
+                  <h2> {{ current_recommendations['imdbtitle'] }} </h2><b> ( {{ current_recommendations['released'][-4:] }}  )</b>
                   
                     <p> 🕐 {{ current_recommendations['runtime'] }} | 🎬 {{ current_recommendations['totalseasons'] }} | 🔰 {{ current_recommendations['rated'] }}  </p>|  
 

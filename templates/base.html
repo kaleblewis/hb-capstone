@@ -92,6 +92,19 @@
                                
                                 
                                     <a href="/">Home</a>
+                                    <a> <form action='/search' method="POST">
+                                        <div class="form-group">
+                                            <label for="search-field"></label>
+                                            <input type="search"
+                                                id="search-input"
+                                                name="search-input"
+                                                placeholder="search by movie title"
+                                                required
+                                                autofocus />
+                                            <input type="submit" value="🔍" />
+                                            </div>
+                                        </form>
+                                        </a>
                                     <a href="/recommendations"><s>search for a specific movie</s></a>
                                     <div class="dropdown">
                                         <button class="dropbtn"><s>Recommendations

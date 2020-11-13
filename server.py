@@ -4,10 +4,14 @@ import crud
 from model import connect_to_db
 import os
 import datetime
+import requests
+import json
+from urllib.parse import quote
 from flask import (Flask, render_template, request, flash, session, redirect, 
     url_for)
 from flask.json import jsonify
 from jinja2 import StrictUndefined
+
 # from google.oauth2 import service_account
 # import google.oauth2.credentials
 
@@ -171,10 +175,11 @@ def recommendations_page():
 
 
 @app.route('/search', methods=['POST'])
-def render_specific_movie(search_terms):
+def render_specific_movie():
     """Serve up *one* search result based on user's specific input parameters"""
-    
-    search_result = get_by_filmid((search_by_id(search_by_title(search_terms))))
+
+    search_term = request.form.get('search-input')
+    search_result = crud.get_by_filmid((crud.search_by_id(crud.search_by_title(search_term))))
 
     return render_template("recommendations.html", 
         current_recommendations=search_result)    

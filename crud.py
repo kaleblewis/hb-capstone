@@ -4,7 +4,9 @@ from model import db, User, Preference, QueryHistory, connect_to_db
 import datetime
 import os
 import sys
-from pprint import pprint
+import requests
+import json
+from urllib.parse import quote
 
 
 #*############################################################################*#
@@ -218,7 +220,13 @@ def search_by_title(str):
     # example looks like of a full url: 
     # "https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/the%20last%20unicorn"
 
-    imdb_headers = (os.environ['search_by_title_TOKEN'])
+    imdb_headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "imdb-internet-movie-database-unofficial.p.rapidapi.com"
+        }
+    imdb_headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
+
+    #imdb_headers = {'x-rapidapi-key': 'aa55355cacmsh1183c4b68a0abb4p174a34jsnb47af0a2721d', 'x-rapidapi-host': 'imdb-internet-movie-database-unofficial.p.rapidapi.com'}
 
     imdb_response = requests.request("GET", imdb_url, headers=imdb_headers)
 
@@ -228,10 +236,9 @@ def search_by_title(str):
 
     imdb_dictionary = (imdb_list[0])
 
+    # TEST TO SEE API PAYLOAD  
+    #print(imdb_dictionary)
     return imdb_dictionary['id']
-
-    for item in payload(imdb_list):
-        print(imdb_dictionary['imdbtitle'])
 
 
 def search_by_id(str):
@@ -252,7 +259,13 @@ def search_by_id(str):
 
     querystring = {"t":"getimdb","q":f"{str}"}
 
-    headers = (os.environ['search_by_id_TOKEN'])
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
+        }
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
+
+    # headers = {'x-rapidapi-key': 'aa55355cacmsh1183c4b68a0abb4p174a34jsnb47af0a2721d', 'x-rapidapi-host': 'unogs-unogs-v1.p.rapidapi.com'}
 
     n_response = requests.request("GET", url, headers=headers, params=querystring)
 
@@ -261,7 +274,8 @@ def search_by_id(str):
     n_list.append(n_payload)
 
     n_dictionary = (n_list[0])
-
+    # TEST TO SEE API PAYLOAD  
+    #print(n_dictionary)
     return n_dictionary['filmid']
     
 # print(search_by_id(search_by_title('the last unicorn')))
@@ -281,7 +295,12 @@ def get_by_filmid(str):
     #querystring = {"t":"loadvideo","q":f"{str}"}                               # TODO:  rawr!  figure out how to unpack dicts that are 3-layers deep
     querystring = {"t":"getimdb","q":f"{str}"}                                  # this one is the imdb info, not the netflix info
 
-    headers = (os.environ['get_by_filmid_TOKEN'])
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
+        }
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
+    #headers = {'x-rapidapi-key': 'aa55355cacmsh1183c4b68a0abb4p174a34jsnb47af0a2721d', 'x-rapidapi-host': 'unogs-unogs-v1.p.rapidapi.com'}
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
@@ -291,10 +310,11 @@ def get_by_filmid(str):
 
     imdb_dictionary = (imdb_list[0])
 
+    print(imdb_dictionary)
     return imdb_dictionary
 
 #* TO RETURN A MOVIE BASED ON A STRING OF IT'S TITLE:
-#current_result = get_by_filmid((search_by_id(search_by_title('the last unicorn'))))
+#current_result = crud.get_by_filmid((crud.search_by_id(crud.search_by_title('the last unicorn'))))
 
 
 # def search_random_top_3_results():                                                 # TODO:  what params?
