@@ -6,7 +6,7 @@ import os
 import sys
 import requests
 import json
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 
 #*############################################################################*#
@@ -308,7 +308,8 @@ def get_by_filmid(str):
     imdb_payload = json.loads(response.text)
     imdb_list.append(imdb_payload)
 
-    imdb_dictionary = (imdb_list[0])
+    imdb_dictionary = imdb_list[0]
+    imdb_dictionary['plot'] = unquote(imdb_dictionary['plot'])                  # TODO: Try to find other ways to get rid of goofy chars?
 
     print(imdb_dictionary)
     return imdb_dictionary

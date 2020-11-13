@@ -10,9 +10,10 @@
 
               <div class="content">
                   <!-- <img src={{ current_recommendations['poster'] }}> -->
-                  <h2> {{ current_recommendations['imdbtitle'] }} </h2><b> ( {{ current_recommendations['released'][-4:] }}  )</b>
+                  <h2> {{ current_recommendations['imdbid'] }}</h2> <b> ( {{ current_recommendations['released'][-4:] }}  )</b>
                   
-                    <p> 🕐 {{ current_recommendations['runtime'] }} | 🎬 {{ current_recommendations['totalseasons'] }} | 🔰 {{ current_recommendations['rated'] }}  </p>|  
+                    <p> 🕐 {{ current_recommendations['runtime'] }} | 🎬 {{ current_recommendations['totalseasons'] }} | 🔰 {{ current_recommendations['rated'] }}  </p>
+                    <p> 🎭 {{ current_recommendations['genre'] }} </p>
 
                     <p>IMDb: ⭐ ⭐ ⭐ ⭐ ⚫  | Netflix: ⭐ ⭐ ⭐ ⭐ ⭐  | Rotten Tomatoes: 🍅 🍅 🍅 🍅 ⚫</p>    
 
