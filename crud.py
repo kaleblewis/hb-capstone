@@ -158,13 +158,13 @@ def get_connections_by_user(user):                                              
 #*#                      USER PREFERENCES OPERATIONS                         #*#
 #*############################################################################*#
 
-def add_user_preference_to_preferences(user, param_subtitle="",                 # TODO:  what params?
-    param_audio="", param_genre="", param_release_date_start="", 
-    param_release_date_end="", param_duration=""):
+def add_user_preference_to_preferences(user, param_subtitle="any",                 # TODO:  what params?
+    param_audio="any", param_genre="all", param_release_date_start="any", 
+    param_release_date_end="any", param_duration=60):
     """Create and store a collection of User's default preferences"""
 
-    user_preferences = db.Preference(
-        #preferences_set_date_time  = datetime.datetime.now(),
+    user_preferences = Preference(
+        preferences_set_date_time  = datetime.datetime.now(),
         user_id = user.id,
         default_subtitle = param_subtitle,
         default_audio = param_audio,
@@ -172,8 +172,6 @@ def add_user_preference_to_preferences(user, param_subtitle="",                 
         default_release_date_start = param_release_date_start,
         default_release_date_end = param_release_date_end,
         default_duration = param_duration)
-
-                   Preference.
 
     db.session.add(user_preferences)
     db.session.commit()

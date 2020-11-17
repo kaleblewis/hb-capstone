@@ -159,6 +159,8 @@ def register_user():
 
     else:
         crud.create_user(fname, email, password)
+        existing_user = crud.get_user_by_email(email)
+        crud.add_user_preference_to_preferences(existing_user)
         flash("You now have an account")
         session['name'] = fname
         session['email'] = email
@@ -168,8 +170,31 @@ def register_user():
         return redirect('/')
 
 
+@app.route('/adduserpreferences', methods=['POST'])
+def register_user_preferences():
+    """Set a new entry for a group of a user's current preferences"""
+
+    existing_user = crud.get_user_by_email(session['email']) 
+    param_subtitle = request.form.get('preferred-subtitle') #request.form.get('subtitle-input')
+    param_audio = request.form.get('preferred-audio') #request.form.get('audio-input')
+    param_genre = request.form.get('genre-input')
+    param_release_date_start = request.form.get('date-range-start')
+    param_release_date_end = request.form.get('date-range-end')
+    param_duration = request.form.get('duration-input')
+
+    crud.add_user_preference_to_preferences(existing_user, param_subtitle,                 # TODO:  what params?
+    param_audio, param_genre, param_release_date_start, 
+    param_release_date_end, param_duration)
+    
+    flash("Your preferences have been updated")
+    session['has_default_preferences'] = True                                      #this way we can display dynamic content to users who are new to the site
+                                                                                # TODO password counter: reset counter when login successful:  session['password-counter'] = 0 
+    return redirect('/profile')
+
+
 @app.route("/logout")
 def logout():
+    """Log a user out"""
     session['logged_in'] = False
     flash('You have logged out successfully')
     return render_template('homepage.html') 

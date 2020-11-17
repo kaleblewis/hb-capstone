@@ -14,16 +14,110 @@
     <p><b>Linked accounts:</b>  </p>
     <hr>
     <h3>default search parameters:</h3>
-    
-    <p><b>subtitles language(s):</b> {{ user.preferences[0].default_subtitle }} </p>
-    <p><b>audio language(s):</b>  {{ user.preferences[0].default_audio }} </p>
-    
-    <p><b>release date range: </b> {{ user.preferences[0].default_duration }} </p>
-    <p><b>runtime/duration:</b>  {{ user.preferences[0].default_duration }}  </p>
 
-    <p><b>genre(s):</b>  {{ user.preferences[0].default_genre }} 	</p>
+    <p><b>subtitles language(s):</b> {{ user.preferences[-1].default_subtitle }} </p>
+    <p><b>audio language(s):</b>  {{ user.preferences[-1].default_audio }} </p>
+    
+    <p><b>release date range "from when?": </b> {{ user.preferences[-1].default_release_date_start }} </p>
+    <p><b>release date range "to when?": </b> {{ user.preferences[-1].default_release_date_end }} </p>
+
+    <p><b>runtime/duration:</b>  {{ user.preferences[-1].default_duration }}  </p>
+
+    <p><b>genre(s):</b>  {{ user.preferences[-1].default_genre }} 	</p>
+
     <hr>
 
+<h3>update your default search parameters below:</h3>
+          
+          <form action='/adduserpreferences' method="POST">
+            <div class="form-group">
+
+          <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
+
+          <label for="preferred-subtitle">Select your default subtitles:</label>
+          <select id="preferred-subtitle" name="preferred-subtitle">
+            <option value="any" selected>any/all</option>
+            <option value="in English">in English</option>
+            <option value="en France">en France</option>
+            <option value="auf Deutsch">auf Deutsch</option>
+            <option value="in Italiano">in Italiano</option>
+            <option value="日本語で">日本語で</option>
+            <option value="한국어로">한국어로</option>
+            <option value="po Polsku">po Polsku</option>
+            <option value="en Español">en Español</option>
+            <option value="เป็นภาษาไทย">เป็นภาษาไทย</option>
+            <option value="用繁體中文">用繁體中文</option>
+          </select>
+<br>
+          <label for="preferred-audio">Select your default audio:</label>
+          <select id="preferred-audio" name="preferred-audio">
+            <option value="any" selected>any/all</option>
+            <option value="in English">in English</option>
+            <option value="en France">en France</option>
+            <option value="auf Deutsch">auf Deutsch</option>
+            <option value="in Italiano">in Italiano</option>
+            <option value="日本語で">日本語で</option>
+            <option value="한국어로">한국어로</option>
+            <option value="po Polsku">po Polsku</option>
+            <option value="en Español">en Español</option>
+            <option value="เป็นภาษาไทย">เป็นภาษาไทย</option>
+            <option value="用繁體中文">用繁體中文</option>
+          </select>
+<br>
+          <label for="date-range-start">Select your default production date "from when?":</label>           
+          <select id="date-range-start" name="date-range-start">
+            <option value="all" selected>any/all</option>
+            <option value="new">released within past year</option>
+            <option value="2years">released within previous 2 years</option>
+            <option value="5years">released within previous 5 years</option>
+            <option value="2000">on or after 2000</option>
+            <option value="1990">on or after 1990</option>
+            <option value="1980">on or after 1980</option>
+            <option value="1970">on or after 1970</option>
+            <option value="1960">on or after 1960</option>
+            <option value="1950">on or after 1950</option>
+            <option value="1940">on or after 1940</option>
+            <option value="1930">on or after 1930</option>
+            <option value="1920">on or after 1920</option>
+            <option value="1910">on or after 1910</option>
+          </select>
+<br>        
+          <label for="date-range-end">Select your default production date "to when?":</label>           
+          <select id="date-range-end" name="date-range-end">
+            <option value="all" selected>any/all</option>
+            <option value="new">released within past year</option>
+            <option value="2000">up until 2000</option>
+            <option value="1990">up until 1990</option>
+            <option value="1980">up until 1980</option>
+            <option value="1970">up until 1970</option>
+            <option value="1960">up until 1960</option>
+            <option value="1950">up until 1950</option>
+            <option value="1940">up until 1940</option>
+            <option value="1930">up until 1930</option>
+            <option value="1920">up until 1920</option>
+            <option value="1910">up until 1910</option>
+          </select>
+<br>
+          <label for="duration-input">select your maximum duration in minutes:</label>
+          <input type="number"
+              id="duration-input"
+              name="duration-input"
+              placeholder="minutes"
+              min="2" 
+              max="80000"
+              value="42" />
+<br>
+          <label for="genre-input">Select your default genre(s):</label>         
+          <select id="genre-input" name="genre-input">
+            <option value="all" selected>any/all</option>
+            <option value="action">action</option>
+            <option value="scifi">science-fiction</option>
+            <option value="best">dark British period-pieces featuring a strong female lead</option>
+          </select>
+<br>
+<input type="submit" value="submit preferences" id="submit-input"/>
+</div>
+        
 
 
 {% endblock %}
