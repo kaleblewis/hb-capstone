@@ -3,12 +3,28 @@
 {% block title %} My Profile {% endblock %}
 
 {% block body %}
+    
     <h1> {{ user.fname }} </h1>
+    <hr>
+    <h3>account information:</h3>
 
     <p><b>Username:</b> {{ user.email }} </p>
     <p><b>Preferred name:</b> {{ user.fname }} </p>
     <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p>
     <p><b>Linked accounts:</b>  </p>
+    <hr>
+    <h3>default search parameters:</h3>
+    
+    <p><b>subtitles language(s):</b> {{ user.preferences[0].default_subtitle }} </p>
+    <p><b>audio language(s):</b>  {{ user.preferences[0].default_audio }} </p>
+    
+    <p><b>release date range: </b> {{ user.preferences[0].default_duration }} </p>
+    <p><b>runtime/duration:</b>  {{ user.preferences[0].default_duration }}  </p>
+
+    <p><b>genre(s):</b>  {{ user.preferences[0].default_genre }} 	</p>
+    <hr>
+
+
 
 {% endblock %}
 

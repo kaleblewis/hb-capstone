@@ -12,32 +12,39 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    # netflix_id = db.Column(db.String) #ForeignKey Netflix
+    netflix_id = db.Column(db.String) #ForeignKey --> Netflix
+    status = db.Column(db.Integer)
     fname = db.Column(db.String(50))
-    email = db.Column(db.String(80), unique=True)
-    password = db.Column(db.String(20))
-    user_since = db.Column(db.DateTime)
-    # mobile = db.Column(db.String(15))
-    # SMS_allowed = db.Column(db.DateTime)
-    # SMS_allowed_date = db.Column(db.DateTime)
+    email = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(20), nullable=False)
+    user_since = db.Column(db.DateTime, nullable=False)
+    mobile = db.Column(db.String(15))
+    SMS_allowed = db.Column(db.DateTime)
+    SMS_allowed_date = db.Column(db.DateTime)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} email={self.email}>'
 
 
-class Connections(db.Model):
+class UserNetwork(db.Model):
     """A User's social connections with other Users."""
 
-    __tablename__ = 'connections'
+    __tablename__ = 'user_network'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    requestor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    requestee_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    status = db.Column(db.String(20))
-    connection_date = db.Column(db.DateTime)
+    requestor_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+        nullable=False)
+    requestee_id = db.Column(db.Integer, db.ForeignKey('users.id'), 
+        nullable=False)
+    status = db.Column(db.String(20), nullable=False)
+    connection_date = db.Column(db.DateTime, nullable=False)
+
+    requestor = db.relationship('User', foreign_keys=[requestor_id])
+    requestee = db.relationship('User', foreign_keys=[requestee_id])
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} status={self.status} requestor_id:{self.requestor_id} requestee_id:{self.requestee_id}>'
+        return f'<{self.__class__.__name__} id={self.id} status={self.status} \
+            requestor_id:{self.requestor_id} requestee_id:{self.requestee_id}>'
 
 
 class Preference(db.Model):
@@ -46,7 +53,8 @@ class Preference(db.Model):
     __tablename__ = 'preferences'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    preferences_set_date_time = db.Column(db.DateTime)
     preferred_app_lang = db.Column(db.String(50))
     default_subtitle = db.Column(db.String)
     default_audio = db.Column(db.String)
@@ -58,8 +66,9 @@ class Preference(db.Model):
     user = db.relationship('User', backref='preferences')
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} related to user_id={self.user_id}>'    # ? is this ok?  should i include more/less/other info here?
-                                                                                                # TODO convert to <80 chars/line
+        return f'<{self.__class__.__name__} id={self.id} \
+            related to user_id={self.user_id}>'    
+
 
 class QueryHistory(db.Model):
     """A user's history of queries which were already run."""
@@ -67,24 +76,26 @@ class QueryHistory(db.Model):
     __tablename__ = 'query_history'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     query_run_date_time = db.Column(db.DateTime)
-    query_string = db.Column(db.String)                                                         # ? should this be "text" or "string"
-    payload = db.Column(db.String)                                                              # ? should this be "text" or "string"
+    query_string = db.Column(db.Text)
+    payload = db.Column(db.Text)
     param_subtitle = db.Column(db.String)
     param_audio = db.Column(db.String)
     param_genre = db.Column(db.String)
-    param_release_date = db.Column(db.String(20))
+    param_release_date_start = db.Column(db.String(20))
+    param_release_date_end = db.Column(db.String(20))
     param_duration = db.Column(db.Integer)
     param_total_seasons = db.Column(db.String(20))
 
     user = db.relationship('User', backref='query_history')
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} related to user_id={self.user_id}>'    # ? is this ok?  should i include more/less/other info here?
-                                                                                                # TODO convert to <80 chars/line
+        return f'<{self.__class__.__name__} id={self.id} \
+            related to user_id={self.user_id}>'
 
-def connect_to_db(flask_app, db_uri='postgresql:///recommendations', echo=True):                # ? doublecheck this URL
+
+def connect_to_db(flask_app, db_uri='postgresql:///recommendations', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -92,7 +103,7 @@ def connect_to_db(flask_app, db_uri='postgresql:///recommendations', echo=True):
     db.app = flask_app
     db.init_app(flask_app)
 
-    print('Connected to the db!')
+    print(' ✅ Connected to the db!')
 
 
 if __name__ == '__main__':

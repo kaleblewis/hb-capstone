@@ -92,30 +92,29 @@ def get_user_by_email(email):
 
 
 #*############################################################################*#
-#*#                      USER CONNECTIONS OPERATIONS                         #*#
+#*#                           USERNETWORK OPERATIONS                         #*#
 #*############################################################################*#
 
-def add_user_connection(user, requestee):                                       # // TODO:  what params?
+def add_user_connection(requestee, user):                                       # // TODO:  what params?
     """Create and store a user's social network connection invitation.
 
     new connection should get created:
     >>> add_user_connection(1, 2)
-    <connections id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
 
     user shouldn't be both requestor and requestee                              # TODO:  add in this logic with if statement?
     >>> add_user_connection(1, 2)
-    <connections id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
 
     only one record should exist per requestor+requestee+status combination     # TODO:  add in this logic with if statement?
     >>> add_user_connection(1, 2)
-    <connections id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
     """
 
-    user_connection = Connections(                                              # // TODO:  what params?
-        requestee_id = requestee_id,
-        status = "Pending",
-        connection_date = datetime.datetime.now()
-        )                   
+    user_connection = db.UserNetwork(requestor_id = User.query.get(id),
+                                    requestee_id = requestee.id,
+                                    status = "Pending",
+                                    connection_date = datetime.datetime.now())                   
 
     db.session.add(user_connection)
     db.session.commit()
@@ -123,7 +122,7 @@ def add_user_connection(user, requestee):                                       
     return user_connection
 
 # def update_user_connection_by_id(connection_id):
-#     """Update a User Connection by primary key
+#     """Update a UserNetwork by primary key
 
 #     # TODO: update docstring with doctest
 #     """
@@ -139,15 +138,15 @@ def get_connections_by_user(user):                                              
     # TODO: update docstring with doctest
     """
 
-    return Connections.query.filter(Connections.requestor_id == (User.query.get(id)))
+    return UserNetwork.query.filter(UserNetwork.requestor_id == (User.id))
 
     
 # def get_pending_connections_by_user(user):                                    # TODO: implement new feature later to approve pending connection requests
 #     """Return all pending connections where User is the Requestee.
 
 #     Should return only the connections where:
-#         Connections.Requestee_ID == User.ID
-#         Connections.status = "Pending"
+#         UserNetwork.Requestee_ID == User.ID
+#         UserNetwork.status = "Pending"
 
 #     # TODO: update docstring with doctest
 #     """
@@ -161,22 +160,20 @@ def get_connections_by_user(user):                                              
 
 def add_user_preference_to_preferences(user, param_subtitle="",                 # TODO:  what params?
     param_audio="", param_genre="", param_release_date_start="", 
-    param_release_date_end="", param_duration="", param_total_seasons=""):
+    param_release_date_end="", param_duration=""):
     """Create and store a collection of User's default preferences"""
 
-    user_preferences = Preferences(user_id = db.Column(db.Integer, 
-            db.ForeignKey(User.query.get(id))),
-        query_run_date_time = datetime.datetime.now(),
-        query_string = query_string,
-        payload = payload,
-        param_subtitle = param_subtitle,
-        param_audio = param_audio,
-        param_genre = param_genre,
-        param_release_date_start = param_release_date_start,
-        param_release_date_end = param_release_date_end,
-        param_duration = param_duration,
-        param_total_seasons = param_total_seasons
-        )                          
+    user_preferences = db.Preference(
+        #preferences_set_date_time  = datetime.datetime.now(),
+        user_id = user.id,
+        default_subtitle = param_subtitle,
+        default_audio = param_audio,
+        default_genre = param_genre,
+        default_release_date_start = param_release_date_start,
+        default_release_date_end = param_release_date_end,
+        default_duration = param_duration)
+
+                   Preference.
 
     db.session.add(user_preferences)
     db.session.commit()
@@ -190,16 +187,20 @@ def add_user_preference_to_preferences(user, param_subtitle="",                 
 #     pass                                                                      # TODO:  get only one value out of a specified col in the most recent row
 
 
-# def get_user_preferences_current_collection():
-#     """Return the most recent collection of this User's default preferences."""
+def get_current_user_preferences(user):
+    """Return the most recent collection of this User's default preferences."""
+    
+    current_user_prefs = Preference.query.filter(Preference.user_id==User.id)    
 
-#     pass                                                                      # TODO:  get only the most recent entry in the table, like, the largest ID?
+    return current_user_prefs                                                                   # TODO:  get only the most recent entry in the table, like, the largest ID?
 
 
 def get_user_preferences_all_time(user):
     """Return all of the collections of this User's default preferences from forever ever."""
 
-    return Preferences.query.filter(User.query.get(id))                        
+    all_user_prefs_all_time = Preference.query.filter(User.id)                        
+
+    return all_user_prefs_all_time
 
 
 #*############################################################################*#
@@ -226,8 +227,6 @@ def search_by_title(str):
         }
     imdb_headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
 
-    #imdb_headers = {'x-rapidapi-key': 'aa55355cacmsh1183c4b68a0abb4p174a34jsnb47af0a2721d', 'x-rapidapi-host': 'imdb-internet-movie-database-unofficial.p.rapidapi.com'}
-
     imdb_response = requests.request("GET", imdb_url, headers=imdb_headers)
 
     imdb_list = []
@@ -236,8 +235,6 @@ def search_by_title(str):
 
     imdb_dictionary = (imdb_list[0])
 
-    # TEST TO SEE API PAYLOAD  
-    #print(imdb_dictionary)
     return imdb_dictionary['id']
 
 
@@ -265,8 +262,6 @@ def search_by_id(str):
         }
     headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
 
-    # headers = {'x-rapidapi-key': 'aa55355cacmsh1183c4b68a0abb4p174a34jsnb47af0a2721d', 'x-rapidapi-host': 'unogs-unogs-v1.p.rapidapi.com'}
-
     n_response = requests.request("GET", url, headers=headers, params=querystring)
 
     n_list = []
@@ -274,11 +269,8 @@ def search_by_id(str):
     n_list.append(n_payload)
 
     n_dictionary = (n_list[0])
-    # TEST TO SEE API PAYLOAD  
-    #print(n_dictionary)
+
     return n_dictionary['filmid']
-    
-# print(search_by_id(search_by_title('the last unicorn')))
 
 
 def get_by_filmid(str):
@@ -300,7 +292,6 @@ def get_by_filmid(str):
         'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
         }
     headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
-    #headers = {'x-rapidapi-key': 'aa55355cacmsh1183c4b68a0abb4p174a34jsnb47af0a2721d', 'x-rapidapi-host': 'unogs-unogs-v1.p.rapidapi.com'}
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
@@ -313,9 +304,6 @@ def get_by_filmid(str):
 
     print(imdb_dictionary)
     return imdb_dictionary
-
-#* TO RETURN A MOVIE BASED ON A STRING OF IT'S TITLE:
-#current_result = crud.get_by_filmid((crud.search_by_id(crud.search_by_title('the last unicorn'))))
 
 
 # def search_random_top_3_results():                                                 # TODO:  what params?
@@ -343,6 +331,10 @@ def get_by_filmid(str):
 #     """                                                                         # TODO:  update docstring with doctests 
 
 #     pass                                                                        # TODO:  complete function stub 
+
+
+#* TEST TO RETURN A MOVIE BASED ON A STRING OF IT'S TITLE:
+#current_result = crud.get_by_filmid((crud.search_by_id(crud.search_by_title('the last unicorn'))))
 
 
 #*############################################################################*#
