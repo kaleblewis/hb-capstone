@@ -15,6 +15,7 @@ class User(db.Model):
     netflix_id = db.Column(db.String) #ForeignKey --> Netflix
     status = db.Column(db.Integer)
     fname = db.Column(db.String(50))
+    #purl_name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(20), nullable=False)
     user_since = db.Column(db.DateTime, nullable=False)

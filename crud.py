@@ -71,7 +71,7 @@ def create_user(name, email, password):
                 user_since = datetime.datetime.now())
 
     db.session.add(user)
-    db.session.commit()
+    db.session.commit()  #TODO:  going to need to loop through a second pass to set PURL_name = User.ID
 
     return user
 
@@ -137,6 +137,24 @@ def update_user_password(user_id, password):
     db.session.commit()
 
     return user
+
+
+#  don't forget to update line 74, too.  need to set an intial unique default for successful page load
+# def update_user_purl(user_id, name):
+#     """Update the unique PURL parameter of an existing user.
+    
+#     The new parameter/alias/string/name will be captured via user input field.
+#     Validation will happen upstream.
+
+#     >>> update_user_name(user, "wombat")
+#     # TODO: update docstring
+#     """
+
+#     user = User.query.get(user_id)
+#     user.purl_name = name
+#     db.session.commit()
+
+#     return user
 
 
 #*############################################################################*#

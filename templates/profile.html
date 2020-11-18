@@ -6,14 +6,19 @@
     
     <h1> {{ user.fname }} </h1>
     <hr>
-    <h3>account information:</h3>
+    <h2>account information:</h2>
 
     <p><b>Username (email address):</b> {{ user.email }} </p>
     <p><b>Preferred name:</b> {{ user.fname }} </p>
     <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p>
-    <p><b>Linked accounts:</b>  </p>
+    <br>
+    <p><b>Linked streaming accounts:</b>  </p>
+    <br>
+    {# <p><b>Share personal URL to connect:</b> <a href="/@{{ user.purl_name }}">"/@{{ user.purl_name }}" </a></p> #}
+    <p><b>Friends & family network:</b>  </p>
+    <br>
     <hr>
-    <h3>default search parameters:</h3>
+    <h2>default search parameters:</h2>
 
     <p><b>subtitles language(s):</b> {{ user.preferences[-1].default_subtitle }} </p>
     <p><b>audio language(s):</b>  {{ user.preferences[-1].default_audio }} </p>
@@ -24,6 +29,7 @@
     <p><b>runtime/duration:</b>  {{ user.preferences[-1].default_duration }}  </p>
 
     <p><b>genre(s):</b>  {{ user.preferences[-1].default_genre }} 	</p>
+    <br>
 
 
     <hr>
@@ -39,7 +45,7 @@
               <input type="text"
                   id="name-input"
                   name="name-input"
-                  placeholder="Want to update your name?"
+                  placeholder="What's your name?"
                   required
                   autofocus />
 
@@ -50,6 +56,31 @@
 
     <hr>
 
+{#
+    <h3>update your share-able social networking URL which can be used to
+      connect with your friends & family:</h3>
+              
+              <form action='/updateuserpurl' method="POST">
+                <div class="form-group">
+    
+              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
+                
+              <label for="purl-name-input"></label>
+              <input type="text"
+                  id="purl-name-input"
+                  name="purl-name-input"
+                  placeholder=" {{ user.id }}  "
+                  required
+                  autofocus />
+
+              <input type="submit" value="update your share-able URL" />
+              <p i>Note: Your custom URL must contain 3-100 letters or numbers. 
+                Please do not use spaces, symbols, or special characters.</p>
+
+                </div>
+            </form>
+
+    <hr> #}
 
     
     <h3>update your username/email address:</h3>
@@ -63,7 +94,7 @@
               <input type="text"
                   id="email-input"
                   name="email-input"
-                  placeholder="want to update your email address?"
+                  placeholder="new email address"
                   required
                   autofocus />
 
@@ -87,7 +118,7 @@
               <input type="current-password"
                   id="current-password"
                   name="current-password"
-                  placeholder="what's your current password?"
+                  placeholder="current password"
                   required
                   autofocus />
                   
@@ -95,7 +126,7 @@
               <input type="new-password"
                   id="new-password-1"
                   name="new-password-1"
-                  placeholder="select a secure new password"
+                  placeholder="new password"
                   required
                   autofocus />
 
@@ -103,7 +134,7 @@
               <input type="new-password"
                   id="new-password-2"
                   name="new-password-2"
-                  placeholder="please re-type your new password"
+                  placeholder="re-type new password"
                   required
                   autofocus />
 

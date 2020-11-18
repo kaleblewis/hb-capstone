@@ -206,6 +206,22 @@ def update_user_fname():
 
     return redirect('/profile')
 
+
+@app.route("/updateuserpurl", methods=["POST"])
+def update_user_purl():
+    """Update user unique PURL parameter from their profile screen."""
+    
+    existing_user = crud.get_user_by_email(session['email'])
+    purl_name = request.form.get('purl-name-input')
+
+    crud.update_user_purl(existing_user.id, purl_name)
+
+    flash(f"Your shareable personalized URL for networking with friends &\
+        family has been updated to:  www.blah.blah/{purl_name}")
+
+    return redirect('/profile')
+
+
 @app.route("/updateuseremail", methods=["POST"])
 def update_user_email():
     """Allow user to update their own email from their profile screen."""
