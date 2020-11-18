@@ -199,12 +199,65 @@ def update_user_fname():
     existing_user = crud.get_user_by_email(session['email'])
     fname = request.form.get('name-input')
 
-    crud.update_user_fname(existing_user, fname)
+    crud.update_user_fname(existing_user.id, fname)
 
     session['name'] = fname
-    flash(f"Your name has been updated to, {fname}")
+    flash(f"Your name has been successfully updated to: ''{fname}''")
 
     return redirect('/profile')
+
+@app.route("/updateuseremail", methods=["POST"])
+def update_user_email():
+    """Allow user to update their own email from their profile screen."""
+    
+    existing_user = crud.get_user_by_email(session['email'])
+    email = request.form.get('email-input')
+
+    crud.update_user_email(existing_user.id, email)
+
+    session['email'] = email
+    flash(f"Your email has been successfully updated to: ''{email}''")
+
+    return redirect('/profile')
+
+@app.route("/updateuserpassword", methods=["POST"])
+def update_user_password():
+    """Allow user to update their own password from their profile screen."""
+
+    current_pw = request.form.get('current-password')
+    new_pw_1 = request.form.get('new-password-1')
+    new_pw_2 = request.form.get('new-password-2')
+
+    existing_user = crud.get_user_by_email(session['email'])
+    
+    if existing_user:
+
+        if existing_user.password == current_pw:
+
+            if new_pw_1 == new_pw_2:
+
+                crud.update_user_password(existing_user.id, new_pw_1)
+
+                flash(f"Your password has been successfully updated")
+                flash(f"Please login with your new password")
+                session['logged_in'] = False
+
+                return redirect('/')
+
+            else:
+                flash(f"sorry, the new passwords you entered do not match")
+                flash(f"please try again")
+
+                return redirect('/profile')
+        
+        else:
+            flash(f"sorry, the current password you entered is not accurate")
+            flash(f"please try again")
+
+            return redirect('/profile')
+    
+    else:
+        return redirect('/')
 
 
 @app.route("/logout")

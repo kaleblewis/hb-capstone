@@ -91,59 +91,52 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()                       
 
-# def update_user_fname(user, name):
-#     """Update the fname of an existing user.
+def update_user_fname(user_id, name):
+    """Update the fname of an existing user.
     
-#     They user will be passed via a hidden input.
-#     The new name will be captured via user input field.
+    The new name will be captured via user input field.
 
-#     >>> update_user_name("1", "jane")
-#     # TODO: update docstring
-#     """
+    >>> update_user_name("1", "jane")
+    # TODO: update docstring
+    """
 
-#     # user = update(user).where(id == user.id).values(fname=name)
+    user = User.query.get(user_id)
+    user.fname = name
+    db.session.commit()
 
-#     db.session.query(user).filter_by(id == user.id).update({"fname": f"{name}"})
-#     #db.session.query(User).filter_by(id=123).update({"name": u"Bob Marley"})
-#     db.session.commit()
+    return user
 
-#     return user
-
-# def update_user_email(user, email):
-#     """Update the email of an existing user.
+def update_user_email(user_id, email):
+    """Update the email of an existing user.
     
-#     They user will be passed via a hidden input.
-#     The new email will be captured via user input field.
-#     Validation will happen on the front end.
+    The new email will be captured via user input field.
+    Validation will happen upstream.
 
-#     >>> update_user_name(user, "jane@email.com")
-#     # TODO: update docstring
-#     """
+    >>> update_user_name(user, "jane@email.com")
+    # TODO: update docstring
+    """
 
-#     user = User(email=email)
+    user = User.query.get(user_id)
+    user.email = email
+    db.session.commit()
 
-#     db.session.update(user)
-#     db.session.commit()
+    return user
 
-#     return user
-
-# def update_user_password(user, password):
-#     """Update the password of an existing user.
+def update_user_password(user_id, password):
+    """Update the password of an existing user.
     
-#     They user will be passed via a hidden input.
-#     The new password will be captured via user input field.
-#     Validation will happen on the front end.
+    The new password will be captured via user input field.
+    Validation will happen upstream.
 
-#     >>> update_user_name(user, "JANESpassword1")
-#     # TODO: update docstring
-#     """
+    >>> update_user_name(user, "JANESpassword1")
+    # TODO: update docstring
+    """
 
-#     user = User(password=password)
+    user = User.query.get(user_id)
+    user.password = password
+    db.session.commit()
 
-#     db.session.update(user)
-#     db.session.commit()
-
-#     return user
+    return user
 
 
 #*############################################################################*#

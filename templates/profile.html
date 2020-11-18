@@ -8,7 +8,7 @@
     <hr>
     <h3>account information:</h3>
 
-    <p><b>Username:</b> {{ user.email }} </p>
+    <p><b>Username (email address):</b> {{ user.email }} </p>
     <p><b>Preferred name:</b> {{ user.fname }} </p>
     <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p>
     <p><b>Linked accounts:</b>  </p>
@@ -27,7 +27,7 @@
 
 
     <hr>
-<!-- 
+
     <h3>update your name:</h3>
               
               <form action='/updateuserfname' method="POST">
@@ -52,7 +52,7 @@
 
 
     
-    <h3>update your email address:</h3>
+    <h3>update your username/email address:</h3>
               
               <form action='/updateuseremail' method="POST">
                 <div class="form-group">
@@ -78,7 +78,7 @@
     
     <h3>update your password:</h3>
               
-              <form action='/updateuserfname' method="POST">
+              <form action='/updateuserpassword' method="POST">
                 <div class="form-group">
     
               <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
@@ -93,26 +93,26 @@
                   
               <label for="new-password-1"></label>        
               <input type="new-password"
-                  id="password-input"
-                  name="password-input"
+                  id="new-password-1"
+                  name="new-password-1"
                   placeholder="select a secure new password"
                   required
                   autofocus />
 
               <label for="new-password-2"></label>      
               <input type="new-password"
-                  id="password-input-2"
-                  name="password-input-2"
+                  id="new-password-2"
+                  name="new-password-2"
                   placeholder="please re-type your new password"
                   required
                   autofocus />
 
-              <input type="submit" value="update your name" />
+              <input type="submit" value="update your password" />
 
                 </div>
             </form>
 
-    <hr> -->
+    <hr>
 
 
 
