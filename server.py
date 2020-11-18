@@ -192,6 +192,21 @@ def register_user_preferences():
     return redirect('/profile')
 
 
+@app.route("/updateuserfname", methods=["POST"])
+def update_user_fname():
+    """Allow user to update their own fname from their profile screen."""
+    
+    existing_user = crud.get_user_by_email(session['email'])
+    fname = request.form.get('name-input')
+
+    crud.update_user_fname(existing_user, fname)
+
+    session['name'] = fname
+    flash(f"Your name has been updated to, {fname}")
+
+    return redirect('/profile')
+
+
 @app.route("/logout")
 def logout():
     """Log a user out"""

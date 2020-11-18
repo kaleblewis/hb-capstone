@@ -25,9 +25,99 @@
 
     <p><b>genre(s):</b>  {{ user.preferences[-1].default_genre }} 	</p>
 
+
+    <hr>
+<!-- 
+    <h3>update your name:</h3>
+              
+              <form action='/updateuserfname' method="POST">
+                <div class="form-group">
+    
+              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
+                
+              <label for="name-field"></label>
+              <input type="text"
+                  id="name-input"
+                  name="name-input"
+                  placeholder="Want to update your name?"
+                  required
+                  autofocus />
+
+              <input type="submit" value="update your name" />
+
+                </div>
+            </form>
+
     <hr>
 
-<h3>update your default search parameters below:</h3>
+
+    
+    <h3>update your email address:</h3>
+              
+              <form action='/updateuseremail' method="POST">
+                <div class="form-group">
+    
+              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
+                
+              <label for="email-field"></label>
+              <input type="text"
+                  id="email-input"
+                  name="email-input"
+                  placeholder="want to update your email address?"
+                  required
+                  autofocus />
+
+              <input type="submit" value="update your email" />
+
+                </div>
+            </form>
+
+    <hr>
+
+
+    
+    <h3>update your password:</h3>
+              
+              <form action='/updateuserfname' method="POST">
+                <div class="form-group">
+    
+              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
+                
+              <label for="current-password"></label>
+              <input type="current-password"
+                  id="current-password"
+                  name="current-password"
+                  placeholder="what's your current password?"
+                  required
+                  autofocus />
+                  
+              <label for="new-password-1"></label>        
+              <input type="new-password"
+                  id="password-input"
+                  name="password-input"
+                  placeholder="select a secure new password"
+                  required
+                  autofocus />
+
+              <label for="new-password-2"></label>      
+              <input type="new-password"
+                  id="password-input-2"
+                  name="password-input-2"
+                  placeholder="please re-type your new password"
+                  required
+                  autofocus />
+
+              <input type="submit" value="update your name" />
+
+                </div>
+            </form>
+
+    <hr> -->
+
+
+
+
+    <h3>update your default search parameters below:</h3>
           
           <form action='/adduserpreferences' method="POST">
             <div class="form-group">
