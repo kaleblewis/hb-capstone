@@ -90,6 +90,59 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()                       
 
+def update_user_name(user, name):
+    """Update the name of an existing user.
+    
+    They user will be passed via a hidden input.
+    The new name will be captured via user input field.
+
+    >>> update_user_name(user, "jane")
+    # TODO: update docstring
+    """
+
+    user = User(fname=name)
+
+    db.session.update(user)
+    db.session.commit()
+
+    return user
+
+def update_user_email(user, email):
+    """Update the email of an existing user.
+    
+    They user will be passed via a hidden input.
+    The new email will be captured via user input field.
+    Validation will happen on the front end.
+
+    >>> update_user_name(user, "jane@email.com")
+    # TODO: update docstring
+    """
+
+    user = User(email=email)
+
+    db.session.update(user)
+    db.session.commit()
+
+    return user
+
+def update_user_password(user, password):
+    """Update the password of an existing user.
+    
+    They user will be passed via a hidden input.
+    The new password will be captured via user input field.
+    Validation will happen on the front end.
+
+    >>> update_user_name(user, "JANESpassword1")
+    # TODO: update docstring
+    """
+
+    user = User(password=password)
+
+    db.session.update(user)
+    db.session.commit()
+
+    return user
+
 
 #*############################################################################*#
 #*#                           USERNETWORK OPERATIONS                         #*#
