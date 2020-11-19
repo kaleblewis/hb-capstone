@@ -58,16 +58,15 @@ class Preference(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     preferences_set_date_time = db.Column(db.DateTime)
     preferred_app_lang = db.Column(db.String(50))
-    default_subtitle = db.Column(db.String)
-    default_audio = db.Column(db.String)
-    default_genre = db.Column(db.String)
-    default_release_date_start = db.Column(db.String(20))
-    default_release_date_end = db.Column(db.String(20))
-    default_duration = db.Column(db.Integer)
-    #rating = db.Column(db.String)
-    #viewing_location_id = db.Column(db.Integer)  
-    # #strip out all the "default"?
-    #match field names to API field names?
+    subtitle = db.Column(db.String)
+    audio = db.Column(db.String)
+    genre = db.Column(db.String)
+    syear = db.Column(db.String(20)) #start date for release date range
+    eyear = db.Column(db.String(20)) #end date for release date range
+    duration = db.Column(db.Integer) #called 'duration' in API response
+    #matlevel = db.Column(db.String) #maturity level/rating
+    #viewing_location_id = db.Column(db.Integer)   #called 'country' in API response?
+
     
     user = db.relationship('User', backref='preferences')
 
