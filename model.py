@@ -22,6 +22,7 @@ class User(db.Model):
     mobile = db.Column(db.String(15))
     SMS_allowed = db.Column(db.DateTime)
     SMS_allowed_date = db.Column(db.DateTime)
+    #viewing_location_id = db.Column(db.Integer)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} email={self.email}>'
@@ -63,7 +64,11 @@ class Preference(db.Model):
     default_release_date_start = db.Column(db.String(20))
     default_release_date_end = db.Column(db.String(20))
     default_duration = db.Column(db.Integer)
-
+    #rating = db.Column(db.String)
+    #viewing_location_id = db.Column(db.Integer)  
+    # #strip out all the "default"?
+    #match field names to API field names?
+    
     user = db.relationship('User', backref='preferences')
 
     def __repr__(self):
