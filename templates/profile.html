@@ -27,7 +27,7 @@
 
     <p><b>runtime/duration:</b>  {{ user.preferences[-1].duration }}  </p>
 
-    <p><b>genre(s):</b>  {{ user.preferences[-1].genre }} 	</p>
+    <p><b>genre(s):</b>   {{ user.preferences[-1].genre }} 	</p>
 
     <p><b>maturity rating:</b>  {{ user.preferences[-1].matlevel }} 	</p>
 
@@ -161,32 +161,34 @@
           <label for="preferred-subtitle">Select your default subtitles:</label>
           <select id="preferred-subtitle" name="preferred-subtitle">
             <option value="any" selected>any/all</option>
-            <option value="in English">in English</option>
-            <option value="en France">en France</option>
-            <option value="auf Deutsch">auf Deutsch</option>
-            <option value="in Italiano">in Italiano</option>
-            <option value="日本語で">日本語で</option>
-            <option value="한국어로">한국어로</option>
-            <option value="po Polsku">po Polsku</option>
-            <option value="en Español">en Español</option>
-            <option value="เป็นภาษาไทย">เป็นภาษาไทย</option>
-            <option value="用繁體中文">用繁體中文</option>
+            {% for key, value in languages.items() %}
+              {% if key == 'subtitles' %}
+                {% for item in value %}
+              <option value="{{item}}">{{item}}</option>  
+              {% endfor %}
+              {% endif %}
+            {% endfor %}
           </select>
 <br>
+          <br>
           <label for="preferred-audio">Select your default audio:</label>
           <select id="preferred-audio" name="preferred-audio">
             <option value="any" selected>any/all</option>
-            <option value="in English">in English</option>
-            <option value="en France">en France</option>
-            <option value="auf Deutsch">auf Deutsch</option>
-            <option value="in Italiano">in Italiano</option>
-            <option value="日本語で">日本語で</option>
-            <option value="한국어로">한국어로</option>
-            <option value="po Polsku">po Polsku</option>
-            <option value="en Español">en Español</option>
-            <option value="เป็นภาษาไทย">เป็นภาษาไทย</option>
-            <option value="用繁體中文">用繁體中文</option>
+            {% for key, value in languages.items() %}
+              {% if key == 'audio' %}
+                {% for item in value %}
+              <option value="{{item}}">{{item}}</option>  
+              {% endfor %}
+              {% endif %}
+            {% endfor %}
           </select>
+
+
+
+
+
+
+
 <br>
           <label for="date-range-start">Select your default production date "from when?":</label>           
           <select id="date-range-start" name="date-range-start">
@@ -234,9 +236,9 @@
           <label for="genre-input">Select your default genre(s):</label>         
           <select id="genre-input" name="genre-input">
             <option value="all" selected>any/all</option>
-            <option value="action">action</option>
-            <option value="scifi">science-fiction</option>
-            <option value="best">dark British period-pieces featuring a strong female lead</option>
+            {% for key, value in genres.items() %}
+              <option value="{{value}}">{{key}}</option>  
+            {% endfor %}
           </select>
 <br>
 <input type="submit" value="submit preferences" id="submit-input"/>
