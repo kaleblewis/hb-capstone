@@ -15,17 +15,31 @@ class User(db.Model):
     netflix_id = db.Column(db.String) #ForeignKey --> Netflix
     status = db.Column(db.Integer)
     fname = db.Column(db.String(50))
-    #purl_name = db.Column(db.String(80), unique=True, nullable=False)
+    purl_name = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(20), nullable=False)
     user_since = db.Column(db.DateTime, nullable=False)
     mobile = db.Column(db.String(15))
     SMS_allowed = db.Column(db.DateTime)
     SMS_allowed_date = db.Column(db.DateTime)
-    #viewing_location_id = db.Column(db.Integer)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} email={self.email}>'
+
+
+class Location(db.Model):
+    """A user's location (where Netflix streaming is available)."""
+
+    __tablename__ = 'locations'
+
+    id = db.Column(db.Integer, primary_key=True)  #NF's country code #'s
+    name = db.Column(db.String(50))
+    default_subtitle = db.Column(db.String)
+    default_audio = db.Column(db.String)
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} id={self.id} \
+            location={self.user_id}>'    
 
 
 class UserNetwork(db.Model):
@@ -64,10 +78,10 @@ class Preference(db.Model):
     syear = db.Column(db.String(20)) #start date for release date range
     eyear = db.Column(db.String(20)) #end date for release date range
     duration = db.Column(db.Integer) #called 'duration' in API response
-    #matlevel = db.Column(db.String) #maturity level/rating
-    #viewing_location_id = db.Column(db.Integer)   #called 'country' in API response?
+    matlevel = db.Column(db.String) #maturity level/rating
+    viewing_location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
 
-    
+    location = db.relationship('Location', backref='preferences')
     user = db.relationship('User', backref='preferences')
 
     def __repr__(self):
@@ -98,6 +112,70 @@ class QueryHistory(db.Model):
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} \
             related to user_id={self.user_id}>'
+
+
+# WELL, NETFLIX AND THE UNOGS API BOTH USE STRINGS FOR THESE
+# class Subtitle(db.Model):
+#     """Available Netflix subtitle languages."""
+
+#     __tablename__ = 'subtitles'
+
+#     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+#     name = db.Column(db.String(50))
+    
+#     user = db.relationship('Preference', backref='subtitles')
+
+#     def __repr__(self):
+#         return f'<{self.__class__.__name__} id={self.id} \
+#             Location={self.user_id}>'    
+
+
+# class Audio(db.Model):
+#     """Available Netflix audio languages."""
+
+#     __tablename__ = 'audios' #yeah, well, in English singular/plural is weird.
+
+#     id = db.Column(db.Integer, autoincrement=True,primary_key=True) 
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+#     name = db.Column(db.String(50))
+#     default_subtitle = db.Column(db.String)
+    
+#     user = db.relationship('User', backref='preferences')
+
+#     def __repr__(self):
+#         return f'<{self.__class__.__name__} id={self.id} \
+#             Location={self.user_id}>'    
+
+
+class Genre(db.Model):
+    """A Netflix genre."""
+
+    __tablename__ = 'genres'
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    genre_name = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} id={self.id} \
+            genre={self.genre_name}>'
+
+
+class GenrePreferences(db.Model):
+    """A Users preferred genre(s)."""
+
+    __tablename__ = 'genre_prefs'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'), nullable=False)
+
+    user = db.relationship('User', backref='genre_prefs')
+    genres = db.relationship('Genre', backref='genre_prefs')
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} id={self.id} parent={self.parent_id} \
+            child={self.child_id}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///recommendations', echo=True):

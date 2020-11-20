@@ -18,17 +18,22 @@
     <hr>
     <h2>default search parameters:</h2>
 
-    <p><b>subtitles language(s):</b> {{ user.preferences[-1].default_subtitle }} </p>
-    <p><b>audio language(s):</b>  {{ user.preferences[-1].default_audio }} </p>
+
+    <p><b>subtitles language(s):</b> {{ user.preferences[-1].subtitle }} </p>
+    <p><b>audio language(s):</b>  {{ user.preferences[-1].audio }} </p>
     
-    <p><b>release date range "from when?": </b> {{ user.preferences[-1].default_release_date_start }} </p>
-    <p><b>release date range "to when?": </b> {{ user.preferences[-1].default_release_date_end }} </p>
+    <p><b>release date range "from when?": </b> {{ user.preferences[-1].eyear }} </p>
+    <p><b>release date range "to when?": </b> {{ user.preferences[-1].syear }} </p>
 
-    <p><b>runtime/duration:</b>  {{ user.preferences[-1].default_duration }}  </p>
+    <p><b>runtime/duration:</b>  {{ user.preferences[-1].duration }}  </p>
 
-    <p><b>genre(s):</b>  {{ user.preferences[-1].default_genre }} 	</p>
+    <p><b>genre(s):</b>  {{ user.preferences[-1].genre }} 	</p>
+
+    <p><b>maturity rating:</b>  {{ user.preferences[-1].matlevel }} 	</p>
+
+    <p><b>viewing location:</b>  {{ user.preferences[-1].location.name }} 	</p>
+    
     <br>
-
 
     <hr>
 
