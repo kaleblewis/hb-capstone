@@ -27,7 +27,9 @@
 
     <p><b>runtime/duration:</b>  {{ user.preferences[-1].duration }}  </p>
 
-    <p><b>genre(s):</b>   {{ user.preferences[-1].genre }} 	</p>
+    <p><b>genre(s):</b>   {% for key, value in genres.items() %} 
+      {% if value == user.preferences[-1].genre %} {{key}} 
+      {% endif %} {% endfor %}  {{ user.preferences[-1].genre }} 	</p>  
 
     <p><b>maturity rating:</b>  {{ user.preferences[-1].matlevel }} 	</p>
 
@@ -182,12 +184,6 @@
               {% endif %}
             {% endfor %}
           </select>
-
-
-
-
-
-
 
 <br>
           <label for="date-range-start">Select your default production date "from when?":</label>           

@@ -10,23 +10,40 @@
 
               <div class="content">
         
-                {% if 'USA' in current_recommendations['country'] %}
+                {% if current_recommendations['title'] is defined %}
                     <div class="search-result">
-                    <img src="{{ current_recommendations['poster'] }}" width="30" height="50">
-                    <b> ( {{ current_recommendations['released'][-4:] }}  )</b>
+                    <h2>{{ current_recommendations['title'] }}</h2>  <b> ( {{ current_recommendations['released'] }}  )</b><br>
+
+                     <img src="{{ current_recommendations['image1'] }}" width="30" height="50">     <img src="{{ current_recommendations['image2'] }}" width="30" height="50">  
+                   
                   
-                    <p> 🕐 {{ current_recommendations['runtime'] }} | 🎬 {{ current_recommendations['totalseasons'] }} | 🔰 {{ current_recommendations['rated'] }}  </p>
+                    <p> 🕐 {{ current_recommendations['runtime'] }}
+                        {% if current_recommendations['type'] == 'movie' %} | 🎬 {{ current_recommendations['type'] }} {% elif current_recommendations['type'] == 'series' %} | 📺 {{ current_recommendations['type'] }}{% endif %}
+                        {% if current_recommendations['download'] == '1' %}| 📶 downloadable {% endif %}
+                        {% if current_recommendations['matlevel'] != "" %}|<a title="{{ current_recommendations['matlabel'] }}"> 🔰 {{ current_recommendations['matlevel'] }} </a> {% endif %}</p>
                     <p> 🎭 {{ current_recommendations['genre'] }} </p>
+                        <p>{{ current_recommendations['mgname'] }} </p>
 
                     <p>IMDb: ⭐ ⭐ ⭐ ★ ★  | Netflix: ⭐ ⭐ ⭐ ⭐ ★  | Rotten Tomatoes: 🍅 🍅 🍅 🍅 ⚫</p>    
+                    <p><b>"votes"</b>   <em>{{ current_recommendations['votes'] }}</em>  |  
+                        <b>"avgrating":</b> <em>{{ current_recommendations['avgrating'] }}</em>  |  
+                        <b>"metascore":</b> <em>{{ current_recommendations['metascore'] }}</em>  |  
+                        <b>"rating":</b> <em>{{ current_recommendations['rating'] }}</em>  |  
+                        <b>metascore:</b> <em>{{ current_recommendations['metascore'] }}</em> </p>
 
-                    <p>🏆 {{ current_recommendations['awards'] }}</p>
+                        {% if current_recommendations['awards'] != '' %} <p>🏆 {{ current_recommendations['awards'] }}</p> {% endif %}
 
-                    <p><b>Synopsis:</b>   <em>{{ current_recommendations['plot'] }}</em></p>
+                    <h4> {{ current_recommendations['synopsis'] }} </h4>
+
+                    <p> <em>{{ current_recommendations['plot'] }}</em></p>
+
+                    <p><b>Actors:</b>   <em>{{ current_recommendations['actors'] }}</em></p>
+
+                    <p><b>Director(s):</b>   <em>{{ current_recommendations['directors'] }}</em></p>
                     
                     <ul>
                         <li><a href="https://www.imdb.com/title/{{ current_recommendations['imdbid'] }}"> Read more on imdb </a></li>
-                        <li><a href="https://www.netflix.com/title/{{ current_recommendations['filmid'] }}"> Watch now on Netflix </a></li>
+                        <li><a href="https://www.netflix.com/title/{{ current_recommendations['netflixid'] }}"> Watch now on Netflix </a></li>
                     </ul>
                     </div>
 
