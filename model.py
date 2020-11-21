@@ -156,8 +156,8 @@ class Genre(db.Model):
     name = db.Column(db.Text, primary_key=True, nullable=False) #yes, this is pk
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} \
-            genre={self.genre_name}>'
+        return f'<{self.__class__.__name__}\
+            genre_name_as_pk={self.name} list_of_ids={self.id}>'
 
 
 class GenrePreference(db.Model):

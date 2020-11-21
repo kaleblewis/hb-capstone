@@ -90,7 +90,8 @@ def get_user_by_email(email):
     <User id=1 email=jane.doe@email.com>
     """
 
-    return User.query.filter(User.email == email).first()                       
+    return User.query.filter(User.email == email).first()    
+                       
 
 def update_user_fname(user_id, name):
     """Update the fname of an existing user.
@@ -269,21 +270,6 @@ def add_genre_preference(user, param_genre):
         db.session.commit()
 
         return GenrePreference.id
-
-
-def create_genre(id, name):
-    """Create and return a new Genre.
-
-    >>> create_genre('10118', 'Comic book and superhero movies')
-    # TODO: update docstring"""
-
-    genre = Genre(id=id, 
-                name=name)
-
-    db.session.add(genre)
-    db.session.commit() 
-
-    return location
 
 
 def get_current_user_preferences(user):
@@ -576,7 +562,7 @@ def get_all_query_history(user):                                                
 
 
 #*############################################################################*#
-#*#                          DB SEEDING  OPERATIONS                          #*#
+#*#                                DB OPERATIONS                             #*#
 #*############################################################################*#
 
 def get_all_locations():
@@ -677,6 +663,15 @@ def create_genre(genre_id, genre_name):
     db.session.commit() 
 
     return genre
+
+
+def get_all_genres():
+    """Return all of the available genres."""
+                   
+    #return User.query.filter(User.email == email).first()    
+    return Genre.query.filter().all()   
+
+
 
 
 if __name__ == '__main__':

@@ -56,13 +56,11 @@ def show_user():
     """Show details for one particular user."""
 
     login_user = crud.get_user_by_email(session['email'])
-    #user_prefs = user.preferences
-    #user_prefs = crud.get_current_user_preferences(login_user)
-   
+    all_genres = crud.get_all_genres()
 
     if login_user:
-        return render_template('profile.html', user=login_user, genres, \
-            genre_groups=GENRE_GROUPS, languages=LANGUAGES)
+        return render_template('profile.html', user=login_user, \
+            all_genres=all_genres, languages=LANGUAGES)
 
     else:
         flash(f'Your account was not found, please login or create an account')

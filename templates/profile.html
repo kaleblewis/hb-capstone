@@ -28,9 +28,7 @@
 
     <p><b>runtime/duration:</b>  {{ user.preferences[-1].duration }}  </p>
 
-    <p><b>genre(s):</b>   {% for key, value in genres.items() %} 
-      {% if value == user.preferences[-1].genre %} {{key}} 
-      {% endif %} {% endfor %}  {{ user.preferences[-1].genre }} 	</p>  
+    <p><b>genre(s):</b>  {{ user.preferences[-1].genre }} 	</p>  
 
     <p><b>maturity rating:</b>  {{ user.preferences[-1].matlevel }} 	</p>
 
@@ -233,14 +231,17 @@
           <label for="genre-input">Select your default genre(s):</label>         
           <select id="genre-input" name="genre-input">
             <option value="all" selected>any/all</option>
-            {% for key, value in genres.items() %}
-              <option value="{{value}}">{{key}}</option>  
+            {% for obj in all_genres %}
+            {% for field in obj.__table__.columns._data.keys() %}
+              {% if field == 'name' %}
+              <option value="{{ obj[field] }}">{{ obj[field] }}</option>
+              {% endif %}
             {% endfor %}
+          {% endfor %}
           </select>
 <br>
 <input type="submit" value="submit preferences" id="submit-input"/>
 </div>
-        
 
 
 {% endblock %}
