@@ -231,17 +231,25 @@ def get_connections_by_user(user):                                              
 #*############################################################################*#
 
 def add_user_preference_to_preferences(user, param_subtitle="any",                 # TODO:  what params?
-    param_audio="any", param_genre="all", param_release_date_start="any", 
+    param_audio="any", param_genre="any", param_release_date_start="any", 
     param_release_date_end="any", param_duration=60, param_matlevel="any", 
     param_viewing_location=78):
     """Create and store a collection of User's default preferences"""
+
+    genre_preference = GenrePreference(
+        user_id = user.id,
+        genre = param_genre,
+    )
+
+    db.session.add(genre_preferences)
+    db.session.commit()
 
     user_preferences = Preference(
         preferences_set_date_time  = datetime.datetime.now(),
         user_id = user.id,
         subtitle = param_subtitle,
         audio = param_audio,
-        genre = param_genre,
+        genre = (add_genre_preference(user, param_genre)), 
         syear = param_release_date_start,
         eyear = param_release_date_end,
         duration = param_duration,
@@ -254,16 +262,47 @@ def add_user_preference_to_preferences(user, param_subtitle="any",              
     return user_preferences
 
 
-# def get_user_preferences_specific_kvp():
-#     """Return ONE SPECIFIC default preference of current User's preferences"""
+def add_genre_preference(user, param_genre):
+    """ Create a genre preference for a user.
 
-#     pass                                                                      # TODO:  get only one value out of a specified col in the most recent row
+    >>> add_genre_preference('1', '[7442]')
+    {self.id}
+    """
+
+    if param_genre =="":
+        return "any"
+    
+    else:
+        user_genre_preference = GenrePreference(
+            user_id = user.id,
+            genre = param_genre,
+            isActive = True)
+
+        db.session.add(user_genre_preference)
+        db.session.commit()
+
+        return GenrePreference.id
+
+
+def create_genre(id, name):
+    """Create and return a new Genre.
+
+    >>> create_genre('10118', 'Comic book and superhero movies')
+    # TODO: update docstring"""
+
+    genre = Genre(id=id, 
+                name=name)
+
+    db.session.add(genre)
+    db.session.commit() 
+
+    return location
 
 
 def get_current_user_preferences(user):
     """Return the most recent collection of this User's default preferences."""
     
-    current_user_prefs = Preference.query.filter(Preference.user_id==User.id)    
+    current_user_prefs = Preference.query.filter(Preference.user_id==User.id)  
 
     return current_user_prefs                                                                   # TODO:  get only the most recent entry in the table, like, the largest ID?
 
@@ -271,9 +310,31 @@ def get_current_user_preferences(user):
 def get_user_preferences_all_time(user):
     """Return all of the collections of this User's default preferences from forever ever."""
 
-    all_user_prefs_all_time = Preference.query.filter(User.id)                        
+    all_user_prefs_all_time = Preference.query.filter(User.id).all()                     
 
     return all_user_prefs_all_time
+
+
+def get_user_genre_preferences_active(user):
+    """Return all of the collections of this User's default preferences from forever ever."""
+
+    all_user_genre_prefs_active = GenrePreference.query.filter(User.id, isActive != false).all()                       
+
+    return all_user_genre_prefs_active
+
+
+def disable_genre_preference(user_id, genre_id):
+    """ Disable a genre preference a user had stored previously.
+
+    >>> disable_genre_preference('1', '[7442]')
+    <GenrePreference id={self.id} user="1" genre='[7442]' isActive=False>'
+    """
+
+    user_genre_preference = GenrePreference.query.filter(user_id, genre_id, isActive != false).all()
+    genre_prefs.isActive = False
+    db.session.commit()
+
+    return user_genre_preference
 
 
 #*############################################################################*#

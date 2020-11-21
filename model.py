@@ -102,7 +102,6 @@ class QueryHistory(db.Model):
     payload = db.Column(db.Text)
     param_subtitle = db.Column(db.String)
     param_audio = db.Column(db.String)
-    param_genre = db.Column(db.String)
     param_release_date_start = db.Column(db.String(20))
     param_release_date_end = db.Column(db.String(20))
     param_duration = db.Column(db.Integer)
@@ -154,7 +153,7 @@ class Genre(db.Model):
 
     __tablename__ = 'genres'
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    id = db.Column(db.Text, primary_key=True, nullable=False)# yes, text, i know
     genre_name = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
@@ -162,14 +161,15 @@ class Genre(db.Model):
             genre={self.genre_name}>'
 
 
-class GenrePreferences(db.Model):
+class GenrePreference(db.Model):
     """A Users preferred genre(s)."""
 
-    __tablename__ = 'genre_prefs'
+    __tablename__ = 'genre_preference'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'), nullable=False)
+    genre_id = db.Column(db.Text, db.ForeignKey('genres.id'), nullable=False)
+    isActive = db.Column(db.Boolean) 
 
     user = db.relationship('User', backref='genre_prefs')
     genres = db.relationship('Genre', backref='genre_prefs')
