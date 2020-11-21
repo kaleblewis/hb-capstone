@@ -232,12 +232,14 @@ def add_user_preference_to_preferences(user, param_subtitle="any",              
     param_viewing_location=78):
     """Create and store a collection of User's default preferences"""
 
+    genre_prefs = add_genre_preference(user, param_genre)
+
     user_preferences = Preference(
         preferences_set_date_time  = datetime.datetime.now(),
         user_id = user.id,
         subtitle = param_subtitle,
         audio = param_audio,
-        genre = (add_genre_preference(user, param_genre)), 
+        genre = param_genre,
         syear = param_release_date_start,
         eyear = param_release_date_end,
         duration = param_duration,
@@ -261,9 +263,9 @@ def add_genre_preference(user, param_genre):
         return "any"
     
     else:
-        user_genre_preference = db.GenrePreference(
+        user_genre_preference = GenrePreference(
             user_id = user.id,
-            genre_id = param_genre,
+            genre_name = param_genre,
             isActive = True)
 
         db.session.add(user_genre_preference)

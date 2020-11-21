@@ -152,8 +152,8 @@ class Genre(db.Model):
 
     __tablename__ = 'genres'
 
-    id = db.Column(db.Text, nullable=False)# yes, text, i know, and not pk
     name = db.Column(db.Text, primary_key=True, nullable=False) #yes, this is pk
+    id = db.Column(db.Text, nullable=False)# yes, text, i know, and not pk
 
     def __repr__(self):
         return f'<{self.__class__.__name__}\
@@ -167,7 +167,7 @@ class GenrePreference(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    genre_id = db.Column(db.Text, db.ForeignKey('genres.name'), nullable=False)
+    genre_name = db.Column(db.Text, db.ForeignKey('genres.name'), nullable=False)
     isActive = db.Column(db.Boolean) 
 
     user = db.relationship('User', backref='genre_prefs')
@@ -175,7 +175,7 @@ class GenrePreference(db.Model):
 
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} user={self.user_id} \
-            genre={self.genre_id} isActive={self.isActive}>'
+            genre_name={self.genre_name} isActive={self.isActive}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///recommendations', echo=True):
