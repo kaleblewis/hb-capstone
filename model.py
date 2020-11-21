@@ -39,8 +39,7 @@ class Location(db.Model):
     default_audio = db.Column(db.String)
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} \
-            location={self.user_id}>'    
+        return f'<{self.__class__.__name__} id={self.id} location={self.user_id}>'    
 
 
 class UserNetwork(db.Model):
@@ -153,8 +152,8 @@ class Genre(db.Model):
 
     __tablename__ = 'genres'
 
-    id = db.Column(db.Text, primary_key=True, nullable=False)# yes, text, i know
-    genre_name = db.Column(db.Text, nullable=False)
+    id = db.Column(db.Text, nullable=False)# yes, text, i know, and not pk
+    name = db.Column(db.Text, primary_key=True, nullable=False) #yes, this is pk
 
     def __repr__(self):
         return f'<{self.__class__.__name__} id={self.id} \
@@ -164,19 +163,19 @@ class Genre(db.Model):
 class GenrePreference(db.Model):
     """A Users preferred genre(s)."""
 
-    __tablename__ = 'genre_preference'
+    __tablename__ = 'genre_preferences'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    genre_id = db.Column(db.Text, db.ForeignKey('genres.id'), nullable=False)
+    genre_id = db.Column(db.Text, db.ForeignKey('genres.name'), nullable=False)
     isActive = db.Column(db.Boolean) 
 
     user = db.relationship('User', backref='genre_prefs')
     genres = db.relationship('Genre', backref='genre_prefs')
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} parent={self.parent_id} \
-            child={self.child_id}>'
+        return f'<{self.__class__.__name__} id={self.id} user={self.user_id} \
+            genre={self.genre_id} isActive={self.isActive}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///recommendations', echo=True):

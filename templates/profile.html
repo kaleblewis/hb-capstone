@@ -15,6 +15,7 @@
     {# <p><b>Share personal URL to connect:</b> <a href="/@{{ user.purl_name }}">"/@{{ user.purl_name }}" </a></p> #}
     {#    <p><b>Friends & family network:</b>  </p> #}
     <br>
+    {% if user.preferences %} 
     <hr>
     <h2>default search parameters:</h2>
 
@@ -36,7 +37,7 @@
     <p><b>viewing location:</b>  {{ user.preferences[-1].location.name }} 	</p>
     
     <br>
-
+      {% endif %}
     <hr>
 
     <h3>update your name:</h3>

@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import db, User, Preference, QueryHistory, connect_to_db
+from model import db, User, Preference, QueryHistory, Location, Genre, GenrePreference, connect_to_db
 import datetime
 import os
 import sys
@@ -236,14 +236,6 @@ def add_user_preference_to_preferences(user, param_subtitle="any",              
     param_viewing_location=78):
     """Create and store a collection of User's default preferences"""
 
-    genre_preference = GenrePreference(
-        user_id = user.id,
-        genre = param_genre,
-    )
-
-    db.session.add(genre_preferences)
-    db.session.commit()
-
     user_preferences = Preference(
         preferences_set_date_time  = datetime.datetime.now(),
         user_id = user.id,
@@ -269,13 +261,13 @@ def add_genre_preference(user, param_genre):
     {self.id}
     """
 
-    if param_genre =="":
+    if param_genre == "" or param_genre == "any" or param_genre == "all":
         return "any"
     
     else:
-        user_genre_preference = GenrePreference(
+        user_genre_preference = db.GenrePreference(
             user_id = user.id,
-            genre = param_genre,
+            genre_id = param_genre,
             isActive = True)
 
         db.session.add(user_genre_preference)
@@ -667,27 +659,29 @@ def get_all_genres():
     new_list = list(n_dictionary)
     n_str_result = new_list[1]
 
-    genres = dict(n_str_result[0])
+    genre_dictionary = {}
 
     for item in n_str_result:
-        genres.update(item)
+        for char in item:
+            if char[0] != 'å':  # to cull out garbage, like ååVãã©ãåTVçªçµã»ã©ãå
+                genre_dictionary.update(item)
+    
+    return genre_dictionary
 
-    return genres
 
-
-def create_genre(id, name):
+def create_genre(genre_id, genre_name):
     """Create and return a new Genre.
 
     >>> create_genre('10118', 'Comic book and superhero movies')
     # TODO: update docstring"""
 
-    genre = Genre(id=id, 
-                name=name)
+    genre = Genre(id=genre_id,
+                name = genre_name)
 
     db.session.add(genre)
     db.session.commit() 
 
-    return location
+    return genre
 
 
 if __name__ == '__main__':
