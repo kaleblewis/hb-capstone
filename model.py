@@ -34,6 +34,7 @@ class Location(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  #NF's country code #'s
     name = db.Column(db.String(50))
+    abbr = db.Column(db.String(3))
     default_subtitle = db.Column(db.String)
     default_audio = db.Column(db.String)
 

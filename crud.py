@@ -527,6 +527,28 @@ def get_all_query_history(user):                                                
     return queryhistory.query.all(QueryHistory.user_id == (User.query.get(id))) # TODO:  complete function stub 
 
 
+#*############################################################################*#
+#*#                          DB SEEDING  OPERATIONS                          #*#
+#*############################################################################*#
+    
+def create_location(id, name, abbr, subtitle="", audio=""):
+    """Create and return a new Country/Location.
+
+    >>> create_location('78', 'United States', 'US')
+    # TODO: update docstring"""
+
+    location = Location(id=id, 
+                name=name, 
+                abbr=abbr, 
+                default_subtitle = subtitle, 
+                default_audio = audio)
+
+    db.session.add(location)
+    db.session.commit() 
+
+    return location
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
