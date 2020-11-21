@@ -28,7 +28,15 @@
 
     <p><b>runtime/duration:</b>  {{ user.preferences[-1].duration }}  </p>
 
-    <p><b>genre(s):</b>  {{ user.preferences[-1].genre }} 	</p>  
+    <p><b>genre(s):</b>  {% for obj in user_genres %}
+    {% for field in obj.__table__.columns._data.keys() %}
+    {% if field == 'genre_name' %}
+    {{ obj[field] }}<br>
+    {% endif %}
+
+
+    {% endfor %}
+  {% endfor %}	</p>  
 
     <p><b>maturity rating:</b>  {{ user.preferences[-1].matlevel }} 	</p>
 

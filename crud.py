@@ -293,7 +293,8 @@ def get_user_preferences_all_time(user):
 def get_user_genre_preferences_active(user):
     """Return all of the collections of this User's default preferences from forever ever."""
 
-    all_user_genre_prefs_active = GenrePreference.query.filter(User.id, isActive != false).all()                       
+    all_user_genre_prefs_active = GenrePreference.query.filter(GenrePreference.user_id==User.id, \
+        GenrePreference.isActive != "false").all()                       
 
     return all_user_genre_prefs_active
 

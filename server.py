@@ -57,10 +57,12 @@ def show_user():
 
     login_user = crud.get_user_by_email(session['email'])
     all_genres = crud.get_all_genres()
+    user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
     if login_user:
         return render_template('profile.html', user=login_user, \
-            all_genres=all_genres, languages=LANGUAGES)
+            all_genres=all_genres, user_genres = user_preferred_genres, \
+            languages=LANGUAGES)
 
     else:
         flash(f'Your account was not found, please login or create an account')
