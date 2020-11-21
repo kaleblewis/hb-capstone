@@ -530,7 +530,33 @@ def get_all_query_history(user):                                                
 #*############################################################################*#
 #*#                          DB SEEDING  OPERATIONS                          #*#
 #*############################################################################*#
-    
+
+def get_all_locations():
+    """ Return a dictionary of each of Netflix's service locations.
+
+    #>>>get_all_locations()
+    # TODO:  erm, is there a way to limit to, like, top1 result here?
+    # that would be:
+    #{'All Action': [10673, 10702, 11804, 11828, 1192487, 1365, 1568, 2125, 2653, 43040, 43048, 4344, 46576, 75418, 76501, 77232, 788212, 801362, 852490, 899, 9584]}
+    """
+
+    url = "https://unogsng.p.rapidapi.com/countries"
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogsng.p.rapidapi.com"
+        }
+
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
+
+    response = requests.request("GET", url, headers=headers)
+
+    country_results = json.loads(response.text)
+    countries = country_results.values()
+
+    return countries
+
+
 def create_location(id, name, abbr, subtitle="", audio=""):
     """Create and return a new Country/Location.
 
@@ -544,6 +570,60 @@ def create_location(id, name, abbr, subtitle="", audio=""):
                 default_audio = audio)
 
     db.session.add(location)
+    db.session.commit() 
+
+    return location
+
+def get_all_genres():
+    """ Return a dictionary of each of Netflix's IDs and Genre names.
+
+    #>>>get_all_genres()
+    # TODO:  erm, is there a way to limit to, like, top1 result here?
+    # that would be:
+    #{'All Action': [10673, 10702, 11804, 11828, 1192487, 1365, 1568, 2125, 2653, 43040, 43048, 4344, 46576, 75418, 76501, 77232, 788212, 801362, 852490, 899, 9584]}
+    """
+
+    url = "https://unogs-unogs-v1.p.rapidapi.com/api.cgi"
+
+    querystring = {"t":"genres"}
+
+    headers = {
+    'x-rapidapi-key': "",
+    'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
+    }
+
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
+
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    #convert the response down into a usable dictionary of genres:ids
+    n_list = []
+    n_payload = json.loads(response.text)
+    n_list.append(n_payload)
+    n_dictionary = n_list[0].values()
+    
+    new_list = list(n_dictionary)
+    n_str_result = new_list[1]
+
+    genres = dict(n_str_result[0])
+
+    for item in n_str_result:
+        genres.update(item)
+
+    return genres
+
+
+def create_genre(id, name):
+    """Create and return a new Genre.
+
+    >>> create_genre('10118', 'Comic book and superhero movies')
+    # TODO: update docstring"""
+
+    genre = Genre(id=id, 
+                name=name)
+
+    db.session.add(genre)
     db.session.commit() 
 
     return location
