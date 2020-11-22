@@ -517,6 +517,65 @@ def get_movie_details_by_filmid(str):
     return dictionary_results
     
 
+def get_all_films_by_person_name(input_name):
+    """ Get all films with a person's name. 
+
+    Argument can be either a full name, surname, etc. 
+    Argument must be an exact match for spelling and punctuation.
+    No, you can't pass "the Prince symbol" here.
+
+    Person should be able to be any named production role, not just an actor: #but apparenlty right now it's only pulling actors
+     - actor
+     - director
+     - creator
+
+    >>> get_all_films_by_person_name("Britney Spears")  
+    {'fullname': 'Britney Spears', 'netflixid': 60022266, 'title': 'Crossroads'}
+
+    >>> get_all_films_by_person_name("Peter Ostrum")
+    {'fullname': 'Peter Ostrum', 'netflixid': 60020949, 'title': 'Willy Wonka and the Chocolate Factory'}
+
+    >>> get_all_films_by_person_name("wachowski")
+    {'fullname': 'Lana Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}
+    """
+
+    url = "https://unogsng.p.rapidapi.com/people"
+
+    querystring = {"name": f"{input_name}"}
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogsng.p.rapidapi.com"
+        }
+
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    #take the response and unpack it into a workable format
+    person_results = json.loads(response.text)
+    films_with_person = person_results.values()
+
+    #take that multi-layer payload and start unpacking the multiple layers
+    n_list = [] 
+    n_payload = json.loads(response.text)
+    n_list.append(n_payload)
+    n_dictionary = n_list[0].values()
+
+    #extract the embedded dictionary from 2 levels down in results
+    new_list = list(n_dictionary)
+    n_str_result = new_list[2]  
+
+    #then wrap it back into a dictionary
+    films_with_person_dictionary = {}
+
+    for item in n_str_result:
+        for char in item:
+            if char[0] != 'å':  # to cull out garbage, like ååVãã©ãåTVçªçµã»ã©ãå
+                films_with_person_dictionary.update(item)
+    
+    return films_with_person_dictionary
+
 
 #* TEST TO RETURN A MOVIE BASED ON A STRING OF IT'S TITLE:
 #current_result = crud.get_by_filmid((crud.search_by_id(crud.search_by_title('the last unicorn'))))
