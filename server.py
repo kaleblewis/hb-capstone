@@ -56,7 +56,7 @@ def show_user():
     """Show details for one particular user."""
 
     login_user = crud.get_user_by_email(session['email'])
-    all_genres = crud.get_all_genres()
+    all_genres = crud.get_stored_genres()
     user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
     if login_user:
