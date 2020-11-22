@@ -39,7 +39,7 @@ class Location(db.Model):
     default_audio = db.Column(db.String)
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} id={self.id} location={self.user_id}>'    
+        return f'<{self.__class__.__name__} id={self.id} location={self.name}>'    
 
 
 class UserNetwork(db.Model):
