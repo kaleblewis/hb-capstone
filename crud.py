@@ -558,15 +558,9 @@ def get_all_films_by_person_name(input_name):
 
     #extract the embedded dictionary from 2 levels down in results
     new_list = list(films_with_person)
-    n_str_result = new_list[2]  
-
-    #then wrap it back into a dictionary
-    films_with_person_dictionary = {}
-
-    for item in n_str_result:
-        films_with_person_dictionary.update(item)
+    result_list = new_list[2]  
     
-    return films_with_person_dictionary 
+    return result_list
 
 
 #*############################################################################*#
