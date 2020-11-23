@@ -556,14 +556,8 @@ def get_all_films_by_person_name(input_name):
     person_results = json.loads(response.text)
     films_with_person = person_results.values()
 
-    #take that multi-layer payload and start unpacking the multiple layers
-    n_list = [] 
-    n_payload = json.loads(response.text)
-    n_list.append(n_payload)
-    n_dictionary = n_list[0].values()
-
     #extract the embedded dictionary from 2 levels down in results
-    new_list = list(n_dictionary)
+    new_list = list(films_with_person)
     n_str_result = new_list[2]  
 
     #then wrap it back into a dictionary
