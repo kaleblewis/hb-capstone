@@ -534,9 +534,6 @@ def get_all_films_by_person_name(input_name):
 
     >>> get_all_films_by_person_name("Peter Ostrum")
     {'fullname': 'Peter Ostrum', 'netflixid': 60020949, 'title': 'Willy Wonka and the Chocolate Factory'}
-
-    >>> get_all_films_by_person_name("wachowski")
-    {'fullname': 'Lana Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}
     """
 
     url = "https://unogsng.p.rapidapi.com/people"
