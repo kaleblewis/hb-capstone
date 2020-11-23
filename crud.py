@@ -317,6 +317,66 @@ def disable_genre_preference(user_id, genre_id):
 #*#                            QUERY OPERATIONS                              #*#
 #*############################################################################*#
 
+    def search_films_by_parameters(query_arg, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitles, audios, country_list):
+    """ Return a number of results based on parameters from User.
+
+    All of the front end parameters are optional.
+    Ordering/sorting will be handled on the front end instead of via querystring parameter
+
+    >>> search_films_by_parameters("the last Unicorn", "", "", 5, 10, 1970, 2020, "", "", "", "")
+    [{'vtype': 'series', 'img': 'https://occ-0-2218-2219.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABf_yO5gOqfvRDqXfZchg9ysuqquBHNcUGu7I4OrjoH0az-nZA95YDPowaJ62xdKREiX43b-6DiIHLm5WWTaEN0GAPg.jpg?r=004', 'nfid': 81190627, 'imdbid': 'tt10329028', 'title': 'The Unicorn', 'clist': '"US":"United States"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjMyZTdlNjAtODZmOC00OGI2LTliOWEtNThmYjNiN2E2Njk2XkEyXkFqcGdeQXVyNjg4NzAyOTA@._V1_SX300.jpg', 'imdbrating': 7.1, 'top250tv': 0, 'synopsis': 'A widowed father of two girls navigates the world of dating, surprised to learn that many women consider him a hot commodity.', 'titledate': '2020-11-03', 'avgrating': 0.0, 'year': 2019, 'runtime': 0, 'top250': 0, 'id': 67089}, {'vtype': 'movie', 'img': 'https://occ-0-2851-38.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABc001T5vhL0kgjnVsvwBAotinqk-GwLwGliKtwmCh44P_U4tXxGjmzMNqW_bTY8hUC7yIE9LcVAu__JsF7wakKDyBagtnuLDVA-BG7lJAWK4tt-AFjgEb5H_fiQ.jpg?r=cb3', 'nfid': 81034317, 'imdbid': 'tt2338454', 'title': 'Unicorn Store', 'clist': '"CA":"Canada","FR":"France","DE":"Germany","NL":"Netherlands","PL":"Poland","GB":"United Kingdom","US":"United States","AR":"Argentina","AU":"Australia","BE":"Belgium","more":"+22"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjUyMTY2OTkwMF5BMl5BanBnXkFtZTgwODEyODA3NzM@._V1_SX300.jpg', 'imdbrating': 5.5, 'top250tv': 0, 'synopsis': 'After failing out of art school and taking a humdrum office job, a whimsical painter gets a chance to fulfill her lifelong dream of adopting a unicorn.', 'titledate': '2019-04-05', 'avgrating': 0.0, 'year': 2019, 'runtime': 5513, 'top250': 0, 'id': 61649}]
+    """
+
+    url = "https://unogsng.p.rapidapi.com/search"
+
+    #OPTIONAL PARAMETERS
+    query_param = query_arg           # any string you want to search (fulltext against the title) 
+    genre_list = genre_list     # comma-separated list of Netflix genre id's (see genre endpoint for list)
+    movie_or_series = movie_or_series # movie or series?
+
+    start_rating = start_rating # imdb rating 0-10
+    end_rating = end_rating     # imdb rating 0-10
+
+    start_year = start_year     # 4 digit year
+    end_year = end_year         # 4 digit year
+
+    new_date = new_date         # something new-ish where streaming began after this date 
+
+    subtitle = subtitles        # *ONE* valid language type
+    audio = audios              # *ONE* valid language type
+    audiosubtitle_andor = ""    # ehhhh... 
+                                #after testing, it turns out this parameter doesn't actually impact results -- at all
+
+    country_list = country_list # comma-separated list of uNoGS country ID's (from country endpoint) leave blank for all country search
+    country_andorunique = "or"  # returns results based on user locations (and/or/unique)
+                                # setting to "or" to return results matching any country in the list 
+
+    order_by = ""                # orderby string (date,rating,title,type,runtime)
+    limit = "100"                  # Limit of returned items default (MAX 100)
+    offset = "0"                 # Starting Number of results (Default is 0)
+
+    querystring = {"newdate": f"{new_date}","genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby": f"{order_by}","audiosubtitle_andor": f"{audiosubtitle_andor}","start_rating": f"{start_rating}","limit": f"{limit}","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist": f"{country_list}","query": f"{query_param}","audio": f"{audio}","country_andorunique": f"{country_andorunique}","offset": f"{offset}","end_year": f"{end_year}"}
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogsng.p.rapidapi.com"
+        }
+
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    #take the response and unpack it into a workable format
+    search_results = json.loads(response.text)
+    search_results_values = search_results.values()
+
+    #extract the embedded dictionary from 2 levels down in results
+    listify_results = list(search_results_values)
+    result_list = listify_results[2]  
+
+    return result_list
+
+
 def search_by_title(str):
     """ Pass movie title to unofficial imdb API to receive imdb 'id'.
 
