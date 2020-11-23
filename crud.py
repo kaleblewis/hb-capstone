@@ -570,15 +570,9 @@ def get_all_films_by_person_name(input_name):
     films_with_person_dictionary = {}
 
     for item in n_str_result:
-        for char in item:
-            if char[0] != 'å':  # to cull out garbage, like ååVãã©ãåTVçªçµã»ã©ãå
-                films_with_person_dictionary.update(item)
+        films_with_person_dictionary.update(item)
     
-    return films_with_person_dictionary
-
-
-#* TEST TO RETURN A MOVIE BASED ON A STRING OF IT'S TITLE:
-#current_result = crud.get_by_filmid((crud.search_by_id(crud.search_by_title('the last unicorn'))))
+    return films_with_person_dictionary 
 
 
 #*############################################################################*#
