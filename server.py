@@ -33,9 +33,10 @@ def homepage():
 
     try:
         session['name']
-        return render_template("homepage.html")                             
+        return render_template("recommendations.html")     
+
     except KeyError:
-        return render_template("homepage.html")
+        return render_template("recommendations.html")
 
 
 #*############################################################################*#
@@ -294,15 +295,39 @@ def logout():
 #*#                     CONTENT/SEARCHES/RECOMMENDATIONS                     #*#
 #*############################################################################*#
 
-@app.route('/recommendations')
+@app.route('/recommendations', methods=['POST'])
 def recommendations_page():
-    """View recommendations page"""
+    """View search results page for recommendation(s)"""
 
-    try:
-        session['logged_in'] = True
-        return render_template("recommendations.html")                             
-    except KeyError:
-        return render_template('homepage.html')                                 
+    search_term = request.form.get('search-input')        # any string you want to search (fulltext against the title) 
+    genre_list = request.form.get('genre-list-input')     # comma-separated list of Netflix genre id's (see genre endpoint for list)
+    
+    movie_or_series = request.form.get('movie-or-series-input') # movie or series?
+
+    start_rating = request.form.get('start-rating-input') # imdb rating 0-10
+    end_rating = request.form.get('end-rating-input')     # imdb rating 0-10
+
+    start_year = request.form.get('start-year-input')     # 4 digit year
+    end_year = request.form.get('end-year-input')         # 4 digit year
+
+    new_date = request.form.get('new-date-input')        # something new-ish where streaming began after this date 
+
+    subtitle = request.form.get('subtitle-input')        # *ONE* valid language type
+    audio = request.form.get('audio-input')
+
+    search_results = crud.search_films_by_parameters(query_arg, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitles, audios, country_list):
+   
+    if session['logged_in'] = True:
+
+        if search_result['imdbid'] != '':
+            return render_template("recommendations.html", 
+            current_recommendations=search_results)
+
+        return render_template("recommendations.html")    
+
+    else:
+        flash("please try again")
+        return redirect('/')                             
 
 
 @app.route('/search', methods=['POST'])
@@ -314,7 +339,7 @@ def render_specific_movie():
         crud.search_by_title(search_term))))
 
     if search_result['imdbid'] != '':
-        flash(f"{search_term}")
+        flash(f"search results for term: {search_term}")
         return render_template("recommendations.html", 
         current_recommendations=search_result)
 
@@ -323,6 +348,8 @@ def render_specific_movie():
         flash(f"try a different search term, {session['name']}?")
         return redirect('/')                                                    # TODO:  debug why this works successfully if searching from '/' page
                                                                                 #        but results in keyerror on [imdbID] if User is searching from '/search' page 
+
+
 
 
 # @app.route('/random', methods=['POST'])
