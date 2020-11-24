@@ -360,9 +360,6 @@ def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_ra
 
     # Fill in the entries one by one if they have values
     for key in parameter_list:
-        print(key)
-        print(type(key))
-        print(parameter_list[key])
         if parameter_list[key]:
             if parameter_list[key] != "":
                 querystring[key] = parameter_list[key]
@@ -375,8 +372,6 @@ def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_ra
     headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
 
     response = requests.request("GET", url, headers=headers, params=querystring)
-    
-    print(response)
 
     #take the response and unpack it into a workable format
     search_results = json.loads(response.text)
@@ -387,7 +382,8 @@ def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_ra
     result_list = listify_results[2]  
     
     print(querystring)
-    print(result_list)
+    print()
+    print()
 
     return result_list
 
