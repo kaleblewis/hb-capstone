@@ -380,12 +380,15 @@ def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_ra
     #extract the embedded dictionary from 2 levels down in results
     listify_results = list(search_results_values)
     result_list = listify_results[2]  
-    
-    print(querystring)
-    print()
-    print()
 
-    return result_list
+    recommendations = dict()
+
+    for index, movie in enumerate(result_list):
+        recommendations[index + 1] = movie
+
+    # TODO:  kick querystr, payload over to add_query_to_query_history(user, query_string, payload)
+
+    return recommendations
 
 
 def search_by_title(str):

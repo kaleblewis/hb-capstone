@@ -343,6 +343,12 @@ def recommendations_page():
         subtitle, audio, country_list)  #new_year,
                         # TODO:  re-enable ^ this for "recently added" search parameter  
 
+    print()
+    print()
+    print()
+    print(search_results)
+    print()
+    
     if session['logged_in'] == True:
 
         if search_results:

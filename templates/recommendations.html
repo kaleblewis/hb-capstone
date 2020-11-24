@@ -54,33 +54,45 @@
                     <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/7aae406a-1051-4f7c-a2a1-17f54a84b888/d5zzvn1-507fd3fb-6aef-4753-b01e-f9fb84e0f07c.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvN2FhZTQwNmEtMTA1MS00ZjdjLWEyYTEtMTdmNTRhODRiODg4XC9kNXp6dm4xLTUwN2ZkM2ZiLTZhZWYtNDc1My1iMDFlLWY5ZmI4NGUwZjA3Yy5naWYifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.Fq17Wh2vSet9TSV7PV_mk54SlBpZiF43rJOK_IhQhbc">
                     
                 {% endif %}
-            
+          
+                
+
             {% elif session['render-search-results'] == "many" %}
 
+
+
                 <h2>recommendations</h2>
-                    {% for item in current_recommendations() %}    
-                        {% if current_recommendations['title'] is defined %}
-                        <div class="search-result">
-                        <b><a href="/title/{{ current_recommendations['title'] }}">{{ current_recommendations['title'] }} </a>    {% if current_recommendations['year'] > 0 %} {{ current_recommendations['year'] }}  )</b>{% endif %}  <br> 
-                            <!-- TODO: create route to process searches by nfid -->
-                        <img src="{{ current_recommendations['img'] }}" width="30" height="50">     <img src="{{ current_recommendations['poster'] }}" width="30" height="50">  
                     
-                        {% if current_recommendations['top250'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix </p> {% endif %}{% if current_recommendations['top250TV'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %}
-                        <p> {% if current_recommendations['runtime'] > 0 %} 🕐 {{ current_recommendations['runtime'] }} {% endif %}
-                            {% if current_recommendations['vtype'] == 'movie' %} | 🎬 {{ current_recommendations['vtype'] }} {% elif current_recommendations['vtype'] == 'series' %} | 📺 {{ current_recommendations['vtype'] }}{% endif %} </p>
-                            {% if current_recommendations['imdbrating'] > 0 %} | {{ current_recommendations['imdbrating'] }} IMDb: ⭐ ⭐ ⭐ ★ ★  {% endif %} </p>
-                            <p> <em>{{ current_recommendations['synopsis'] }} </em> </p>
+                    {% for result_number, movie_result in current_recommendations.items() %}    
+           
+                        {% if movie_result['title'] is defined %}
+                        <div class="search-result">
+                        <b><a href="/title/{{ movie_result['title'] }}">{{ movie_result['title'] }} </a>    {% if movie_result['year'] > 0 %} ( {{ movie_result['year'] }}  )</b>{% endif %}  <br> 
+                            <!-- TODO: create route to process searches by nfid -->
+                        <img src="{{ movie_result['img'] }}" width="30" height="50">     <img src="{{ movie_result['poster'] }}" width="30" height="50">  
+                    
+                        {% if movie_result['top250'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix </p> {% endif %}{% if movie_result['top250tv'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %}
+                        <p> 
+                            {% if movie_result['vtype'] == 'movie' %} 🎬 {{ movie_result['vtype'] }} | {% elif movie_result['vtype'] == 'series' %} 📺 {{ movie_result['vtype'] }} | {% endif %}
+
+                            {% if movie_result['runtime'] > 0 %} 🕐 {{ movie_result['runtime'] }} minutes  | {% endif %}
+                            <!-- TODO:  break this up into hours and minutes -->
+
+                            {% if movie_result['imdbrating'] > 0 %}  IMDb: {{ movie_result['imdbrating'] }} ⭐ ⭐ ⭐ ★ ★  {% endif %} </p>
+                            <!-- TODO:  render starts graphics based on imdb rating -->
+                            <p> <em>{{ movie_result['synopsis'] }} </em> </p>
                         <ul>
-                            <li><a href="https://www.imdb.com/title/{{ current_recommendations['imdbid'] }}"> Read more on imdb </a></li>
-                            <li><a href="https://www.netflix.com/title/{{ current_recommendations['nfid'] }}"> Watch now on Netflix </a></li>
+                            <li><a href="https://www.imdb.com/title/{{ movie_result['imdbid'] }}"> Read more on imdb </a></li>
+                            <li><a href="https://www.netflix.com/title/{{ movie_result['nfid'] }}"> Watch now on Netflix </a></li>
                         </ul>
-                        <hr>
-                        <br>
+                        <br><hr><br>
                         </div>
                         {% endif %}
                     
                     {% endfor %}
             
+
+
             {% else %}
 
                 ## render block of "try again"
@@ -88,8 +100,11 @@
             {% endif %} 
 
 
+
         {% else %} 
         
+
+
              <h3>update your search parameters below:</h3>
           
              <form action='/recommendations' method="POST">
