@@ -31,26 +31,28 @@ app.secret_key = '''service_account.Credentials.from_service_account_file(
 def homepage():
     """View homepage."""
 
+    try:
+        session['name']
+        return render_template("homepage.html")     
+
+    except KeyError:
+        return render_template("homepage.html")
+
     # try:
-    #     session['name']
-    #     return render_template("homepage.html")     
+    #     session['logged-in']
+
+    #     if session['logged-in'] == True:
+    #         return render_template('homepage.html', user=login_user, 
+    #         all_genres=all_genres, user_genres = user_preferred_genres, 
+    #         languages=LANGUAGES)
+            
+    #     else:
+    #         return render_template('homepage.html')
 
     # except KeyError:
-    #     return render_template("homepage.html")
-
-    login_user = crud.get_user_by_email(session['email'])
-    all_genres = crud.get_stored_genres()
-    user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
-
-    if login_user:
-        return render_template('homepage.html', user=login_user, \
-            all_genres=all_genres, user_genres = user_preferred_genres, \
-            languages=LANGUAGES)
-
-    else:
-        flash(f'Your account was not found, please login or create an account')
-        session['name'] = 'no-account-found-please-create-account'
-        return redirect('/')
+    #         return render_template('homepage.html',
+    #         all_genres=all_genres, 
+    #         languages=LANGUAGES)
 
 
 #*############################################################################*#
@@ -328,17 +330,22 @@ def recommendations_page():
     start_year = request.form.get('date-range-start')     # 4 digit year
     end_year = request.form.get('date-range-end')         # 4 digit year
 
-    new_date = request.form.get('new-date-input')        # something new-ish where streaming began after this date 
-
     subtitle = request.form.get('preferred-subtitle')        # *ONE* valid language type
     audio = request.form.get('preferred-audio')
 
-    new_date = ""           # <-- hard-coded to pass 'any' for this param
+    new_year = start_year       
     country_list = 87       # <-- hard-coded "USA" 
  
-    search_results = crud.search_films_by_parameters(search_term, genre_list, \
+    print(new_year)
+    print(type(new_year))
+
+    print(search_term, genre_list, \
         movie_or_series, start_rating, end_rating, start_year, end_year, \
         new_date, subtitle, audio, country_list)
+
+    search_results = crud.search_films_by_parameters(search_term, genre_list, \
+        movie_or_series, start_rating, end_rating, start_year, end_year, \
+        new_year, subtitle, audio, country_list)
    
 
 

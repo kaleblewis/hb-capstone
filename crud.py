@@ -317,7 +317,7 @@ def disable_genre_preference(user_id, genre_id):
 #*#                            QUERY OPERATIONS                              #*#
 #*############################################################################*#
 
-def search_films_by_parameters(search_term, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitle, audio, country_list):
+def search_films_by_parameters(search_term, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_year, subtitle, audio, country_list):
     """ Return a number of results based on parameters from User.
 
     All of the front end parameters are optional.
@@ -331,35 +331,69 @@ def search_films_by_parameters(search_term, genre_list, movie_or_series, start_r
 
     url = "https://unogsng.p.rapidapi.com/search"
 
+    # correct any inadvertent start-date range mix-ups or inadvertent exclusions
+    if new_year < start_year:
+        start_year = new_year
+
+    else:
+        new_year = start_year
+
     #OPTIONAL PARAMETERS
-    query_param = search_term           # any string you want to search (fulltext against the title) 
-    genre_list = genre_list     # comma-separated list of Netflix genre id's (see genre endpoint for list)
-    movie_or_series = movie_or_series # movie or series?
+    query_param = search_term        # any string you want to search (fulltext against the title) 
+    genre_list = "" #str(genre_list)     # comma-separated list of Netflix genre id's (see genre endpoint for list)
+    movie_or_series = str(movie_or_series) # movie or series?
 
-    start_rating = start_rating # imdb rating 0-10
-    end_rating = end_rating     # imdb rating 0-10
+    start_rating = "" #str(start_rating) # imdb rating 0-10
+    end_rating = "" #str(end_rating)     # imdb rating 0-10
 
-    start_year = start_year     # 4 digit year
-    end_year = end_year         # 4 digit year
+    start_year = "" #str(start_year)     # 4 digit year
+    end_year = "" #str(end_year)        # 4 digit year
 
-    new_date = new_date         # something new-ish where streaming began after this date 
+    new_date = f"{new_year}" + "-01-01" #str(new_date)         # DATE (YYYY-MM-DD)  something new-ish where streaming began after this date 
 
-    subtitle = subtitle        # *ONE* valid language type
-    audio = audio              # *ONE* valid language type
-    audiosubtitle_andor = ""    # ehhhh... 
-                                #after testing, it turns out this parameter doesn't actually impact results -- at all
+    subtitle = "" #str(subtitle)        # *ONE* valid language type
+    audio = audio          # *ONE* valid language type
+    # audiosubtitle_andor = ""    # ehhhh... 
+    #                             #after testing, it turns out this parameter doesn't actually impact results -- at all
 
-    country_list = country_list # comma-separated list of uNoGS country ID's (from country endpoint) leave blank for all country search
-    country_andorunique = "or"  # returns results based on user locations (and/or/unique)
+    country_list = "78" # comma-separated list of uNoGS country ID's (from country endpoint) leave blank for all country search
+    # country_andorunique = "or"  # returns results based on user locations (and/or/unique)
                                 # setting to "or" to return results matching any country in the list 
 
-    order_by = ""                # orderby string (date,rating,title,type,runtime)
+    order_by = "rating"                # orderby string (date,rating,title,type,runtime)
     limit = "100"                  # Limit of returned items default (MAX 100)
     offset = "0"                 # Starting Number of results (Default is 0)
 
-    # querystring = {"newdate": f"{new_date}","genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby": f"{order_by}","audiosubtitle_andor": f"{audiosubtitle_andor}","start_rating": f"{start_rating}","limit": f"{limit}","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist": f"{country_list}","query": f"{query_param}","audio": f"{audio}","country_andorunique": f"{country_andorunique}","offset": f"{offset}","end_year": f"{end_year}"}
 
-    querystring = {"newdate": f"","genrelist": f"","type": f"movie","start_year": f"","orderby": f"","audiosubtitle_andor": f"","start_rating": f"","limit": f"","end_rating": f"","subtitle": f"","countrylist": f"","query": f"unicorn","audio": f"","country_andorunique": f"","offset": f"","end_year": f""}
+
+
+    parameter_list = {"newdate":f"{new_date}","genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby":"rating","start_rating": f"{start_rating}","limit":"100","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist":"78","query": f"{query_param}","audio": f"{audio}","country_andorunique":"or","offset":"0","end_year": f"{end_year}"}
+    
+    print(f"parameter_list is: {parameter_list}")
+    print(type(parameter_list))
+    print("")
+
+    querystring = {}
+    # Fill in the entries one by one
+    for key in parameter_list:
+        print(key)
+        print(type(key))
+        print(parameter_list[key])
+        if parameter_list[key] != "":
+            querystring[key] = parameter_list[key]
+
+    print(f"querystring is: {querystring}")
+    print(type(querystring))
+    print("")
+
+
+
+    # querystring = {"newdate": f"1901-01-01","genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby": f"{order_by}","audiosubtitle_andor": f"{audiosubtitle_andor}","start_rating": f"{start_rating}","limit": f"{limit}","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist": f"{country_list}","query": f"{query_param}","audio": f"{audio}","country_andorunique": f"{country_andorunique}","offset": f"{offset}","end_year": f"{end_year}"}
+
+    # querystring = {"newdate": f"","genrelist": f"","type": f"movie","start_year": f"","orderby": f"","audiosubtitle_andor": f"","start_rating": f"","limit": f"","end_rating": f"","subtitle": f"","countrylist": f"","query": f"unicorn","audio": f"","country_andorunique": f"","offset": f"","end_year": f""}
+
+    # querystring = {"newdate":"1982-01-01","start_year":"1981","orderby":"rating","limit":"100","subtitle":"spanish","audio":"english","offset":"0","end_year":"1983"}
+
 
     headers = {
         'x-rapidapi-key': "",
