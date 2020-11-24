@@ -316,7 +316,6 @@ def recommendations_page():
     all_genres = crud.get_stored_genres()
     # user_preferred_genres = crud.get_user_genre_preferences_active(login.user)
 
-    search_term = request.form.get('search-input')        # any string you want to search (fulltext against the title) 
     genre_list = request.form.get('genre-input')     # comma-separated list of Netflix genre id's (see genre endpoint for list)
     
     movie_or_series = request.form.get('movie-or-series-input') # movie or series?
@@ -331,17 +330,25 @@ def recommendations_page():
     audio = request.form.get('preferred-audio')
 
     new_year = start_year       
-    country_list = 87       # <-- hard-coded "USA" 
- 
-    print(new_year)
-    print(type(new_year))
+    country_list = 87       # <-- hard-coded "USA" for now 
+                            # TODO: flip this back to dynamic list value later
 
-    print(search_term, genre_list, \
-        movie_or_series, start_rating, end_rating, start_year, end_year, \
-        new_date, subtitle, audio, country_list)
+    print(genre_list)
+    #strip out the curly braces
+    genre_list = genre_list.replace('{','')
+    genre_list = genre_list.replace('}','')
 
-    search_results = crud.search_films_by_parameters(search_term, genre_list, \
-        movie_or_series, start_rating, end_rating, start_year, end_year, \
+    print(genre_list)
+    print(genre_list)
+    print(genre_list)
+    print(genre_list)
+
+    print(genre_list,
+        movie_or_series, start_rating, end_rating, start_year, end_year,
+        new_year, subtitle, audio, country_list)
+
+    search_results = crud.search_films_by_parameters(genre_list, 
+        movie_or_series, start_rating, end_rating, start_year, end_year,
         new_year, subtitle, audio, country_list)
    
 

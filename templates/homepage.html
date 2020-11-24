@@ -13,14 +13,14 @@
 <form action='/recommendations' method="POST">
   <div class="form-group">
 
-<label for="search-field"></label>
+<!-- <label for="search-field"></label>
 <input type="search"
     id="search-input"
     name="search-input"
     placeholder="search by movie title"
     autofocus />
 <br>
-<br>
+<br> -->
 <label for="movie-or-series-input"> movie or series?</label>           
 <select id="movie-or-series-input" name="movie-or-series-input">
   <option value="" selected>any/all</option>
@@ -28,6 +28,7 @@
   <option value="series"> series </option>
 </select>
 <br>  
+<br>
 <label for="preferred-subtitle">Select your default subtitles:</label>
 <select id="preferred-subtitle" name="preferred-subtitle">
   <option value="" selected>any/all</option>
@@ -90,28 +91,31 @@
 <input type="number"
     id="start-rating-input"
     name="start-rating-input"
-    placeholder="1-5"
+    placeholder="1-10"
     min="0" 
-    max="5"
-    value="4" />
+    max="9"
+    value="3" />
+
 <br>
 <label for="end-rating-input"> maximum imdb rating:</label>
 <input type="number"
    id="end-rating-input"
    name="end-rating-input"
    placeholder="1-5"
-   min="0" 
-   max="5"
-   value="5" />
+   min="1" 
+   max="10"
+   value="10" />
 <br>
 <br>
-<label for="genre-input">Select your default genre(s):</label>         
+<label for="genre-input">one of genre(s):
+    <br> (inclusive "OR" criteria)
+</label>         
 <select id="genre-input" name="genre-input">
   <option value="all" selected>any/all</option>
   {% for obj in all_genres %}
   {% for field in obj.__table__.columns._data.keys() %}
     {% if field == 'name' %}
-    <option value="{{ obj[field] }}">{{ obj[field] }}</option>
+    <option value="{{ obj['id'] }}">{{ obj['name'] }}</option>
     {% endif %}
   {% endfor %}
 {% endfor %}
