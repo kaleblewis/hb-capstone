@@ -315,15 +315,20 @@ def recommendations_page():
     subtitle = request.form.get('subtitle-input')        # *ONE* valid language type
     audio = request.form.get('audio-input')
 
-    search_results = crud.search_films_by_parameters(query_arg, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitles, audios, country_list):
+    search_results = crud.search_films_by_parameters(query_arg, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitles, audios, country_list)
    
-    if session['logged_in'] = True:
+    if session['logged_in'] == True:
 
         if search_result['imdbid'] != '':
+            session['render-search-results'] = "many"
             return render_template("recommendations.html", 
             current_recommendations=search_results)
+        
+        else:
+            flash("please update your search criteria")
+            session['render-search-results'] = "update-search-criteria"
 
-        return render_template("recommendations.html")    
+            return render_template("recommendations.html")    
 
     else:
         flash("please try again")
@@ -340,6 +345,7 @@ def render_specific_movie():
 
     if search_result['imdbid'] != '':
         flash(f"search results for term: {search_term}")
+        session['render-search-results'] = "one"
         return render_template("recommendations.html", 
         current_recommendations=search_result)
 

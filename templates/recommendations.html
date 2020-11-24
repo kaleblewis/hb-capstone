@@ -9,7 +9,8 @@
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 title-summary">
 
               <div class="content">
-        
+        {% if session['render-search-results'] is defined %} 
+            {% if session['render-search-results'] == "one" %}
                 {% if current_recommendations['title'] is defined %}
                     <div class="search-result">
                     <h2>{{ current_recommendations['title'] }}</h2>  <b> ( {{ current_recommendations['released'] }}  )</b><br>
@@ -51,11 +52,24 @@
                     <p> crickets chirping.... <b>try a different search term, friend</h3></p>
                     <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/7aae406a-1051-4f7c-a2a1-17f54a84b888/d5zzvn1-507fd3fb-6aef-4753-b01e-f9fb84e0f07c.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvN2FhZTQwNmEtMTA1MS00ZjdjLWEyYTEtMTdmNTRhODRiODg4XC9kNXp6dm4xLTUwN2ZkM2ZiLTZhZWYtNDc1My1iMDFlLWY5ZmI4NGUwZjA3Yy5naWYifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.Fq17Wh2vSet9TSV7PV_mk54SlBpZiF43rJOK_IhQhbc">
                     
-                
                 {% endif %}
+            
+            {% elif session['render-search-results'] == "many" %}
 
+                ## render block of multiple search results 
+                { current_recommendations }
+            
+            {% else %}
 
-                
+                ## render block of "try again"
+
+            {% endif %} 
+        {% else %} 
+        
+             ## display search form fields
+
+        {% endif %} 
+            
               </div>
           </div>
     </div>

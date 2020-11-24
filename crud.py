@@ -317,7 +317,7 @@ def disable_genre_preference(user_id, genre_id):
 #*#                            QUERY OPERATIONS                              #*#
 #*############################################################################*#
 
-    def search_films_by_parameters(query_arg, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitles, audios, country_list):
+def search_films_by_parameters(search_term, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitles, audios, country_list):
     """ Return a number of results based on parameters from User.
 
     All of the front end parameters are optional.
@@ -325,12 +325,14 @@ def disable_genre_preference(user_id, genre_id):
 
     >>> search_films_by_parameters("the last Unicorn", "", "", 5, 10, 1970, 2020, "", "", "", "")
     [{'vtype': 'series', 'img': 'https://occ-0-2218-2219.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABf_yO5gOqfvRDqXfZchg9ysuqquBHNcUGu7I4OrjoH0az-nZA95YDPowaJ62xdKREiX43b-6DiIHLm5WWTaEN0GAPg.jpg?r=004', 'nfid': 81190627, 'imdbid': 'tt10329028', 'title': 'The Unicorn', 'clist': '"US":"United States"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjMyZTdlNjAtODZmOC00OGI2LTliOWEtNThmYjNiN2E2Njk2XkEyXkFqcGdeQXVyNjg4NzAyOTA@._V1_SX300.jpg', 'imdbrating': 7.1, 'top250tv': 0, 'synopsis': 'A widowed father of two girls navigates the world of dating, surprised to learn that many women consider him a hot commodity.', 'titledate': '2020-11-03', 'avgrating': 0.0, 'year': 2019, 'runtime': 0, 'top250': 0, 'id': 67089}, {'vtype': 'movie', 'img': 'https://occ-0-2851-38.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABc001T5vhL0kgjnVsvwBAotinqk-GwLwGliKtwmCh44P_U4tXxGjmzMNqW_bTY8hUC7yIE9LcVAu__JsF7wakKDyBagtnuLDVA-BG7lJAWK4tt-AFjgEb5H_fiQ.jpg?r=cb3', 'nfid': 81034317, 'imdbid': 'tt2338454', 'title': 'Unicorn Store', 'clist': '"CA":"Canada","FR":"France","DE":"Germany","NL":"Netherlands","PL":"Poland","GB":"United Kingdom","US":"United States","AR":"Argentina","AU":"Australia","BE":"Belgium","more":"+22"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjUyMTY2OTkwMF5BMl5BanBnXkFtZTgwODEyODA3NzM@._V1_SX300.jpg', 'imdbrating': 5.5, 'top250tv': 0, 'synopsis': 'After failing out of art school and taking a humdrum office job, a whimsical painter gets a chance to fulfill her lifelong dream of adopting a unicorn.', 'titledate': '2019-04-05', 'avgrating': 0.0, 'year': 2019, 'runtime': 5513, 'top250': 0, 'id': 61649}]
+
     """
+
 
     url = "https://unogsng.p.rapidapi.com/search"
 
     #OPTIONAL PARAMETERS
-    query_param = query_arg           # any string you want to search (fulltext against the title) 
+    query_param = search_term           # any string you want to search (fulltext against the title) 
     genre_list = genre_list     # comma-separated list of Netflix genre id's (see genre endpoint for list)
     movie_or_series = movie_or_series # movie or series?
 
