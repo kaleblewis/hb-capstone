@@ -314,10 +314,13 @@ def recommendations_page():
     
     login_user = crud.get_user_by_email(session['email'])
     all_genres = crud.get_stored_genres()
-    # user_preferred_genres = crud.get_user_genre_preferences_active(login.user)
+    user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
     genre_list = request.form.get('genre-input')     # comma-separated list of Netflix genre id's (see genre endpoint for list)
-    
+    #strip out the curly braces
+    genre_list = genre_list.replace('{','')
+    genre_list = genre_list.replace('}','')
+
     movie_or_series = request.form.get('movie-or-series-input') # movie or series?
 
     start_rating = request.form.get('start-rating-input') # imdb rating 0-10
@@ -329,30 +332,16 @@ def recommendations_page():
     subtitle = request.form.get('preferred-subtitle')        # *ONE* valid language type
     audio = request.form.get('preferred-audio')
 
-    new_year = start_year       
-    country_list = 87       # <-- hard-coded "USA" for now 
+    # new_year = start_year
+    # TODO:  re-enable ^ this for "recently added" search parameter  
+         
+    country_list = 78       # <-- hard-coded "USA" for now 
                             # TODO: flip this back to dynamic list value later
-
-    print(genre_list)
-    #strip out the curly braces
-    genre_list = genre_list.replace('{','')
-    genre_list = genre_list.replace('}','')
-
-    print(genre_list)
-    print(genre_list)
-    print(genre_list)
-    print(genre_list)
-
-    print(genre_list,
-        movie_or_series, start_rating, end_rating, start_year, end_year,
-        new_year, subtitle, audio, country_list)
 
     search_results = crud.search_films_by_parameters(genre_list, 
         movie_or_series, start_rating, end_rating, start_year, end_year,
-        new_year, subtitle, audio, country_list)
-   
-
-
+        subtitle, audio, country_list)  #new_year,
+                        # TODO:  re-enable ^ this for "recently added" search parameter  
 
     if session['logged_in'] == True:
 
@@ -361,9 +350,9 @@ def recommendations_page():
             return render_template("recommendations.html",  
             user=login_user,
             all_genres=all_genres, 
-            # user_genres = user_preferred_genres, 
+            user_genres = user_preferred_genres, 
             languages=LANGUAGES,
-            current_recommendations=search_results, )
+            current_recommendations=search_results)
         
         else:
             flash("please update your search criteria")

@@ -317,7 +317,7 @@ def disable_genre_preference(user_id, genre_id):
 #*#                            QUERY OPERATIONS                              #*#
 #*############################################################################*#
 
-def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_year, subtitle, audio, country_list):
+def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, subtitle, audio, country_list):  #new_year, 
     """ Return a number of results based on parameters from User.
 
     All of the front end parameters are optional.
@@ -328,37 +328,33 @@ def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_ra
 
     """
 
-
     url = "https://unogsng.p.rapidapi.com/search"
 
-    # correct any inadvertent start-date range mix-ups or inadvertent exclusions
-    if new_year < start_year:
-        start_year = new_year
+    # # correct any inadvertent start-date range mix-ups or inadvertent exclusions
+    # if new_year < start_year:
+    #     start_year = new_year
 
-    else:
-        new_year = start_year
+    # else:
+    #     new_year = start_year
 
-    # NOT-SO-OPTIONAL PARAMETERS, ones that needed a little extra help
-    if start_year:
-        new_date=f"{start_year}" + "-01-01"    # DATE (YYYY-MM-DD)  something new-ish where streaming began after this date 
+    # # NOT-SO-OPTIONAL PARAMETERS, ones that needed a little extra help
+    # if start_year:
+    #     new_date=f"{start_year}" + "-01-01"    # DATE (YYYY-MM-DD)  something new-ish where streaming began after this date 
+     # TODO:  re-enable ^ this for "recently added" search parameter  
 
     country_list = "78" # comma-separated list of uNoGS country ID's 
     #(from country endpoint) leave blank for all country search
     # hard-coded "USA" for now 
     # TODO: flip this back to dynamic list value later
 
-    order_by = "rating"                # orderby string (date,rating,title,type,runtime)
-    limit = "100"                  # Limit of returned items default (MAX 100)
-    offset = "0"                 # Starting Number of results (Default is 0)
+    order_by = "rating"     # orderby string (date,rating,title,type,runtime)
+    limit = "100"           # Limit of returned items default (MAX 100)
+    offset = "0"            # Starting Number of results (Default is 0)
 
 
-#"newdate":f"{new_date}",
 
-    parameter_list = {"genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby":"rating","start_rating": f"{start_rating}","limit":"100","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist":"78","audio": f"{audio}","offset":"0","end_year": f"{end_year}"}
-    
-    print(f"parameter_list is: {parameter_list}")
-    print(type(parameter_list))
-    print("")
+    parameter_list = {"genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby":"rating","start_rating": f"{start_rating}","limit":"100","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist":"78","audio": f"{audio}","offset":"0","end_year": f"{end_year}"}   #"newdate":f"{new_date}",
+    # TODO:  re-enable ^ this for "recently added" search parameter
 
     querystring = {}
 
@@ -370,19 +366,6 @@ def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_ra
         if parameter_list[key]:
             if parameter_list[key] != "":
                 querystring[key] = parameter_list[key]
-
-    print(f"querystring is: {querystring}")
-    print(type(querystring))
-    print("")
-
-
-
-    # querystring = {"newdate": f"1901-01-01","genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby": f"{order_by}","audiosubtitle_andor": f"{audiosubtitle_andor}","start_rating": f"{start_rating}","limit": f"{limit}","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist": f"{country_list}","query": f"{query_param}","audio": f"{audio}","country_andorunique": f"{country_andorunique}","offset": f"{offset}","end_year": f"{end_year}"}
-
-    # querystring = {"newdate": f"","genrelist": f"","type": f"movie","start_year": f"","orderby": f"","audiosubtitle_andor": f"","start_rating": f"","limit": f"","end_rating": f"","subtitle": f"","countrylist": f"","query": f"unicorn","audio": f"","country_andorunique": f"","offset": f"","end_year": f""}
-
-    # querystring = {"newdate":"1982-01-01","start_year":"1981","orderby":"rating","limit":"100","subtitle":"spanish","audio":"english","offset":"0","end_year":"1983"}
-
 
     headers = {
         'x-rapidapi-key': "",

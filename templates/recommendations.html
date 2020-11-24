@@ -39,6 +39,7 @@
                     <p> <em>{{ current_recommendations['plot'] }}</em></p>
 
                     <p><b>Actors:</b>   <em>{{ current_recommendations['actors'] }}</em></p>
+                          <!-- TODO: create route to process actors by actor-name -->
 
                     <p><b>Director(s):</b>   <em>{{ current_recommendations['directors'] }}</em></p>
                     
@@ -56,14 +57,37 @@
             
             {% elif session['render-search-results'] == "many" %}
 
-                ## render block of multiple search results 
-                { current_recommendations }
+                <h2>recommendations</h2>
+                    {% for item in current_recommendations() %}    
+                        {% if current_recommendations['title'] is defined %}
+                        <div class="search-result">
+                        <b><a href="/title/{{ current_recommendations['title'] }}">{{ current_recommendations['title'] }} </a>    {% if current_recommendations['year'] > 0 %} {{ current_recommendations['year'] }}  )</b>{% endif %}  <br> 
+                            <!-- TODO: create route to process searches by nfid -->
+                        <img src="{{ current_recommendations['img'] }}" width="30" height="50">     <img src="{{ current_recommendations['poster'] }}" width="30" height="50">  
+                    
+                        {% if current_recommendations['top250'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix </p> {% endif %}{% if current_recommendations['top250TV'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %}
+                        <p> {% if current_recommendations['runtime'] > 0 %} 🕐 {{ current_recommendations['runtime'] }} {% endif %}
+                            {% if current_recommendations['vtype'] == 'movie' %} | 🎬 {{ current_recommendations['vtype'] }} {% elif current_recommendations['vtype'] == 'series' %} | 📺 {{ current_recommendations['vtype'] }}{% endif %} </p>
+                            {% if current_recommendations['imdbrating'] > 0 %} | {{ current_recommendations['imdbrating'] }} IMDb: ⭐ ⭐ ⭐ ★ ★  {% endif %} </p>
+                            <p> <em>{{ current_recommendations['synopsis'] }} </em> </p>
+                        <ul>
+                            <li><a href="https://www.imdb.com/title/{{ current_recommendations['imdbid'] }}"> Read more on imdb </a></li>
+                            <li><a href="https://www.netflix.com/title/{{ current_recommendations['nfid'] }}"> Watch now on Netflix </a></li>
+                        </ul>
+                        <hr>
+                        <br>
+                        </div>
+                        {% endif %}
+                    
+                    {% endfor %}
             
             {% else %}
 
                 ## render block of "try again"
 
             {% endif %} 
+
+
         {% else %} 
         
              <h3>update your search parameters below:</h3>
@@ -182,24 +206,6 @@
 
    <input type="submit" value="search" id="submit-input"/>
    </div>
-
-
-            search_term = request.form.get('search-input')        # any string you want to search (fulltext against the title) 
-            genre_list = request.form.get('genre-list-input')     # comma-separated list of Netflix genre id's (see genre endpoint for list)
-            
-            movie_or_series = request.form.get('movie-or-series-input') # movie or series?
-        
-            start_rating = request.form.get('start-rating-input') # imdb rating 0-10
-            end_rating = request.form.get('end-rating-input')     # imdb rating 0-10
-        
-            start_year = request.form.get('start-year-input')     # 4 digit year
-            end_year = request.form.get('end-year-input')         # 4 digit year
-        
-            new_date = request.form.get('new-date-input')        # something new-ish where streaming began after this date 
-        
-            subtitle = request.form.get('subtitle-input')        # *ONE* valid language type
-            audio = request.form.get('audio-input')
-
 
 
         {% endif %} 
