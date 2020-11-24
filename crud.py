@@ -279,7 +279,8 @@ def get_current_user_preferences(user):
     
     current_user_prefs = Preference.query.filter(Preference.user_id==User.id)  
 
-    return current_user_prefs                                                                   # TODO:  get only the most recent entry in the table, like, the largest ID?
+    return current_user_prefs
+    # TODO:  get only the most recent entry in the table, like, the largest ID?
 
 
 def get_user_preferences_all_time(user):
@@ -317,7 +318,7 @@ def disable_genre_preference(user_id, genre_id):
 #*#                            QUERY OPERATIONS                              #*#
 #*############################################################################*#
 
-def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, subtitle, audio, country_list):  #new_year, 
+def search_films_by_parameters(current_user, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, subtitle, audio, country_list):  #new_year, 
     """ Return a number of results based on parameters from User.
 
     All of the front end parameters are optional.
@@ -386,7 +387,7 @@ def search_films_by_parameters(genre_list, movie_or_series, start_rating, end_ra
     for index, movie in enumerate(result_list):
         recommendations[index + 1] = movie
 
-    # TODO:  kick querystr, payload over to add_query_to_query_history(user, query_string, payload)
+    # TODO:  kick querystr, payload over to add_query_to_query_history(current_user, query_string, payload)
 
     return recommendations
 

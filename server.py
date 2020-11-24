@@ -312,9 +312,10 @@ def logout():
 def recommendations_page():
     """View search results page for recommendation(s)"""
     
-    login_user = crud.get_user_by_email(session['email'])
+    current_user = crud.get_user_by_email(session['email'])
+    current_user_prefs = Preference.query.filter(Preference.user_id==User.id)  
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
-    user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
     genre_list = request.form.get('genre-input')     # comma-separated list of Netflix genre id's (see genre endpoint for list)
     #strip out the curly braces
@@ -338,7 +339,7 @@ def recommendations_page():
     country_list = 78       # <-- hard-coded "USA" for now 
                             # TODO: flip this back to dynamic list value later
 
-    search_results = crud.search_films_by_parameters(genre_list, 
+    search_results = crud.search_films_by_parameters(current_user, genre_list, 
         movie_or_series, start_rating, end_rating, start_year, end_year,
         subtitle, audio, country_list)  #new_year,
                         # TODO:  re-enable ^ this for "recently added" search parameter  
@@ -348,15 +349,16 @@ def recommendations_page():
     print()
     print(search_results)
     print()
-    
+
     if session['logged_in'] == True:
 
         if search_results:
             session['render-search-results'] = "many"
             return render_template("recommendations.html",  
-            user=login_user,
+            user=current_user,
+            user_prefs=current_user_prefs,
+            user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
-            user_genres = user_preferred_genres, 
             languages=LANGUAGES,
             current_recommendations=search_results)
         
@@ -364,7 +366,13 @@ def recommendations_page():
             flash("please update your search criteria")
             session['render-search-results'] = "update-search-criteria"
 
-            return render_template("recommendations.html")    
+            return render_template("recommendations.html",  
+            user=current_user,
+            user_prefs=current_user_prefs,
+            user_genres=current_user_preferred_genres, 
+            all_genres=all_genres, 
+            languages=LANGUAGES,
+            current_recommendations=search_results)    
 
     else:
         flash("please try again")
