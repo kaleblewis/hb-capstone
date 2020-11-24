@@ -3,9 +3,9 @@
 {% block title %} Homepage {% endblock %}
 
 {% block body %}
-{% endblock %}
 
 
+{% if session['logged_in'] == True %}
 {% block sidebar %}
 
 <h3>update your search parameters below:</h3>
@@ -125,6 +125,8 @@
 
 
 {% endblock %}
+{% endif %}
 
+{% endblock %}
 {% block js %}
 {% endblock %}

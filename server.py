@@ -32,27 +32,24 @@ def homepage():
     """View homepage."""
 
     try:
-        session['name']
-        return render_template("homepage.html")     
+        session['logged_in']
+
+        if session['logged_in'] == True:
+            login_user = crud.get_user_by_email(session['email'])
+            all_genres = crud.get_stored_genres()
+            user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
+
+            return render_template('homepage.html', user=login_user, 
+            all_genres=all_genres, user_genres = user_preferred_genres, 
+            languages=LANGUAGES)
+            
+        else:
+            return render_template('homepage.html')
 
     except KeyError:
-        return render_template("homepage.html")
-
-    # try:
-    #     session['logged-in']
-
-    #     if session['logged-in'] == True:
-    #         return render_template('homepage.html', user=login_user, 
-    #         all_genres=all_genres, user_genres = user_preferred_genres, 
-    #         languages=LANGUAGES)
-            
-    #     else:
-    #         return render_template('homepage.html')
-
-    # except KeyError:
-    #         return render_template('homepage.html',
-    #         all_genres=all_genres, 
-    #         languages=LANGUAGES)
+            return render_template('homepage.html',
+            all_genres=all_genres, 
+            languages=LANGUAGES)
 
 
 #*############################################################################*#
