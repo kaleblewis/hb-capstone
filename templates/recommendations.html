@@ -66,7 +66,141 @@
             {% endif %} 
         {% else %} 
         
-             ## display search form fields
+             <h3>update your search parameters below:</h3>
+          
+             <form action='/recommendations' method="POST">
+               <div class="form-group">
+   
+             <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
+
+             <label for="search-field"></label>
+             <input type="search"
+                 id="search-input"
+                 name="search-input"
+                 placeholder="search by movie title"
+                 autofocus />
+      
+             <label for="movie-or-series-input"> production date "to when?":</label>           
+             <select id="movie-or-series-input" name="movie-or-series-input">
+               <option value="" selected>any/all</option>
+               <option value="movie"> movie </option>
+               <option value="series"> series </option>
+             </select>
+    <br>  
+             <label for="preferred-subtitle">Select your default subtitles:</label>
+             <select id="preferred-subtitle" name="preferred-subtitle">
+               <option value="any" selected>any/all</option>
+               {% for key, value in languages.items() %}
+                 {% if key == 'subtitles' %}
+                   {% for item in value %}
+                 <option value="{{item}}">{{item}}</option>  
+                 {% endfor %}
+                 {% endif %}
+               {% endfor %}
+             </select>
+   <br>
+             <br>
+             <label for="preferred-audio">Select your default audio:</label>
+             <select id="preferred-audio" name="preferred-audio">
+               <option value="any" selected>any/all</option>
+               {% for key, value in languages.items() %}
+                 {% if key == 'audio' %}
+                   {% for item in value %}
+                 <option value="{{item}}">{{item}}</option>  
+                 {% endfor %}
+                 {% endif %}
+               {% endfor %}
+             </select>
+   
+   <br>
+             <label for="date-range-start"> production date "from when?":</label>           
+             <select id="date-range-start" name="date-range-start">
+               <option value="all" selected>any/all</option>
+               <option value="new">released within past year</option>
+               <option value="2years">released within previous 2 years</option>
+               <option value="5years">released within previous 5 years</option>
+               <option value="2000">on or after 2000</option>
+               <option value="1990">on or after 1990</option>
+               <option value="1980">on or after 1980</option>
+               <option value="1970">on or after 1970</option>
+               <option value="1960">on or after 1960</option>
+               <option value="1950">on or after 1950</option>
+               <option value="1940">on or after 1940</option>
+               <option value="1930">on or after 1930</option>
+               <option value="1920">on or after 1920</option>
+               <option value="1910">on or after 1910</option>
+             </select>
+   <br>        
+             <label for="date-range-end"> production date "to when?":</label>           
+             <select id="date-range-end" name="date-range-end">
+               <option value="all" selected>any/all</option>
+               <option value="new">released within past year</option>
+               <option value="2000">up until 2000</option>
+               <option value="1990">up until 1990</option>
+               <option value="1980">up until 1980</option>
+               <option value="1970">up until 1970</option>
+               <option value="1960">up until 1960</option>
+               <option value="1950">up until 1950</option>
+               <option value="1940">up until 1940</option>
+               <option value="1930">up until 1930</option>
+               <option value="1920">up until 1920</option>
+               <option value="1910">up until 1910</option>
+             </select>
+   <br>
+             <label for="start-rating-input"> minimum imdb rating:</label>
+             <input type="number"
+                 id="start-rating-input"
+                 name="start-rating-input"
+                 placeholder="1-5"
+                 min="0" 
+                 max="5"
+                 value="4" />
+
+            <br>
+            <label for="end-rating-input"> maximum imdb rating:</label>
+            <input type="number"
+                id="end-rating-input"
+                name="end-rating-input"
+                placeholder="1-5"
+                min="0" 
+                max="5"
+                value="4" />
+   <br>
+             <label for="genre-input">Select your default genre(s):</label>         
+             <select id="genre-input" name="genre-input">
+               <option value="all" selected>any/all</option>
+               {% for obj in all_genres %}
+               {% for field in obj.__table__.columns._data.keys() %}
+                 {% if field == 'name' %}
+                 <option value="{{ obj[field] }}">{{ obj[field] }}</option>
+                 {% endif %}
+               {% endfor %}
+             {% endfor %}
+             </select>
+   <br>
+
+
+   <input type="submit" value="search" id="submit-input"/>
+   </div>
+
+
+            search_term = request.form.get('search-input')        # any string you want to search (fulltext against the title) 
+            genre_list = request.form.get('genre-list-input')     # comma-separated list of Netflix genre id's (see genre endpoint for list)
+            
+            movie_or_series = request.form.get('movie-or-series-input') # movie or series?
+        
+            start_rating = request.form.get('start-rating-input') # imdb rating 0-10
+            end_rating = request.form.get('end-rating-input')     # imdb rating 0-10
+        
+            start_year = request.form.get('start-year-input')     # 4 digit year
+            end_year = request.form.get('end-year-input')         # 4 digit year
+        
+            new_date = request.form.get('new-date-input')        # something new-ish where streaming began after this date 
+        
+            subtitle = request.form.get('subtitle-input')        # *ONE* valid language type
+            audio = request.form.get('audio-input')
+
+
 
         {% endif %} 
             

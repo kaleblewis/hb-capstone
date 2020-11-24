@@ -317,7 +317,7 @@ def disable_genre_preference(user_id, genre_id):
 #*#                            QUERY OPERATIONS                              #*#
 #*############################################################################*#
 
-def search_films_by_parameters(search_term, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitles, audios, country_list):
+def search_films_by_parameters(search_term, genre_list, movie_or_series, start_rating, end_rating, start_year, end_year, new_date, subtitle, audio, country_list):
     """ Return a number of results based on parameters from User.
 
     All of the front end parameters are optional.
@@ -344,8 +344,8 @@ def search_films_by_parameters(search_term, genre_list, movie_or_series, start_r
 
     new_date = new_date         # something new-ish where streaming began after this date 
 
-    subtitle = subtitles        # *ONE* valid language type
-    audio = audios              # *ONE* valid language type
+    subtitle = subtitle        # *ONE* valid language type
+    audio = audio              # *ONE* valid language type
     audiosubtitle_andor = ""    # ehhhh... 
                                 #after testing, it turns out this parameter doesn't actually impact results -- at all
 
@@ -357,7 +357,9 @@ def search_films_by_parameters(search_term, genre_list, movie_or_series, start_r
     limit = "100"                  # Limit of returned items default (MAX 100)
     offset = "0"                 # Starting Number of results (Default is 0)
 
-    querystring = {"newdate": f"{new_date}","genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby": f"{order_by}","audiosubtitle_andor": f"{audiosubtitle_andor}","start_rating": f"{start_rating}","limit": f"{limit}","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist": f"{country_list}","query": f"{query_param}","audio": f"{audio}","country_andorunique": f"{country_andorunique}","offset": f"{offset}","end_year": f"{end_year}"}
+    # querystring = {"newdate": f"{new_date}","genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby": f"{order_by}","audiosubtitle_andor": f"{audiosubtitle_andor}","start_rating": f"{start_rating}","limit": f"{limit}","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist": f"{country_list}","query": f"{query_param}","audio": f"{audio}","country_andorunique": f"{country_andorunique}","offset": f"{offset}","end_year": f"{end_year}"}
+
+    querystring = {"newdate": f"","genrelist": f"","type": f"movie","start_year": f"","orderby": f"","audiosubtitle_andor": f"","start_rating": f"","limit": f"","end_rating": f"","subtitle": f"","countrylist": f"","query": f"unicorn","audio": f"","country_andorunique": f"","offset": f"","end_year": f""}
 
     headers = {
         'x-rapidapi-key': "",
@@ -367,6 +369,8 @@ def search_films_by_parameters(search_term, genre_list, movie_or_series, start_r
     headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
 
     response = requests.request("GET", url, headers=headers, params=querystring)
+    
+    print(response)
 
     #take the response and unpack it into a workable format
     search_results = json.loads(response.text)
@@ -375,6 +379,9 @@ def search_films_by_parameters(search_term, genre_list, movie_or_series, start_r
     #extract the embedded dictionary from 2 levels down in results
     listify_results = list(search_results_values)
     result_list = listify_results[2]  
+    
+    print(querystring)
+    print(result_list)
 
     return result_list
 
