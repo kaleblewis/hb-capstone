@@ -30,13 +30,14 @@ app.secret_key = '''service_account.Credentials.from_service_account_file(
 @app.route('/')
 def homepage():
     """View homepage."""
-
+    
+    all_genres = crud.get_stored_genres()
+    
     try:
         session['logged_in']
 
         if session['logged_in'] == True:
             login_user = crud.get_user_by_email(session['email'])
-            all_genres = crud.get_stored_genres()
             user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
             return render_template('homepage.html', user=login_user, 
@@ -44,12 +45,10 @@ def homepage():
             languages=LANGUAGES)
             
         else:
-            return render_template('homepage.html')
+            return render_template('base.html')
 
     except KeyError:
-            return render_template('homepage.html',
-            all_genres=all_genres, 
-            languages=LANGUAGES)
+            return render_template('base.html')
 
 
 #*############################################################################*#
@@ -74,8 +73,8 @@ def show_user():
     user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
     if login_user:
-        return render_template('profile.html', user=login_user, \
-            all_genres=all_genres, user_genres = user_preferred_genres, \
+        return render_template('profile.html', user=login_user,
+            all_genres=all_genres, user_genres = user_preferred_genres,
             languages=LANGUAGES)
 
     else:
@@ -342,12 +341,6 @@ def recommendations_page():
         movie_or_series, start_rating, end_rating, start_year, end_year,
         subtitle, audio, country_list)  #new_year,
                         # TODO:  re-enable ^ this for "recently added" search parameter  
-
-    print()
-    print()
-    print()
-    print(search_results)
-    print()
 
     if session['logged_in'] == True:
 

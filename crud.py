@@ -389,7 +389,9 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
         recommendations[index + 1] = movie
 
     # store results, qstr, and login_user in the query_history table
-    add_query_to_query_history(current_user, str(querystring), str(recommendations))
+    add_query_to_query_history(current_user, str(querystring), 
+        str(recommendations), list(genre_list), movie_or_series, start_year, 
+        end_year, subtitle, audio, list(country_list), start_rating, end_rating)
 
     return recommendations
 
@@ -641,7 +643,9 @@ def get_all_films_by_person_name(input_name):
 #*#                        QUERYHISTORY OPERATIONS                           #*#
 #*############################################################################*#
 
-def add_query_to_query_history(current_user, querystring, query_results):
+def add_query_to_query_history(current_user, querystring, query_results,
+        genre_list, movie_or_series, start_year, end_year, subtitle, audio,
+        country_list, start_rating, end_rating):
     """Create a new entry in Query History with query results
 
     # TODO: update docstring with doctest
@@ -650,7 +654,16 @@ def add_query_to_query_history(current_user, querystring, query_results):
     query_results = QueryHistory(user_id = current_user.id,
         query_run_date_time = datetime.datetime.now(),
         query_string = querystring,
-        payload = query_results)                   
+        query_result = query_results,
+        param_viewing_location = country_list,
+        param_subtitle = subtitle,
+        param_audio = audio,
+        param_start_year = start_year,
+        param_end_year = end_year,
+        param_start_rating = start_rating,
+        param_end_rating = end_rating,
+        movie_or_series = movie_or_series,
+        param_genre = genre_list)                   
 
     db.session.add(query_results)
     db.session.commit()

@@ -5,7 +5,7 @@
 {% block body %}
 
 
-{% if session['logged_in'] == True %}
+<!-- TODO: make search sidebar show up only when user is logged in -->
 {% block sidebar %}
 
 <h3>update your search parameters below:</h3>
@@ -122,14 +122,10 @@
 </select>
 <br>
 
-
 <input type="submit" value="search" id="submit-input"/>
 </div>
 
-
-
 {% endblock %}
-{% endif %}
 
 {% endblock %}
 {% block js %}
