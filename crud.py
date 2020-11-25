@@ -349,7 +349,7 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
     # TODO: flip this back to dynamic list value later
 
     order_by = "rating"     # orderby string (date,rating,title,type,runtime)
-    limit = "100"           # Limit of returned items default (MAX 100)
+    limit = "10"            # Limit of returned items default (MAX 100)
     offset = "0"            # Starting Number of results (Default is 0)
 
 
@@ -390,8 +390,8 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
 
     # store results, qstr, and login_user in the query_history table
     add_query_to_query_history(current_user, str(querystring), 
-        str(recommendations), list(genre_list), movie_or_series, start_year, 
-        end_year, subtitle, audio, list(country_list), start_rating, end_rating)
+        str(recommendations), str(genre_list), movie_or_series, start_year, 
+        end_year, subtitle, audio, str(country_list), start_rating, end_rating)
 
     return recommendations
 
