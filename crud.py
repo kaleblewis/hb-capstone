@@ -379,8 +379,13 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
     search_results_values = search_results.values()
 
     #extract the embedded dictionary from 2 levels down in results
-    listify_results = list(search_results_values)
-    result_list = listify_results[2]  
+    try:
+        listify_results = list(search_results_values)
+        result_list = listify_results[2]  
+
+    except IndexError:
+        return {"error": "your search was too specific and returned no results. please try again."}
+        
 
     #then wrap it back into a dictionary using index/result number as key
     recommendations = dict()

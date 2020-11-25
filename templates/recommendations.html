@@ -58,14 +58,15 @@
                 
 
             {% elif session['render-search-results'] == "many" %}
-
-
-
+                        
                 <h2>recommendations</h2>
-                    
-                    {% for result_number, movie_result in current_recommendations.items() %}    
-           
-                        {% if movie_result['title'] is defined %}
+                
+                {% for result_number, movie_result in current_recommendations.items() %}  
+                
+                        {% if result_number == 'error' %}
+                            {{ movie_result }}
+                        
+                        {% elif movie_result['title'] is defined %}
                         <div class="search-result">
                         <b><a href="/title/{{ movie_result['title'] }}">{{ movie_result['title'] }} </a>    {% if movie_result['year'] > 0 %} ( {{ movie_result['year'] }}  )</b>{% endif %}  <br> 
                             <!-- TODO: create route to process searches by nfid -->
@@ -88,10 +89,8 @@
                         <br><hr><br>
                         </div>
                         {% endif %}
-                    
-                    {% endfor %}
             
-
+                {% endfor %}
 
             {% else %}
 
