@@ -93,7 +93,7 @@
 
                                
                                 
-                                    <a href="/">home</a>
+                                    <a href="/">recommendations</a>
                                     <a> <form action='/search' method="POST">
                                         <div class="form-group">
                                             <label for="search-field"></label>
@@ -107,16 +107,7 @@
                                             </div>
                                         </form>
                                         </a>
-                                    <div class="dropdown">
-                                        <button class="dropbtn"><s>recommendations
-                                            <i class="fa fa-caret-down"></i>
-                                        </button>
-                                        <div class="dropdown-content">
-                                            <a href="/recommendations">return-1-result</a>
-                                            <a href="/recommendations">find something i feel like watching</a>
-                                            <a href="/recommendations">previous recommendations</s></a>
-                                        </div>
-                                    </div>
+
                                     <div class="dropdown">
                                         <button class="dropbtn" href="/profile">profile
                                             <i class="fa fa-caret-down"></i>
@@ -125,7 +116,6 @@
                                                 <a href="/profile">preferences</a>
                                                 <a href="/logout">log out</a>
                                             </div>
-                                            
                                 {% else %}
                                     
                                 <form action='/login' method="POST">
