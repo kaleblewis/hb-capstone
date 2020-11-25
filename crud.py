@@ -179,7 +179,7 @@ def add_user_connection(requestee, user):                                       
     <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
     """
 
-    user_connection = db.UserNetwork(requestor_id = User.query.get(id),
+    user_connection = db.UserNetwork(requestor_id = user.id,
                                     requestee_id = requestee.id,
                                     status = "Pending",
                                     connection_date = datetime.datetime.now())                   
@@ -382,13 +382,14 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
     listify_results = list(search_results_values)
     result_list = listify_results[2]  
 
+    #then wrap it back into a dictionary using index/result number as key
     recommendations = dict()
 
     for index, movie in enumerate(result_list):
         recommendations[index + 1] = movie
 
     # store results, qstr, and login_user in the query_history table
-    add_query_to_query_history(current_user, query_string, recommendations)
+    add_query_to_query_history(current_user, str(querystring), str(recommendations))
 
     return recommendations
 
@@ -640,16 +641,16 @@ def get_all_films_by_person_name(input_name):
 #*#                        QUERYHISTORY OPERATIONS                           #*#
 #*############################################################################*#
 
-def add_query_to_query_history(current_user, query_string, recommendations):
+def add_query_to_query_history(current_user, querystring, query_results):
     """Create a new entry in Query History with query results
 
     # TODO: update docstring with doctest
     """
 
-    query_results = QueryHistory(user_id = (User.query.get(id)),
+    query_results = QueryHistory(user_id = current_user.id,
         query_run_date_time = datetime.datetime.now(),
-        query_string = query_string,
-        payload = recommendations)                   
+        query_string = querystring,
+        payload = query_results)                   
 
     db.session.add(query_results)
     db.session.commit()
@@ -667,7 +668,7 @@ def add_query_to_query_history(current_user, query_string, recommendations):
 def get_all_query_history(user):                                                    # TODO:  what params?
     """Retreive all of a users's searches from the QueryHistory table"""        # TODO:  update docstring with doctests    
 
-    return queryhistory.query.all(QueryHistory.user_id == (User.query.get(id))) # TODO:  complete function stub 
+    return queryhistory.query.all(QueryHistory.user_id == user.id) # TODO:  complete function stub 
 
 
 #*############################################################################*#

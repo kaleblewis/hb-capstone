@@ -313,7 +313,6 @@ def recommendations_page():
     """View search results page for recommendation(s)"""
     
     current_user = crud.get_user_by_email(session['email'])
-    current_user_prefs = Preference.query.filter(Preference.user_id==User.id)  
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
@@ -356,7 +355,6 @@ def recommendations_page():
             session['render-search-results'] = "many"
             return render_template("recommendations.html",  
             user=current_user,
-            user_prefs=current_user_prefs,
             user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
             languages=LANGUAGES,
@@ -368,7 +366,6 @@ def recommendations_page():
 
             return render_template("recommendations.html",  
             user=current_user,
-            user_prefs=current_user_prefs,
             user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
             languages=LANGUAGES,
