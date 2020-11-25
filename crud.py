@@ -387,7 +387,8 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
     for index, movie in enumerate(result_list):
         recommendations[index + 1] = movie
 
-    # TODO:  kick querystr, payload over to add_query_to_query_history(current_user, query_string, payload)
+    # store results, qstr, and login_user in the query_history table
+    add_query_to_query_history(current_user, query_string, recommendations)
 
     return recommendations
 
@@ -639,34 +640,26 @@ def get_all_films_by_person_name(input_name):
 #*#                        QUERYHISTORY OPERATIONS                           #*#
 #*############################################################################*#
 
-def add_query_to_query_history(user, query_string, 
-    payload, param_subtitle="", param_audio="", param_genre="", 
-    param_release_date_start="", param_release_date_end="", param_duration="", 
-    param_total_seasons=""):          # TODO:  what params?
-    """Create a new entry in Query History with query results                   # TODO: update docstring with doctest
+def add_query_to_query_history(current_user, query_string, recommendations):
+    """Create a new entry in Query History with query results
+
+    # TODO: update docstring with doctest
     """
 
-    query = QueryHistory(user_id = (User.query.get(id)),
+    query_results = QueryHistory(user_id = (User.query.get(id)),
         query_run_date_time = datetime.datetime.now(),
         query_string = query_string,
-        payload = payload,
-        param_subtitle = param_subtitle,
-        param_audio = param_audio,
-        param_genre = param_genre,
-        param_release_date_start = param_release_date_start,
-        param_release_date_end = param_release_date_end,
-        param_duration = param_duration,
-        param_total_seasons = param_total_seasons
-        )                   
+        payload = recommendations)                   
 
-    db.session.add(query)
+    db.session.add(query_results)
     db.session.commit()
 
-    return query
+    return query_results
 
 
 # def get_previous_query_from_history():                                          # TODO:  what params?
-#     """Retreive only users's most recent search from the QueryHistory table"""  # TODO:  update docstring with doctests    
+#     """Retreive only users's most recent search from the QueryHistory table"""
+#   # TODO:  update docstring with doctests    
 
 #     pass                                                                        # TODO:  complete function stub 
 
