@@ -18,19 +18,53 @@ app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
 app.secret_key = '''service_account.Credentials.from_service_account_file(
     'secrets.sh')'''
-#netflix api key =  ~approx:  os.environ....  (import sys <?)
-# credentials = google.oauth2.credentials.Credentials(
-#     'access_token',
-#     refresh_token='refresh_token',
-#     token_uri='token_uri',
-#     client_id='client_id',
-#     client_secret='client_secret')
+
+
+# @app.route('/profile')
+# @app.route('/login')
+# @app.route('/logout')
+# @app.route('/search')
+# @app.route('/recommendations')
+# @app.route('/')
+    # def root():
+    #   return render_template("root.html")
+
+# @app.route("/api/login", methods=["POST"])
+# def login(): 
+#     data = request.get_json()
+#     email = data['email']
+#     password = data['password']
+
+#     # do stuff with your data then return something
+#     return jsonify("banana bunny muffins")
+
+    login_user = crud.get_user_by_email(email)
+
+    if login_user:
+        if login_user.password == password:
+            session['name'] = login_user.fname
+            session['email'] = email
+            session['isNew'] = False
+            session['logged_in'] = True
+            return jsonify("Success")
+            return redirect('/')    
+
+        else:
+
+            return jsonify("Wrong password, try again")
+            return redirect('/')
+
+    else:
+        flash(f'please create an account')
+        return redirect('/newuser')
 
 
 @app.route('/')
 def homepage():
     """View homepage."""
+
     
+
     all_genres = crud.get_stored_genres()
     
     try:
