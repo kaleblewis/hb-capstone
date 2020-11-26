@@ -1,5 +1,13 @@
-/* Navbar container */
+/* GENERAL STYLE  */
 
+  body {
+    margin: 0;
+    font-family: "Lato", sans-serif;
+  }
+
+
+
+/* NAVBAR container */
 .navbar {
     overflow: hidden;
     background-color: #777;
@@ -68,3 +76,63 @@
     display: block;
   }
   
+
+
+
+/* SIDEBAR container */
+  
+  .sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f9f9f9;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  .sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+  }
+   
+  .sidebar a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+  
+
+  /* CONTENT container */
+
+  div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+  }
+  
+
+  
+
+  /* SCREEN SIZE VARIATIONS */
+  @media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+  }
+  
+  @media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }
