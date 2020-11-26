@@ -10,7 +10,10 @@ const useHistory = ReactRouterDOM.useHistory;
 // const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route } = ReactRouterDOM;
 
 function Homepage() {
-  return <div> Welcome to my site </div>
+  return <div>
+    <LogIn /> 
+    <Nav />
+     </div>
 }
 
 function About() {
@@ -28,6 +31,7 @@ function SearchBar() {
 function Search() {
   return (
       <div>  
+      <Nav />
         Search for stuff 
         <SearchBar/>
       </div>
@@ -43,7 +47,7 @@ function LogIn() {
     evt.preventDefault();
     // console.log((email)
     // console.log(password)
-    
+
     const data = { 
       email: email,
       password: password
@@ -57,13 +61,23 @@ function LogIn() {
       },
     }
 
+    // const promise = fetch('/api/login', options)
+    // promise.then((response => response.json()).then(data => console.log(data))
+    // .then(data1 => console.log(data1))
+
     fetch('/api/login', options)
     .then(response => response.json())
     .then(data => {
-      if (data === 'banana bunny muffins') {
-        alert(data)
+      if (data === 'login successful') { 
+        console.log(data)
+        return  <Redirect  to="/profile" />
+        // return(
+        //   <div>
+        //       <Profile />
+        //   </div>
+        //   )
       } else{ 
-        alert("no muffins, very sad")
+        alert(data)
       }
     })
 
@@ -74,8 +88,8 @@ function LogIn() {
   }
 
   function handlePasswordChange(evt) {
-    // let what_they_just_typed = evt.target.value 
-    // console.log(what_they_just_typed)
+    let what_they_just_typed = evt.target.value 
+    console.log(what_they_just_typed)
     setPassword(evt.target.value)
   }
 
@@ -83,36 +97,112 @@ function LogIn() {
     <div>
       <form onSubmit={handleLogin}>
         Username:
-        <input value={email} onChange={handleEmailChange} type="text"></input>
+        <input value={email} onChange={handleEmailChange} type="email"></input>
         Password:
-        <input value={password} onChange={handlePasswordChange} type="text"></input>
-        <button>Login</button>
+        <input value={password} onChange={handlePasswordChange} type="password"></input>
+        <button onClick={this.onSubmit}>Login</button>
       </form>
     </div>
   )
 }
 
 
+
+function Profile() {
+  return <div> 
+    <Nav></Nav>
+
+    {/* <h1> {{ user.fname }} </h1> */}
+
+    <h2>account information:</h2>
+{/* 
+    <p><b>Username (email address):</b> {{ user.email }} </p>
+    <p><b>Preferred name:</b> {{ user.fname }} </p>
+    <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p> */}
+
+    
+    </div>
+}
+
+function UserPreferences() {
+  return <div> 
+    <Nav></Nav>
+
+    <h2>default search parameters:</h2>
+{/* 
+    <p><b>subtitles language(s):</b> {{ user.preferences[-1].subtitle }} </p>
+    <p><b>audio language(s):</b>  {{ user.preferences[-1].audio }} </p>
+    
+    <p><b>release date range "from when?": </b> {{ user.preferences[-1].eyear }} </p>
+    <p><b>release date range "to when?": </b> {{ user.preferences[-1].syear }} </p>
+
+    <p><b>runtime/duration:</b>  {{ user.preferences[-1].duration }}  </p>
+
+    <p><b>genre(s):</b>  {% for obj in user_genres %}
+    {% for field in obj.__table__.columns._data.keys() %}
+    {% if field == 'genre_name' %}
+    {{ obj[field] }}<br>
+    {% endif %}
+
+
+    {% endfor %}
+  {% endfor %}	
+  </p>  
+
+    <p><b>maturity rating:</b>  { user.preferences[-1].matlevel } 	</p>
+
+    <p><b>viewing location:</b>  { user.preferences[-1].location.name } 	</p>
+    <br>
+    <hr>
+    */}
+    </div> 
+}
+
+
+function Recommendations() {
+  return <div>
+    <Nav></Nav>
+    User's recommendations screen </div>
+}
+
+
+function Title() {
+  return <div> 
+    <Nav></Nav>
+    Results for full details of a given titleID </div>
+}
+
+
+function Actor() {
+  return <div> 
+    <Nav></Nav>
+    Results for available titles for a given actor </div>
+}
+
+
+function Nav() {
+  return (
+  <div>        
+    <nav>
+      <ul>
+        <li>
+            <Link to="/"> Home </Link>
+        </li>
+        <li>
+            <Link to="/search"> Search </Link>
+        </li>
+        <li>
+            <Link to="/profile"> Profile </Link>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  )
+}
+
 function App() {
     return (
       <Router>
-        <nav>
-          <ul>
-            <li>
-                <Link to="/"> Home </Link>
-            </li>
-
-            <li>
-                <Link to="/search"> Search </Link>
-            </li>
-            <li>
-                <Link to="/profile"> Profile </Link>
-            </li>
-            <li>
-                <Link to="/login"> Login </Link>
-            </li>
-          </ul>
-        </nav>
         <div>
           <Switch>
             <Route path="/about">

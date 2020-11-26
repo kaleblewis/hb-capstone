@@ -20,23 +20,22 @@ app.secret_key = '''service_account.Credentials.from_service_account_file(
     'secrets.sh')'''
 
 
-# @app.route('/profile')
-# @app.route('/login')
-# @app.route('/logout')
-# @app.route('/search')
-# @app.route('/recommendations')
-# @app.route('/')
-    # def root():
-    #   return render_template("root.html")
+@app.route('/profile')
+@app.route('/login')
+@app.route('/logout')
+@app.route('/search')
+@app.route('/recommendations')
+@app.route('/')
+def root():
+      return render_template("root.html")
 
-# @app.route("/api/login", methods=["POST"])
-# def login(): 
-#     data = request.get_json()
-#     email = data['email']
-#     password = data['password']
 
-#     # do stuff with your data then return something
-#     return jsonify("banana bunny muffins")
+@app.route("/api/login", methods=["POST"])
+def login(): 
+
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
 
     login_user = crud.get_user_by_email(email)
 
@@ -46,43 +45,40 @@ app.secret_key = '''service_account.Credentials.from_service_account_file(
             session['email'] = email
             session['isNew'] = False
             session['logged_in'] = True
-            return jsonify("Success")
-            return redirect('/')    
+            return jsonify("login successful")
 
         else:
-
             return jsonify("Wrong password, try again")
-            return redirect('/')
 
     else:
-        flash(f'please create an account')
-        return redirect('/newuser')
+        return jsonify("please create an account")
+        # return redirect('/newuser')
 
 
-@app.route('/')
-def homepage():
-    """View homepage."""
+# @app.route('/')
+# def homepage():
+#     """View homepage."""
 
     
 
-    all_genres = crud.get_stored_genres()
+#     all_genres = crud.get_stored_genres()
     
-    try:
-        session['logged_in']
+#     try:
+#         session['logged_in']
 
-        if session['logged_in'] == True:
-            login_user = crud.get_user_by_email(session['email'])
-            user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
+#         if session['logged_in'] == True:
+#             login_user = crud.get_user_by_email(session['email'])
+#             user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
-            return render_template('homepage.html', user=login_user, 
-            all_genres=all_genres, user_genres = user_preferred_genres, 
-            languages=LANGUAGES)
+#             return render_template('homepage.html', user=login_user, 
+#             all_genres=all_genres, user_genres = user_preferred_genres, 
+#             languages=LANGUAGES)
             
-        else:
-            return render_template('base.html')
+#         else:
+#             return render_template('base.html')
 
-    except KeyError:
-            return render_template('base.html')
+#     except KeyError:
+#             return render_template('base.html')
 
 
 #*############################################################################*#
