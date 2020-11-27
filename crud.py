@@ -353,7 +353,11 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
 
 
 
-    parameter_list = {"genrelist": f"{genre_list}","type": f"{movie_or_series}","start_year": f"{start_year}","orderby":"rating","start_rating": f"{start_rating}","limit":f"{limit}","end_rating": f"{end_rating}","subtitle": f"{subtitle}","countrylist":"78","audio": f"{audio}","offset":"0","end_year": f"{end_year}"}   #"newdate":f"{new_date}",
+    parameter_list = {"genrelist": f"{genre_list}","type": f"{movie_or_series}",
+    "start_year": f"{start_year}","orderby":"rating","start_rating": 
+    f"{start_rating}","limit":f"{limit}","end_rating": f"{end_rating}",
+    "subtitle": f"{subtitle}","countrylist":"78","audio": f"{audio}",
+    "offset":"0","end_year": f"{end_year}","audiosubtitle_andor":"OR"}   #"newdate":f"{new_date}",
     # TODO:  re-enable ^ this for "recently added" search parameter
 
     querystring = {}
