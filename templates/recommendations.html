@@ -22,7 +22,7 @@
                     <p> 🕐 {{ current_recommendations['runtime'] }}
                         {% if current_recommendations['type'] == 'movie' %} | 🎬 {{ current_recommendations['type'] }} {% elif current_recommendations['type'] == 'series' %} | 📺 {{ current_recommendations['type'] }}{% endif %}
                         {% if current_recommendations['download'] == '1' %}| 📶 downloadable {% endif %}
-                        {% if current_recommendations['matlevel'] != "" %}|<a title="{{ current_recommendations['matlabel'] }}"> 🔰 {{ current_recommendations['matlevel'] }} </a> {% endif %}</p>
+                        {% if current_recommendations['matlevel'] != "" %}|<a title="{{ current_recommendations['matlabel'] }}"> 🔰 {{ current_recommendations['matlabel'] }} </a> {% endif %}</p>
                     <p> 🎭 {{ current_recommendations['genre'] }} </p>
                         <p>{{ current_recommendations['mgname'] }} </p>
 
@@ -182,9 +182,10 @@
                         
                         {% elif movie_result['title'] is defined %}
                         <div class="search-result">
-                        <b><a href="/title/{{ movie_result['title'] }}">{{ movie_result['title'] }} </a>    {% if movie_result['year'] > 0 %} ( {{ movie_result['year'] }}  )</b>{% endif %}  <br> 
-                            <!-- TODO: create route to process searches by nfid -->
-                        <img src="{{ movie_result['img'] }}" width="30" height="50">     <img src="{{ movie_result['poster'] }}" width="30" height="50">  
+                          <img src="{{ movie_result['img'] }}" width="30" height="50">
+                           <b><a href="/title/{{ movie_result['nfid'] }}">{{ movie_result['title'] }} </a>    {% if movie_result['year'] > 0 %} ( {{ movie_result['year'] }}  )</b>{% endif %}  <br> 
+
+                        <!-- <img src="{{ movie_result['poster'] }}" width="30" height="50">  this second image is frequently broken -->
                     
                         {% if movie_result['top250'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix </p> {% endif %}{% if movie_result['top250tv'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %}
                         <p> 
@@ -197,7 +198,7 @@
                             <!-- TODO:  render starts graphics based on imdb rating -->
                             <p> <em>{{ movie_result['synopsis'] }} </em> </p>
                         <ul>
-                            <li><a href="https://www.imdb.com/title/{{ movie_result['imdbid'] }}"> Read more on imdb </a></li>
+                            <li><a href="https://www.imdb.com/title/{{ movie_result['imdbid'] }}"> View trailer on imdb </a></li>
                             <li><a href="https://www.netflix.com/title/{{ movie_result['nfid'] }}"> Watch now on Netflix </a></li>
                         </ul>
                         <br><hr><br>

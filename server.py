@@ -331,7 +331,7 @@ def recommendations_page():
     """View search results page for recommendation(s)"""
     
     current_user = crud.get_user_by_email(session['email'])
-    current_user_prefs = get_current_user_preferences(user)
+    # current_user_prefs = get_current_user_preferences(current_user)
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
@@ -368,7 +368,7 @@ def recommendations_page():
             session['render-search-results'] = "many"
             return render_template("recommendations.html",  
             user=current_user,
-            user_prefs=current_user_prefs,
+            # user_prefs=current_user_prefs,
             user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
             languages=LANGUAGES,
@@ -410,6 +410,26 @@ def render_specific_movie():
         return redirect('/')                                                    # TODO:  debug why this works successfully if searching from '/' page
                                                                                 #        but results in keyerror on [imdbID] if User is searching from '/search' page 
 
+
+@app.route('/title/<filmid>')
+def show_title(filmid):
+    """Show full details on a particular title."""
+
+    title = crud.get_movie_details_by_filmid(filmid)
+
+    current_user = crud.get_user_by_email(session['email'])
+    # current_user_prefs = get_current_user_preferences(current_user)
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    all_genres = crud.get_stored_genres()
+
+    session['render-search-results'] = "one"
+
+    return render_template('recommendations.html', 
+            user=current_user,
+            # user_genres=current_user_preferred_genres, 
+            all_genres=all_genres, 
+            languages=LANGUAGES,
+            current_recommendations=title)
 
 
 
