@@ -39,13 +39,15 @@
 
                     <p> <em>{{ current_recommendations['plot'] }}</em></p>
 
-                    <p><b>Actors:</b>   <em>{{ current_recommendations['actors'] }}</em></p>
+                    <p><b>Actors:</b>   <em> {% for actor in current_recommendations['actors'] %}  
+                        {{ actor }}, 
                           <!-- TODO: create route to process actors by actor-name -->
-
+                    {% endfor %}
+                  </em></p>
                     <p><b>Director(s):</b>   <em>{{ current_recommendations['directors'] }}</em></p>
                     
                     <ul>
-                        <li><a href="https://www.imdb.com/title/{{ current_recommendations['imdbid'] }}"> Read more on imdb </a></li>
+                        <li><a href="https://www.imdb.com/title/{{ current_recommendations['imdbid'] }}"> View trailer on imdb </a></li>
                         <li><a href="https://www.netflix.com/title/{{ current_recommendations['netflixid'] }}"> Watch now on Netflix </a></li>
                     </ul>
                     </div>
