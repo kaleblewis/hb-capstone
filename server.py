@@ -8,6 +8,7 @@ from flask import (Flask, render_template, request, flash, session, redirect,
     url_for)
 from flask.json import jsonify
 from jinja2 import StrictUndefined
+from urllib.parse import quote, unquote
 
 # from google.oauth2 import service_account
 # import google.oauth2.credentials
@@ -430,6 +431,72 @@ def show_title(filmid):
             all_genres=all_genres, 
             languages=LANGUAGES,
             current_recommendations=title)
+
+
+@app.route('/actor/<actorname>',  methods=['GET'])
+def show_all_films_by_person_name(actorname):
+    """Show film results for a particular actor."""
+
+    actor_name = unquote(actorname)
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(actor_name)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+
+
+    filmography = crud.get_all_films_by_person_name(actor_name)
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(filmography)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+
+    current_user = crud.get_user_by_email(session['email'])
+    # current_user_prefs = get_current_user_preferences(current_user)
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    all_genres = crud.get_stored_genres()
+
+    session['render-search-results'] = "filmography"
+
+    return render_template('recommendations.html', 
+            user=current_user,
+            # user_genres=current_user_preferred_genres, 
+            all_genres=all_genres, 
+            languages=LANGUAGES,
+            current_recommendations=filmography)
 
 
 

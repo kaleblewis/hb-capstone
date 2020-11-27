@@ -477,9 +477,8 @@ def get_by_filmid(str):
     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
 
-    #querystring = {"t":"loadvideo","q":f"{str}"}                               # TODO:  rawr!  figure out how to unpack dicts that are 3-layers deep
-    querystring = {"t":"getimdb","q":f"{str}"}                                  # this one is the imdb info, not the netflix info
-
+    querystring = {"t":"getimdb","q":f"{str}"}                                  
+    
     headers = {
         'x-rapidapi-key': "",
         'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
@@ -496,6 +495,70 @@ def get_by_filmid(str):
     imdb_dictionary['plot'] = unquote(imdb_dictionary['plot'])                  # TODO: Try to find other ways to get rid of goofy chars?
 
     print(imdb_dictionary)
+    return imdb_dictionary
+
+
+def get_nfinfo_by_id(netflixid):
+    """ Pass 'netflixid' to receive netflix information.
+
+    Accepts string of numeric chars
+        accepts parameter: 'filmid' netflix id does not contain alpha chars
+        returns: dictionary of netflix info... most importantly: title
+
+    #TODO: update docstring
+    """
+# #     >>> get_nfinfo_details_by_filmid('60035334')
+# #     {'image1': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'title': 'The Last Unicorn', 'synopsis': 'This animated tale follows a unicorn who believes she may be the last of her species and is searching high and low for someone just like her.', 'matlevel': '35', 'matlabel': 'Contains nothing in theme, language, nudity, sex, violence or other matters that, in the view of the Rating Board, would offend parents whose younger children view the motion picture', 'avgrating': '3.8214536', 'type': 'movie', 'updated': '', 'unogsdate': '2015-07-10 01:09:00', 'released': '1982', 'netflixid': '60035334', 'runtime': '1h32m', 'image2': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'download': '1'}
+# #     """
+    url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
+
+    querystring = {"t":"loadvideo","q":f"{netflixid}"}
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
+        }
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    n_list = []
+    n_payload = json.loads(response.text)
+    n_list.append(n_payload)
+
+    n_dictionary = n_list[0].values()
+    new_list = list(n_dictionary)
+    n_str_result = new_list[0]
+
+    nfinfo = n_str_result['nfinfo']
+
+    return nfinfo
+
+
+def get_imdb_details_by_filmid(str):
+    """ Pass 'filmid' to receive imbd details.
+
+    >>> get_by_filmid('60035334')
+    {'poster': 'https://images-na.ssl-images-amazon.com/images/M/MV5BOTBjOTg1ZmMtMjFlZi00ODkyLTkwOGMtY2FmNTc1MTEzMGQyXkEyXkFqcGdeQXVyMjA0MDQ0Mjc@._V1_SX300.jpg', 'language': 'English, German', 'imdbrating': '7.5', 'tomatoConsensus': 'N/A', 'filmid': '60035334', 'imdbid': 'tt0084237', 'totalseasons': '', 'genre': 'Animation, Adventure, Drama, Family, Fantasy', 'imdbtitle': '', 'released': '19 Nov 1982', 'tomatoFresh': '0', 'production': '', 'tomatoUserReviews': '0', 'tomatoRating': '0', 'tomatoMeter': '0', 'country': 'UK, France, West Germany, Japan, USA', 'tomatoUserMeter': '0', 'tomatoReviews': '0', 'localimage': '1', 'tomatoUserRating': '0', 'type': 'movie', 'newid': '15075', 'date': '2020-03-23 01:04:38', 'top250': '0', 'plot': 'From a riddle-speaking butterfly, a unicorn learns that she is supposedly the last of her kind, all the others having been herded away by the Red Bull. The unicorn sets out to discover the truth behind the butterfly&#39;s words. She is eventually joined on her quest by Schmendrick, a second-rate magician, and Molly Grue, a now middle-aged woman who dreamed all her life of seeing a unicorn. Their journey leads them far from home, all the way to the castle of King Haggard...', 'rated': 'G', 'awards': '1 nomination.', 'imdbvotes': '23234', 'metascore': '70', 'tomatoRotten': '0', 'runtime': '92 min', 'top250tv': '0'}
+    """
+    url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
+
+    querystring = {"t":"getimdb","q":f"{str}"} 
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
+        }
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    imdb_list = []
+    imdb_payload = json.loads(response.text)
+    imdb_list.append(imdb_payload)
+
+    imdb_dictionary = (imdb_list[0])
+
     return imdb_dictionary
 
 
@@ -632,6 +695,7 @@ def get_all_films_by_person_name(input_name):
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
+
     #take the response and unpack it into a workable format
     person_results = json.loads(response.text)
     films_with_person = person_results.values()
@@ -639,8 +703,22 @@ def get_all_films_by_person_name(input_name):
     #extract the embedded dictionary from 2 levels down in results
     new_list = list(films_with_person)
     result_list = new_list[2]  
-    
-    return result_list
+
+    filmography = dict()
+
+    for index, movie in enumerate(result_list):
+        film_results = dict()
+
+        nfinfo = get_imdb_details_by_filmid(movie['netflixid'])
+        nfinfo['runtime'] = '' # <-- strip this runtime, it's a mash of hrs and mins
+        imdbinfo = get_nfinfo_by_id(movie['netflixid'])
+
+        film_results.update(nfinfo)
+        film_results.update(imdbinfo)
+
+        filmography[index + 1] = film_results
+
+    return filmography
 
 
 #*############################################################################*#
