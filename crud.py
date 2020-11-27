@@ -163,7 +163,7 @@ def update_user_password(user_id, password):
 #*#                           USERNETWORK OPERATIONS                         #*#
 #*############################################################################*#
 
-def add_user_connection(requestee, user):                                       # // TODO:  what params?
+def add_user_connection(requestee, user):
     """Create and store a user's social network connection invitation.
 
     new connection should get created:
@@ -277,11 +277,10 @@ def add_genre_preference(user, param_genre):
 def get_current_user_preferences(user):
     """Return the most recent collection of this User's default preferences."""
     
-    current_user_prefs = Preference.query.filter(Preference.user_id==User.id)  
+    current_user_prefs = Preference.query.filter(Preference.user_id==User.id).order_by(Preference.id.desc()).first()
 
     return current_user_prefs
-    # TODO:  get only the most recent entry in the table, like, the largest ID?
-
+    
 
 def get_user_preferences_all_time(user):
     """Return all of the collections of this User's default preferences from forever ever."""

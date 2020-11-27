@@ -192,6 +192,25 @@ def register_user_preferences():
     return redirect('/profile')
 
 
+@app.route('/getuserpreferences', methods=['GET'])
+def get_user_preferences():
+    """Get the most recent group of a user's current preferences"""
+
+    current_user = crud.get_user_by_email(session['email']) 
+    current_preferences = crud.get_current_user_preferences(current_user)
+    current_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    
+    return jsonify({'user': str(current_user.id),
+                    'subtitle': str(current_preferences.subtitle), 
+                    'audio': str(current_preferences.audio), 
+                    'syear': str(current_preferences.syear), 
+                    'eyear': str(current_preferences.eyear), 
+                    'duration': str(current_preferences.duration), 
+                    'matlevel': str(current_preferences.matlevel), 
+                    'location': str(current_preferences.viewing_location_id),
+                    'genres': str(current_preferred_genres)})
+
+
 #*############################################################################*#
 #*#                       USER  LOGIN/LOGOUT/CREATION                        #*#
 #*############################################################################*#
