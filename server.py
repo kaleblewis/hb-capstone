@@ -439,56 +439,14 @@ def show_all_films_by_person_name(actorname):
 
     actor_name = unquote(actorname)
 
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(actor_name)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-
-
     filmography = crud.get_all_films_by_person_name(actor_name)
-
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(filmography)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
 
     current_user = crud.get_user_by_email(session['email'])
     # current_user_prefs = get_current_user_preferences(current_user)
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
+    flash(f"Filmography based on name:  '{actorname}' ")
     session['render-search-results'] = "filmography"
 
     return render_template('recommendations.html', 

@@ -23,8 +23,7 @@
                         {% if current_recommendations['type'] == 'movie' %} | 🎬 {{ current_recommendations['type'] }} {% elif current_recommendations['type'] == 'series' %} | 📺 {{ current_recommendations['type'] }}{% endif %}
                         {% if current_recommendations['download'] == '1' %}| 📶 downloadable {% endif %}
                         {% if current_recommendations['matlevel'] != "" %}|<a title="{{ current_recommendations['matlabel'] }}"> 🔰 {{ current_recommendations['matlabel'] }} </a> {% endif %}</p>
-                    <p> 🎭 {{ current_recommendations['genre'] }} </p>
-                        <p>{{ current_recommendations['mgname'] }} </p>
+                    <p> 🎭 {% for genre in current_recommendations['mgname'] %} {{ genre }}, {% endfor %} </p>
 
                     <p>IMDb: ⭐ ⭐ ⭐ ★ ★  | Netflix: ⭐ ⭐ ⭐ ⭐ ★  | Rotten Tomatoes: 🍅 🍅 🍅 🍅 ⚫</p>    
                     <p><b>"votes"</b>   <em>{{ current_recommendations['votes'] }}</em>  |  
@@ -215,46 +214,16 @@
             <div class="search-result">
                         
               <div class="content">
-                {% for result_number, movie_result in current_recommendations.items() %}  
 
-                    {% if movie_result['title'] is defined %}
-                         
-                            <img src="{{ movie_result['image1'] }}" width="30" height="50"><img src="{{ movie_result['image2'] }}" width="30" height="50"><img src="{{ movie_result['poster'] }}" width="30" height="50"> 
-                          
-                          <b><a href="/title/{{ movie_result['netflixid'] }}">{{ movie_result['title'] }} </a>    {% if movie_result['released'] is defined %} ( {{ movie_result['released'] }}  )</b>{% endif %}  <br> 
-                    
-                        {% if movie_result['top250'] != '0' %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix </p> {% endif %}{% if movie_result['top250tv'] != '0' %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %}
-                        <p> 
-                            {% if movie_result['type'] == 'movie' %} 🎬 {{ movie_result['type'] }} | {% elif movie_result['type'] == 'series' %} 📺 {{ movie_result['type'] }} | {% endif %}
-
-                            {% if movie_result['runtime'] != "" %} 🕐 {{ movie_result['runtime'] }}  |  {% endif %}
-                            {% if movie_result['rated'] != "" %}<a title="{{ movie_result['matlabel'] }}"></a>  🔰  {{ movie_result['rated'] }} </a> | {% endif %}
-                            <!-- TODO:  break this up into hours and minutes -->
-
-                            {% if movie_result['imdbrating'] != 0 %}  IMDb: {{ movie_result['imdbrating'] }} ⭐ ⭐ ⭐ ★ ★  {% endif %} </p>
-                            <!-- TODO:  render starts graphics based on imdb rating -->
-
-                            <p> 🎭 {{ movie_result['genre'] }} </p>
-  
-                            <p><b>"imdbvotes"</b>   <em>{{ movie_result['imdbvotes'] }}</em>  |  
-                            <b>"avgrating":</b> <em>{{ movie_result['avgrating'] }}</em>  |  
-                            <b>"metascore":</b> <em>{{ movie_result['metascore'] }}</em>  |  
-                            <b>"imdbrating":</b> <em>{{ movie_result['imdbrating'] }}</em>  |  
-                            <b>metascore:</b> <em>{{ movie_result['metascore'] }}</em> </p>
-    
-                            {% if movie_result['awards'] != '' %} <p>🏆 {{ movie_result['awards'] }}</p> {% endif %}
-    
-                            <p> <em>{{ movie_result['synopsis'] }} </em> </p>
-                        <ul>
-                            <li><a href="https://www.imdb.com/title/{{ movie_result['imdbid'] }}"> View trailer on imdb </a></li>
-                            <li><a href="https://www.netflix.com/title/{{ movie_result['filmid'] }}"> Watch now on Netflix </a></li>
-                        </ul>
-
-                        <br><hr><br>
-                        {% endif %}
-            
-               
-                {% endfor %}
+                <DL><ul>
+                {% for actor in current_recommendations %}  
+                <li><h4> {{ actor }} </li> </ul></h4> <ul>
+                    {% for title in current_recommendations[actor] %}    
+                    <DD><li>  <a href="/title/{{ title['netflixid'] }}"> {{ title['title'] }} </a></li></DD>
+                    {% endfor %}
+                    {% endfor %}
+              </DL></ul>
+              
               </div>
             </div>
 

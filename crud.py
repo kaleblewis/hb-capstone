@@ -670,16 +670,20 @@ def get_all_films_by_person_name(input_name):
     Argument must be an exact match for spelling and punctuation.
     No, you can't pass "the Prince symbol" here.
 
-    Person should be able to be any named production role, not just an actor: #but apparenlty right now it's only pulling actors
+    Person should supposedly return any named production role, not just an actor: 
      - actor
      - director
      - creator
+    (but apparently right now the API is actually only returning actors)
 
     >>> get_all_films_by_person_name("Britney Spears")  
-    {'fullname': 'Britney Spears', 'netflixid': 60022266, 'title': 'Crossroads'}
+    {'Britney Spears': [{'fullname': 'Britney Spears', 'netflixid': 60022266, 'title': 'Crossroads'}]}
 
     >>> get_all_films_by_person_name("Peter Ostrum")
-    {'fullname': 'Peter Ostrum', 'netflixid': 60020949, 'title': 'Willy Wonka and the Chocolate Factory'}
+    {'Peter Ostrum': [{'fullname': 'Peter Ostrum', 'netflixid': 60020949, 'title': 'Willy Wonka and the Chocolate Factory'}]}
+
+    >>> get_all_films_by_person_name("Wachowski")
+    {'Andy Wachowski': [{'fullname': 'Andy Wachowski', 'netflixid': 60031303, 'title': 'The Matrix Revolutions'}, {'fullname': 'Andy Wachowski', 'netflixid': 70039175, 'title': 'V for Vendetta'}, {'fullname': 'Andy Wachowski', 'netflixid': 326674, 'title': 'Bound'}, {'fullname': 'Andy Wachowski', 'netflixid': 70084796, 'title': 'Speed Racer'}, {'fullname': 'Andy Wachowski', 'netflixid': 265929, 'title': 'Assassins'}, {'fullname': 'Andy Wachowski', 'netflixid': 60027495, 'title': 'The Animatrix'}, {'fullname': 'Andy Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}, {'fullname': 'Andy Wachowski', 'netflixid': 80025744, 'title': 'Sense8'}, {'fullname': 'Andy Wachowski', 'netflixid': 70248183, 'title': 'Cloud Atlas'}, {'fullname': 'Andy Wachowski', 'netflixid': 20557937, 'title': 'The Matrix'}], 'Lana Wachowski': [{'fullname': 'Lana Wachowski', 'netflixid': 60031303, 'title': 'The Matrix Revolutions'}, {'fullname': 'Lana Wachowski', 'netflixid': 70039175, 'title': 'V for Vendetta'}, {'fullname': 'Lana Wachowski', 'netflixid': 326674, 'title': 'Bound'}, {'fullname': 'Lana Wachowski', 'netflixid': 70084796, 'title': 'Speed Racer'}, {'fullname': 'Lana Wachowski', 'netflixid': 265929, 'title': 'Assassins'}, {'fullname': 'Lana Wachowski', 'netflixid': 60027495, 'title': 'The Animatrix'}, {'fullname': 'Lana Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}, {'fullname': 'Lana Wachowski', 'netflixid': 80025744, 'title': 'Sense8'}, {'fullname': 'Lana Wachowski', 'netflixid': 70248183, 'title': 'Cloud Atlas'}, {'fullname': 'Lana Wachowski', 'netflixid': 20557937, 'title': 'The Matrix'}, {'fullname': 'Lana Wachowski', 'netflixid': 60027695, 'title': 'The Matrix Reloaded'}], 'Lilly Wachowski': [{'fullname': 'Lilly Wachowski', 'netflixid': 20557937, 'title': 'The Matrix'}, {'fullname': 'Lilly Wachowski', 'netflixid': 60027695, 'title': 'The Matrix Reloaded'}, {'fullname': 'Lilly Wachowski', 'netflixid': 60031303, 'title': 'The Matrix Revolutions'}, {'fullname': 'Lilly Wachowski', 'netflixid': 70084796, 'title': 'Speed Racer'}, {'fullname': 'Lilly Wachowski', 'netflixid': 70248183, 'title': 'Cloud Atlas'}, {'fullname': 'Lilly Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}, {'fullname': 'Lilly Wachowski', 'netflixid': 80025744, 'title': 'Sense8'}]}
     """
 
     url = "https://unogsng.p.rapidapi.com/people"
@@ -695,7 +699,6 @@ def get_all_films_by_person_name(input_name):
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
-
     #take the response and unpack it into a workable format
     person_results = json.loads(response.text)
     films_with_person = person_results.values()
@@ -704,19 +707,19 @@ def get_all_films_by_person_name(input_name):
     new_list = list(films_with_person)
     result_list = new_list[2]  
 
+    dedeuplicated_list = []
+    for movie in result_list:
+        if movie not in dedeuplicated_list:
+            dedeuplicated_list.append(movie)
+
     filmography = dict()
 
-    for index, movie in enumerate(result_list):
-        film_results = dict()
+    for movie in dedeuplicated_list:
+        if movie['fullname'] in filmography:
+            filmography[movie['fullname']].append(movie)
 
-        nfinfo = get_imdb_details_by_filmid(movie['netflixid'])
-        nfinfo['runtime'] = '' # <-- strip this runtime, it's a mash of hrs and mins
-        imdbinfo = get_nfinfo_by_id(movie['netflixid'])
-
-        film_results.update(nfinfo)
-        film_results.update(imdbinfo)
-
-        filmography[index + 1] = film_results
+        else:
+            filmography[movie['fullname']]=[movie]
 
     return filmography
 
