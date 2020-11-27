@@ -192,7 +192,7 @@ def register_user_preferences():
     return redirect('/profile')
 
 
-@app.route('/getuserpreferences', methods=['GET'])
+@app.route('/getuserpreferences.json', methods=['GET'])
 def get_user_preferences():
     """Get the most recent group of a user's current preferences"""
 
@@ -331,6 +331,7 @@ def recommendations_page():
     """View search results page for recommendation(s)"""
     
     current_user = crud.get_user_by_email(session['email'])
+    current_user_prefs = get_current_user_preferences(user)
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
@@ -367,6 +368,7 @@ def recommendations_page():
             session['render-search-results'] = "many"
             return render_template("recommendations.html",  
             user=current_user,
+            user_prefs=current_user_prefs,
             user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
             languages=LANGUAGES,

@@ -226,7 +226,7 @@ def get_connections_by_user(user):                                              
 #*#                      USER PREFERENCES OPERATIONS                         #*#
 #*############################################################################*#
 
-def add_user_preference_to_preferences(user, param_subtitle="any",                 # TODO:  what params?
+def add_user_preference_to_preferences(user, param_subtitle="any",
     param_audio="any", param_genre="any", param_release_date_start="any", 
     param_release_date_end="any", param_duration=60, param_matlevel="any", 
     param_viewing_location=78):
