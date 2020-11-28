@@ -502,7 +502,7 @@ def show_top10_films_by_keyword(keyword):
             # user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
             languages=LANGUAGES,
-            current_recommendations=films_of_genre)
+            current_recommendations=films_of_keyword)
 
 
 

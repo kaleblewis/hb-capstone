@@ -748,29 +748,6 @@ def get_top10_films_by_genre_name(current_user, genre_name):
 
     url = "https://unogsng.p.rapidapi.com/search"
 
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(genre_name)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    
-
-
     genre_id = str(get_genre_id_by_name(genre_name))
     genre_id = genre_id.replace('{','')
     genre_id = genre_id.replace('}','')
@@ -819,47 +796,9 @@ def get_top10_films_by_genre_name(current_user, genre_name):
         str(recommendations), str(genre_id), None, None, 
         None, None, None, None, None, None)
 
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(genre_name)
-    print()
-    print()
-    print()
-    print(genre_id)
-    print()
-    print()
-    print()
-    print(querystring)
-    print()
-    print()
-    print()  
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(recommendations)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-
     return recommendations
+
+
 
 
 #*############################################################################*#
@@ -1011,51 +950,9 @@ def get_genre_id_by_name(genre_name):
     <Genre genre_name_as_pk=All Documentaries list_of_ids={10005,10105,10599,1159,15456,180,2595,26126,2760,28269,3652,3675,4006,4720,48768,49110,49547,50232,5161,5349,55087,56178,58710,60026,6839,7018,72384,77245,852494,90361,9875}>
     """
 
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(genre_name)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
+    genre = Genre.query.filter(Genre.name == genre_name).first()   
 
-    result = Genre.query.filter(Genre.name == genre_name).first()   
-
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(result)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-
-    return result.id
+    return genre.id
 
 
 def create_genre(genre_id, genre_name):
@@ -1105,7 +1002,7 @@ def get_all_keywords():
     return TmdbKeyword.query.filter().all()   
 
 
-def get_keyword_by_name(keyword_name):
+def get_keyword_id_by_name(keyword_name):
     """Return keyword when given keyword name.
     
     >>> get_keyword_by_name('suffragist movement')
@@ -1115,10 +1012,12 @@ def get_keyword_by_name(keyword_name):
     <Keyword id=257456 keyword='anti-racism'>
     """
     
-    return TmdbKeyword.query.filter(TmdbKeyword.name == keyword_name).first()   
+    keyword = TmdbKeyword.query.filter(TmdbKeyword.name == keyword_name).first() 
+
+    return keyword.id  
 
 
-def get_keyword_by_id(keyword_id):
+def get_keyword_name_by_id(keyword_id):
     """Return keyword when given keyword ID.
     
     >>> get_keyword_by_name('210586')
@@ -1128,8 +1027,9 @@ def get_keyword_by_id(keyword_id):
     <Keyword id=253306 keyword='feminist literature'>
     """
                      
-    return TmdbKeyword.query.filter(TmdbKeyword.id == keyword_id).first()   
+    keyword = TmdbKeyword.query.filter(TmdbKeyword.id == keyword_id).first()   
 
+    return keyword.named
 
 if __name__ == '__main__':
     from server import app
