@@ -471,30 +471,8 @@ def show_top10_films_by_genre_name(genrename):
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(films_of_genre)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-
     flash(f"results based on genre name:  '{genrename}' ")
-    session['render-search-results'] = "films_of_genre"
+    session['render-search-results'] = "many"
 
     return render_template('recommendations.html', 
             user=current_user,
