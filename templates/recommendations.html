@@ -17,13 +17,24 @@
                     <h2>{{ current_recommendations['title'] }}</h2>  <b> ( {{ current_recommendations['released'] }}  )</b><br>
 
                      <img src="{{ current_recommendations['image1'] }}" width="30" height="50">     <img src="{{ current_recommendations['image2'] }}" width="30" height="50">  
-                   
+                     
                   
                     <p> 🕐 {{ current_recommendations['runtime'] }}
                         {% if current_recommendations['type'] == 'movie' %} | 🎬 {{ current_recommendations['type'] }} {% elif current_recommendations['type'] == 'series' %} | 📺 {{ current_recommendations['type'] }}{% endif %}
                         {% if current_recommendations['download'] == '1' %}| 📶 downloadable {% endif %}
                         {% if current_recommendations['matlevel'] != "" %}|<a title="{{ current_recommendations['matlabel'] }}"> 🔰 {{ current_recommendations['matlabel'] }} </a> {% endif %}</p>
-                    <p> 🎭 {% for genre in current_recommendations['mgname'] %} {{ genre }}, {% endfor %} </p>
+                    <p> 🎭 {% for genre_name in current_recommendations['mgname'] %}
+                              {% for obj in all_genres %}
+                              {% for field in obj.__table__.columns._data.keys() %}
+                                {% if field == 'name' %}
+                                  {% if obj[field] == genre_name %}
+                                    <a href = '/genre/{{ genre_name }}'>{{ genre_name }}</a>, 
+                                  {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                              {% endfor %}
+                              {{ genre_name }}, 
+                            {% endfor %} </p>
 
                     <p>IMDb: ⭐ ⭐ ⭐ ★ ★  | Netflix: ⭐ ⭐ ⭐ ⭐ ★  | Rotten Tomatoes: 🍅 🍅 🍅 🍅 ⚫</p>    
                     <p><b>"votes"</b>   <em>{{ current_recommendations['votes'] }}</em>  |  
