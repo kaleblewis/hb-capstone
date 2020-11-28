@@ -726,6 +726,140 @@ def get_all_films_by_person_name(input_name):
             filmography[movie['fullname']]=[movie]
 
     return filmography
+    
+
+def get_top10_films_by_genre_name(current_user, genre_name):
+    """ Get top-10 best rated films results for a particular genre
+
+    Argument must be the name of a genre.
+    Genre names can represent either:
+     - One single genre  (eg. 'Social & Cultural Documentaries')
+     - One group of related genres  (eg. 'All Documentaries')
+
+    >>> get_all_films_by_person_name("Britney Spears")  
+    {'Britney Spears': [{'fullname': 'Britney Spears', 'netflixid': 60022266, 'title': 'Crossroads'}]}
+
+    >>> get_all_films_by_person_name("Peter Ostrum")
+    {'Peter Ostrum': [{'fullname': 'Peter Ostrum', 'netflixid': 60020949, 'title': 'Willy Wonka and the Chocolate Factory'}]}
+
+    >>> get_all_films_by_person_name("Wachowski")
+    {'Andy Wachowski': [{'fullname': 'Andy Wachowski', 'netflixid': 60031303, 'title': 'The Matrix Revolutions'}, {'fullname': 'Andy Wachowski', 'netflixid': 70039175, 'title': 'V for Vendetta'}, {'fullname': 'Andy Wachowski', 'netflixid': 326674, 'title': 'Bound'}, {'fullname': 'Andy Wachowski', 'netflixid': 70084796, 'title': 'Speed Racer'}, {'fullname': 'Andy Wachowski', 'netflixid': 265929, 'title': 'Assassins'}, {'fullname': 'Andy Wachowski', 'netflixid': 60027495, 'title': 'The Animatrix'}, {'fullname': 'Andy Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}, {'fullname': 'Andy Wachowski', 'netflixid': 80025744, 'title': 'Sense8'}, {'fullname': 'Andy Wachowski', 'netflixid': 70248183, 'title': 'Cloud Atlas'}, {'fullname': 'Andy Wachowski', 'netflixid': 20557937, 'title': 'The Matrix'}], 'Lana Wachowski': [{'fullname': 'Lana Wachowski', 'netflixid': 60031303, 'title': 'The Matrix Revolutions'}, {'fullname': 'Lana Wachowski', 'netflixid': 70039175, 'title': 'V for Vendetta'}, {'fullname': 'Lana Wachowski', 'netflixid': 326674, 'title': 'Bound'}, {'fullname': 'Lana Wachowski', 'netflixid': 70084796, 'title': 'Speed Racer'}, {'fullname': 'Lana Wachowski', 'netflixid': 265929, 'title': 'Assassins'}, {'fullname': 'Lana Wachowski', 'netflixid': 60027495, 'title': 'The Animatrix'}, {'fullname': 'Lana Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}, {'fullname': 'Lana Wachowski', 'netflixid': 80025744, 'title': 'Sense8'}, {'fullname': 'Lana Wachowski', 'netflixid': 70248183, 'title': 'Cloud Atlas'}, {'fullname': 'Lana Wachowski', 'netflixid': 20557937, 'title': 'The Matrix'}, {'fullname': 'Lana Wachowski', 'netflixid': 60027695, 'title': 'The Matrix Reloaded'}], 'Lilly Wachowski': [{'fullname': 'Lilly Wachowski', 'netflixid': 20557937, 'title': 'The Matrix'}, {'fullname': 'Lilly Wachowski', 'netflixid': 60027695, 'title': 'The Matrix Reloaded'}, {'fullname': 'Lilly Wachowski', 'netflixid': 60031303, 'title': 'The Matrix Revolutions'}, {'fullname': 'Lilly Wachowski', 'netflixid': 70084796, 'title': 'Speed Racer'}, {'fullname': 'Lilly Wachowski', 'netflixid': 70248183, 'title': 'Cloud Atlas'}, {'fullname': 'Lilly Wachowski', 'netflixid': 70301367, 'title': 'Jupiter Ascending'}, {'fullname': 'Lilly Wachowski', 'netflixid': 80025744, 'title': 'Sense8'}]}
+    """
+
+    url = "https://unogsng.p.rapidapi.com/search"
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(genre_name)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    
+
+
+    genre_id = str(get_genre_id_by_name(genre_name))
+    genre_id = genre_id.replace('{','')
+    genre_id = genre_id.replace('}','')
+
+    parameter_list = {"genrelist": f"{genre_id}","orderby":"rating",
+    "limit":"10"}  
+
+    querystring = {}
+
+    # Fill in the entries one by one if they have values
+    for key in parameter_list:
+        if parameter_list[key]:
+            if parameter_list[key] != "":
+                querystring[key] = parameter_list[key]
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogsng.p.rapidapi.com"
+        }
+
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    #take the response and unpack it into a workable format
+    search_results = json.loads(response.text)
+    search_results_values = search_results.values()
+
+    #extract the embedded dictionary from 2 levels down in results
+    try:
+        listify_results = list(search_results_values)
+        result_list = listify_results[2]  
+
+    except IndexError:
+        return {"error": "your search was too specific and returned no results. please try again."}
+        
+
+    #then wrap it back into a dictionary using index/result number as key
+    recommendations = dict()
+
+    for index, movie in enumerate(result_list):
+        recommendations[index + 1] = movie
+
+    # store results, qstr, and login_user in the query_history table
+    add_query_to_query_history(current_user, str(querystring), 
+        str(recommendations), str(genre_id), None, None, 
+        None, None, None, None, None, None)
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(genre_name)
+    print()
+    print()
+    print()
+    print(genre_id)
+    print()
+    print()
+    print()
+    print(querystring)
+    print()
+    print()
+    print()  
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(recommendations)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+
+    return recommendations
 
 
 #*############################################################################*#
@@ -857,6 +991,71 @@ def get_all_genres():
                 genre_dictionary.update(item)
     
     return genre_dictionary
+
+
+def get_genre_id_by_name(genre_name):
+    """Return just the ID of a genre when given a genre name.
+
+    Name is being used as the Primary Key on the genre table.
+    ID is a list.
+    ID list can contain either:
+     - a single string value which represents one single genre  
+        eg. 'Social & Cultural Documentaries'
+     - multiple strings which represnet a group of related genres
+        eg. 'All Documentaries'
+    
+    >>> get_genre_id_by_name('Social & Cultural Documentaries')
+    <Genre genre_name_as_pk=Social & Cultural Documentaries list_of_ids={3675}>
+
+    >>> get_genre_id_by_name('All Documentaries')
+    <Genre genre_name_as_pk=All Documentaries list_of_ids={10005,10105,10599,1159,15456,180,2595,26126,2760,28269,3652,3675,4006,4720,48768,49110,49547,50232,5161,5349,55087,56178,58710,60026,6839,7018,72384,77245,852494,90361,9875}>
+    """
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(genre_name)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+
+    result = Genre.query.filter(Genre.name == genre_name).first()   
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(result)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+
+    return result.id
 
 
 def create_genre(genre_id, genre_name):
