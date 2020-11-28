@@ -181,6 +181,18 @@ class GenrePreference(db.Model):
             genre_name={self.genre_name} isActive={self.isActive}>'
 
 
+class TmdbKeyword(db.Model):
+    """A TMDB Keyword."""
+
+    __tablename__ = 'tmdb_keywords'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} id={self.id} name={self.keyword}>'
+
+
 def connect_to_db(flask_app, db_uri='postgresql:///recommendations', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo

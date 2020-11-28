@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import db, User, Preference, QueryHistory, Location, Genre, GenrePreference, connect_to_db
+from model import db, User, Preference, QueryHistory, Location, Genre, GenrePreference, TmdbKeyword, connect_to_db
 import datetime
 import os
 import sys
@@ -863,7 +863,7 @@ def create_genre(genre_id, genre_name):
     """Create and return a new Genre.
 
     >>> create_genre('10118', 'Comic book and superhero movies')
-    <GenrePreference id=5 user=1 genre_name=Comic Book and Superhero Movies isActive=True>
+    <Genre genre_name_as_pk='Comic book and superhero movies' list_of_ids=['10118']>'
     """
 
     genre = Genre(id=genre_id,
@@ -881,6 +881,55 @@ def get_stored_genres():
     return Genre.query.filter().all()   
 
 
+def create_keyword(keyword_id, keyword_name):
+    """Create and return a Keyword.
+
+    >>> create_keyword('207958', 'queer activism')
+    <Keyword id=207958 keyword='queer activism'>
+
+    >>> create_keyword('239141', 'post-racial america')
+    <Keyword id=239141 keyword='post-racial america'>
+    """
+
+    keyword = TmdbKeyword(id=keyword_id,
+                name = keyword_name)
+
+    db.session.add(keyword)
+    db.session.commit() 
+
+    return keyword
+
+
+def get_all_keywords():
+    """Return all of the available keywords."""
+                     
+    return TmdbKeyword.query.filter().all()   
+
+
+def get_keyword_by_name(keyword_name):
+    """Return keyword when given keyword name.
+    
+    >>> get_keyword_by_name('suffragist movement')
+    <Keyword id=207958 keyword='suffragist movement'>
+
+    >>> get_keyword_by_name('anti-racism')
+    <Keyword id=257456 keyword='anti-racism'>
+    """
+    
+    return TmdbKeyword.query.filter(TmdbKeyword.name == keyword_name).first()   
+
+
+def get_keyword_by_id(keyword_id):
+    """Return keyword when given keyword ID.
+    
+    >>> get_keyword_by_name('210586')
+    <Keyword id=210586 keyword='dark fairy tale'>
+
+    >>> get_keyword_by_name('253306')
+    <Keyword id=253306 keyword='feminist literature'>
+    """
+                     
+    return TmdbKeyword.query.filter(TmdbKeyword.id == keyword_id).first()   
 
 
 if __name__ == '__main__':
