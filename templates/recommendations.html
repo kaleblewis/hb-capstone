@@ -223,7 +223,7 @@
                     {% endfor %}
                     {% endfor %}
               </DL></ul>
-              
+
               </div>
             </div>
 
@@ -245,13 +245,6 @@
                <div class="form-group">
    
              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
-
-             <label for="search-field"></label>
-             <input type="search"
-                 id="search-input"
-                 name="search-input"
-                 placeholder="search by movie title"
-                 autofocus />
       
              <label for="movie-or-series-input"> movie or series?</label>           
              <select id="movie-or-series-input" name="movie-or-series-input">
@@ -262,7 +255,7 @@
     <br>  
              <label for="preferred-subtitle">Select your default subtitles:</label>
              <select id="preferred-subtitle" name="preferred-subtitle">
-               <option value="any" selected>any/all</option>
+               <option id="preferred-subtitle-default" value="any" selected>any/all</option>
                {% for key, value in languages.items() %}
                  {% if key == 'subtitles' %}
                    {% for item in value %}
@@ -275,7 +268,8 @@
              <br>
              <label for="preferred-audio">Select your default audio:</label>
              <select id="preferred-audio" name="preferred-audio">
-               <option value="any" selected>any/all</option>
+              <option value="any" selected>any/all</option>
+              <option value="any">any/all</option>
                {% for key, value in languages.items() %}
                  {% if key == 'audio' %}
                    {% for item in value %}
@@ -288,7 +282,8 @@
    <br>
              <label for="date-range-start"> production date "from when?":</label>           
              <select id="date-range-start" name="date-range-start">
-               <option value="all" selected>any/all</option>
+               <option value="any" selected>any/all</option>
+               <option value="any">any/all</option>
                <option value="new">released within past year</option>
                <option value="2years">released within previous 2 years</option>
                <option value="5years">released within previous 5 years</option>
@@ -306,7 +301,8 @@
    <br>        
              <label for="date-range-end"> production date "to when?":</label>           
              <select id="date-range-end" name="date-range-end">
-               <option value="all" selected>any/all</option>
+               <option value="any" selected>any/all</option>
+               <option value="any">any/all</option>
                <option value="new">released within past year</option>
                <option value="2000">up until 2000</option>
                <option value="1990">up until 1990</option>
@@ -326,8 +322,8 @@
                  name="start-rating-input"
                  placeholder="1-10"
                  min="0" 
-                 max="9"
-                 value="3" />
+                 max="8"
+                 value="6" />
 
             <br>
             <label for="end-rating-input"> maximum imdb rating:</label>
@@ -335,13 +331,14 @@
                 id="end-rating-input"
                 name="end-rating-input"
                 placeholder="1-5"
-                min="1" 
+                min="2" 
                 max="10"
                 value="10" />
    <br>
              <label for="genre-input">Select your default genre(s):</label>         
              <select id="genre-input" name="genre-input">
-               <option value="all" selected>any/all</option>
+               <option value="any" selected>any/all</option>
+               <option value="any">any/all</option>
                {% for obj in all_genres %}
                {% for field in obj.__table__.columns._data.keys() %}
                  {% if field == 'name' %}
