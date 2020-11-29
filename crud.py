@@ -968,6 +968,405 @@ def get_keyword_name_by_id(keyword_id):
     return keyword.named
 
 
+
+#*############################################################################*#
+#*#                          TMDB API OPERATIONS                             #*#
+#*############################################################################*#
+
+def get_movies_by_title(str):
+    """Return movies by string of title.
+    
+    >>>get_movies_by_title('quitting a job')
+    """
+
+    sort_by = "popularity.desc"
+
+    url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&page=1&include_adult=false&query='{str}'"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    count = 1
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[(index + 1)] = title
+
+    return recommendations
+
+
+def get_people_with_name(str):
+    """Return a person(s) from string of name.
+
+    Did you know the kid from Willy Wonka was only in one movie ever?
+
+    >>> get_people_with_name('Peter Ostrum')
+    {3462: {'known_for_department': 'Acting', 'popularity': 1.068, 'adult': False, 'id': 3462, 'name': 'Peter Ostrum', 'known_for': [{'media_type': 'movie', 'poster_path': '/vmpsZkrs4Uvkp9r1atL8B3frA63.jpg', 'video': False, 'vote_average': 7.5, 'adult': False, 'overview': 'Eccentric candy man Willy Wonka prompts a worldwide frenzy when he announces that golden tickets hidden inside five of his delicious candy bars will admit their lucky holders into his top-secret confectionary. But does Wonka have an agenda hidden amid a world of Oompa Loompas and chocolate rivers?', 'release_date': '1971-06-29', 'title': 'Willy Wonka & the Chocolate Factory', 'vote_count': 2164, 'backdrop_path': '/iiusvOLB4ytkZ6FSFMlGHvt33uW.jpg', 'original_title': 'Willy Wonka & the Chocolate Factory', 'genre_ids': [10751, 14, 35], 'id': 252, 'original_language': 'en'}, {'media_type': 'movie', 'poster_path': '/gbL6TucQnnVnWl5XKjFI4P2IXwu.jpg', 'video': False, 'vote_average': 6.6, 'overview': 'Retrospective documentary on the making of the cult classic "Willy Wonka and the Chocolate Factory."', 'release_date': '2001-11-13', 'title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'vote_count': 12, 'id': 413393, 'original_title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'genre_ids': [99, 14], 'adult': False, 'original_language': 'en'}, {'media_type': 'tv', 'vote_average': 0, 'overview': '', 'origin_country': ['US'], 'first_air_date': '2005-06-13', 'vote_count': 0, 'original_name': '100 Greatest Kid Stars', 'name': '100 Greatest Kid Stars', 'genre_ids': [], 'id': 24956, 'original_language': 'en'}], 'gender': 2, 'profile_path': '/a3jbe78Rs8gjJrFxl0PoVtayNbf.jpg'}}
+
+    >>> get_people_with_name('wachowski').keys()
+    dict_keys([9340, 9339, 1737865, 1636722])
+    """
+
+    url = f"https://api.themoviedb.org/3/search/person?api_key={TMDB_API_KEY}&language=en-US&page=1&include_adult=false&query='{str}'"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    count = 1
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[title.get('id')] = title
+
+    return recommendations
+
+
+def get_studio_with_name(str):
+    """Return studio/production company info with string of name.
+
+    >>>get_studio_with_name('Studio Ghibli')
+    {10342: {'id': 10342, 'logo_path': '/eS79pslnoKbWg7t3PMA9ayl0bGs.png', 'name': 'Studio Ghibli', 'origin_country': 'JP'}}
+    """
+
+    url = f"https://api.themoviedb.org/3/search/company?api_key={TMDB_API_KEY}&language=en-US&page=1&include_adult=false&query='{str}'"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    count = 1
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[title.get('id')] = title
+
+    return recommendations
+
+
+# def get_genre_with_genre_id(genre_id):
+#     """Given a genre id, return genre info.
+    
+#     >>>get_genre_with_genre_id('10751')
+    
+#     """
+
+#     pass
+
+
+# def get_genre_with_type_and_name_or_id(str, movie_or_tv):
+#     """Return genre info with string of genre name.
+    
+#     Accepts required parameters:
+#         1. str: the name of the genre 
+#         2. movie_or_tv: is this a series genre or film genre?
+#             does this need to hit the tv endppoint or the movie endpoint?
+#             e.g. 'movie',  'tv'
+
+#     >>>get_genre_with_type_and_name_or_id('10751')
+
+#     """
+
+#     url = f"https://api.themoviedb.org/3/genre/{movie_or_tv}/list?api_key={TMDB_API_KEY}&language=en-US&page=1&include_adult=false&query='{str}'"
+
+#     response = requests.get(url)
+
+#     search_results = json.loads(response.text)
+
+#     print(search_results)
+#     print(url) 
+
+#     # recommendations = dict()
+#     # count = 1
+    
+#     # for index, title in enumerate(search_results['results']):
+#     #     recommendations[(index + 1)] = title
+
+#     return "" # recommendations
+
+# print()
+# print()
+# print(get_genre_with_type_and_name_or_id('lgbt', 'movie'))
+
+
+def get_titles_with_keyword(keyword_id):
+    """Return recommendations from keyword.
+    
+    >>>get_titles_by_keyword('quitting a job')
+    """
+
+    sort_by = "popularity.desc"
+
+    url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&include_video=false&page=1&with_keywords={keyword_id}"
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+    # https://developers.themoviedb.org/3/discover/tv-discover
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    count = 1
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[(index + 1)] = title
+
+    return recommendations
+
+
+def get_titles_with_person(person_id):
+    """Return recommendations from people_id.
+    
+    >>>get_titles_by_person('3462')
+    {1: {'adult': False, 'backdrop_path': '/iiusvOLB4ytkZ6FSFMlGHvt33uW.jpg', 'popularity': 26.457, 'genre_ids': [10751, 14, 35], 'title': 'Willy Wonka & the Chocolate Factory', 'original_language': 'en', 'original_title': 'Willy Wonka & the Chocolate Factory', 'poster_path': '/vmpsZkrs4Uvkp9r1atL8B3frA63.jpg', 'overview': 'Eccentric candy man Willy Wonka prompts a worldwide frenzy when he announces that golden tickets hidden inside five of his delicious candy bars will admit their lucky holders into his top-secret confectionary. But does Wonka have an agenda hidden amid a world of Oompa Loompas and chocolate rivers?', 'video': False, 'vote_average': 7.5, 'id': 252, 'vote_count': 2193, 'release_date': '1971-06-29'}, 2: {'adult': False, 'backdrop_path': None, 'popularity': 5.806, 'genre_ids': [99, 14], 'title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'original_language': 'en', 'original_title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'poster_path': '/gbL6TucQnnVnWl5XKjFI4P2IXwu.jpg', 'overview': 'Retrospective documentary on the making of the cult classic "Willy Wonka and the Chocolate Factory."', 'video': False, 'vote_average': 6.6, 'id': 413393, 'vote_count': 12, 'release_date': '2001-11-13'}}
+    """
+
+    sort_by = "popularity.desc"
+
+    url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&include_video=false&page=1&with_people={person_id}"
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+    # https://developers.themoviedb.org/3/discover/tv-discover
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    count = 1
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[(index + 1)] = title
+
+    return recommendations
+
+
+def get_titles_with_studio(studio_id):
+    """Return recommendations from studio_id.
+    
+    >>>get_titles_by_studio('10342')[1]
+    {'vote_average': 8.5, 'popularity': 56.698, 'vote_count': 10469, 'release_date': '2001-07-20', 'adult': False, 'backdrop_path': '/mSDsSDwaP3E7dEfUPWy4J0djt4O.jpg', 'title': 'Spirited Away', 'genre_ids': [16, 10751, 14], 'poster_path': '/eO4NHOsitcVpRw0kolJRLxXdxa2.jpg', 'original_language': 'ja', 'original_title': '千と千尋の神隠し', 'id': 129, 'overview': 'A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.', 'video': False}
+    """
+
+    sort_by = "popularity.desc"
+
+    url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&include_video=false&page=1&with_companies={studio_id}"
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+    # https://developers.themoviedb.org/3/discover/tv-discover
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    count = 1
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[(index + 1)] = title
+
+    return recommendations
+
+
+def get_titles_with_genre(genre_id):
+    """Return recommendations from keyword.
+    
+    Accepts a single string 
+        get_titles_with_genre('16')
+
+    or a list of strings
+        get_titles_with_genre('[16, 10751, 14]')
+
+    """
+
+    sort_by = "popularity.desc"
+
+    url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&include_video=false&page=1&with_genres={genre_id}"
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+    # https://developers.themoviedb.org/3/discover/tv-discover
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[(index + 1)] = title
+
+    return recommendations
+
+
+def get_titles_with_original_language(str):
+    """Return recommendations from keyword.
+    
+    Accepts a single string of 2 char language.
+    Specify an ISO 639-1 string to filter results by their original language value.
+
+    Examples:
+        ISO 639-1   English       Endonym
+        en	        English       English
+        es	        Spanish	      Español
+        pt	        Portuguese    Português
+        zh	        Chinese 	  中文, Zhōngwén
+    """
+
+    sort_by = "popularity.desc"
+
+    url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&include_video=false&page=1&with_original_language={str}"
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+    # https://developers.themoviedb.org/3/discover/tv-discover
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[(index + 1)] = title
+
+    return recommendations
+
+
+def get_title_by_imdbid(imdb_id):
+    """Given IMDB id return title info from TMDB.
+
+    >>> get_title_by_imdbid('tt0084237')
+    {'movie_results': [{'video': False, 'vote_average': 8.1, 'overview': 'Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.', 'release_date': '1999-03-30', 'adult': False, 'backdrop_path': '/fNG7i7RqMErkcqhohV2a6cV1Ehy.jpg', 'vote_count': 18106, 'genre_ids': [28, 878], 'title': 'The Matrix', 'original_language': 'en', 'original_title': 'The Matrix', 'poster_path': '/vybQQ7w7vGvF53IsGD0y0JSgIsA.jpg', 'id': 603, 'popularity': 57.411}], 'person_results': [], 'tv_results': [], 'tv_episode_results': [], 'tv_season_results': []}
+    """
+
+    url = f"https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_API_KEY}&external_source=imdb_id&"
+
+    response = requests.get(url)
+
+    return json.loads(response.text)
+
+
+def get_IMDB_id_by_movie_id(movie_id):
+    """Given TMDB id return IMDB id.
+
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+        #https://developers.themoviedb.org/3/movies/get-movie-external-ids
+        #https://developers.themoviedb.org/3/tv/get-tv-external-ids
+
+    >>> get_IMDB_id_by_TMDB_id('603')
+    {'id': 603, 'imdb_id': 'tt0133093', 'facebook_id': 'TheMatrixMovie', 'instagram_id': None, 'twitter_id': None}
+    """
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/external_ids?api_key={TMDB_API_KEY}"
+
+    response = requests.get(url)
+
+    return json.loads(response.text)
+
+
+def get_image_with_movie_id(movie_id):
+    """Return image types and paths from movie id.
+
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+        # https://developers.themoviedb.org/3/movies/get-movie-images
+        # https://developers.themoviedb.org/3/tv/get-tv-images
+        
+    >>> get_image_with_movie_id(603).keys()
+    dict_keys(['id', 'backdrops', 'posters'])
+    """
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/images?api_key={TMDB_API_KEY}"
+
+    response = requests.get(url)
+
+    return json.loads(response.text)
+
+
+def get_keywords_with_movie_id(movie_id):
+    """Return keywords for a given movie id.
+
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+        # https://developers.themoviedb.org/3/movies/get-movie-keywords
+        # https://developers.themoviedb.org/3/tv/get-tv-keywords
+        
+    >>> get_keywords_with_movie_id(603)
+    [{'id': 83, 'name': 'saving the world'}, {'id': 310, 'name': 'artificial intelligence'}, {'id': 312, 'name': 'man vs machine'}, {'id': 490, 'name': 'philosophy'}, {'id': 530, 'name': 'prophecy'}, {'id': 779, 'name': 'martial arts'}, {'id': 1430, 'name': 'self sacrifice'}, {'id': 1721, 'name': 'fight'}, {'id': 3074, 'name': 'insurgence'}, {'id': 4563, 'name': 'virtual reality'}, {'id': 4565, 'name': 'dystopia'}, {'id': 6256, 'name': 'truth'}, {'id': 12190, 'name': 'cyberpunk'}, {'id': 186789, 'name': 'dream world'}, {'id': 187056, 'name': 'woman director'}, {'id': 194063, 'name': 'messiah'}, {'id': 221385, 'name': 'gnosticism'}]
+    """
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/keywords?api_key={TMDB_API_KEY}"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    return search_results['keywords']
+
+
+def get_person_details_from_person_id(person_id):
+    """Return recommendations from people_id.
+
+    # https://developers.themoviedb.org/3/people/get-person-details
+    # https://developers.themoviedb.org/3/people/get-person-combined-credits
+    
+    >>>get_person_details_from_person_id(15309)['name']
+    Lori Petty
+    """
+
+    url = f"https://api.themoviedb.org/3/person/{person_id}?api_key={TMDB_API_KEY}&append_to_response=combined_credits"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    return search_results
+
+
+def get_basic_details_with_movie_id(movie_id):
+    """Return preliminary movie details from movie id.
+
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+        # https://developers.themoviedb.org/3/movies/get-movie-details
+        # https://developers.themoviedb.org/3/tv/get-tv-details
+        
+    >>> get_basic_details_with_movie_id(603)
+    {"adult":false,"backdrop_path":"/fNG7i7RqMErkcqhohV2a6cV1Ehy.jpg","belongs_to_collection":{"id":2344,"name":"The Matrix Collection","poster_path":"/lh4aGpd3U9rm9B8Oqr6CUgQLtZL.jpg","backdrop_path":"/bRm2DEgUiYciDw3myHuYFInD7la.jpg"},"budget":63000000,"genres":[{"id":28,"name":"Action"},{"id":878,"name":"Science Fiction"}],"homepage":"http://www.warnerbros.com/matrix","id":603,"imdb_id":"tt0133093","original_language":"en","original_title":"The Matrix","overview":"Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.","popularity":57.411,"poster_path":"/vybQQ7w7vGvF53IsGD0y0JSgIsA.jpg","production_companies":[{"id":79,"logo_path":"/tpFpsqbleCzEE2p5EgvUq6ozfCA.png","name":"Village Roadshow Pictures","origin_country":"US"},{"id":372,"logo_path":null,"name":"Groucho II Film Partnership","origin_country":""},{"id":1885,"logo_path":"/xlvoOZr4s1PygosrwZyolIFe5xs.png","name":"Silver Pictures","origin_country":"US"},{"id":174,"logo_path":"/IuAlhI9eVC9Z8UQWOIDdWRKSEJ.png","name":"Warner Bros. Pictures","origin_country":"US"}],"production_countries":[{"iso_3166_1":"AU","name":"Australia"},{"iso_3166_1":"US","name":"United States of America"}],"release_date":"1999-03-30","revenue":463517383,"runtime":136,"spoken_languages":[{"english_name":"English","iso_639_1":"en","name":"English"}],"status":"Released","tagline":"Welcome to the Real World.","title":"The Matrix","video":false,"vote_average":8.1,"vote_count":18109}
+
+
+    """
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    return search_results
+
+
+def get_full_details_with_movie_id(movie_id, language_id='en'):
+    """Return comprehensive movie details from movie id.
+
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+        # https://developers.themoviedb.org/3/movies/get-movie-details
+        # https://developers.themoviedb.org/3/tv/get-tv-details
+        
+    >>> get_full_details_with_movie_id(603)['title']
+    The Matrix
+
+    >>> get_full_details_with_movie_id(603)['keywords']
+    {'keywords': [{'id': 83, 'name': 'saving the world'}, {'id': 310, 'name': 'artificial intelligence'}, {'id': 312, 'name': 'man vs machine'}, {'id': 490, 'name': 'philosophy'}, {'id': 530, 'name': 'prophecy'}, {'id': 779, 'name': 'martial arts'}, {'id': 1430, 'name': 'self sacrifice'}, {'id': 1721, 'name': 'fight'}, {'id': 3074, 'name': 'insurgence'}, {'id': 4563, 'name': 'virtual reality'}, {'id': 4565, 'name': 'dystopia'}, {'id': 6256, 'name': 'truth'}, {'id': 12190, 'name': 'cyberpunk'}, {'id': 186789, 'name': 'dream world'}, {'id': 187056, 'name': 'woman director'}, {'id': 194063, 'name': 'messiah'}, {'id': 221385, 'name': 'gnosticism'}]}
+
+    >>> get_full_details_with_movie_id(603, 'zh')['images']['posters']
+    [{'aspect_ratio': 0.6706349206349206, 'file_path': '/qwFRLa87lFLhuXi0Is33jMBSuUB.jpg', 'height': 1008, 'iso_639_1': None, 'vote_average': 5.312, 'vote_count': 1, 'width': 676}, {'aspect_ratio': 0.6708407871198568, 'file_path': '/vsTC6jddyfy25GirpCVtZ7GOB7A.jpg', 'height': 1118, 'iso_639_1': 'zh', 'vote_average': 0.0, 'vote_count': 0, 'width': 750}, {'aspect_ratio': 0.6741573033707865, 'file_path': '/uSgDJaLSFh2oOUMRevaxJWwbh4b.jpg', 'height': 1780, 'iso_639_1': 'zh', 'vote_average': 0.0, 'vote_count': 0, 'width': 1200}]
+    """
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&append_to_response=keywords,images&include_image_language={language_id},null"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    return search_results
+
+
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
