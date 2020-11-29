@@ -6,10 +6,16 @@ import os
 import sys
 import requests
 import json
+
 from urllib.parse import quote, unquote
 from sqlalchemy import update
 
+
 LANGUAGES = {"audio": ["Arabic", "Cantonese", "Croatian", "English", "Filipino", "French", "German", "Gujarati", "Hebrew", "Hindi", "Italian", "Japanese", "Khmer", "Korean", "Mandarin", "Persian", "Polish", "Portuguese", "Russian", "Serbian", "Spanish", "Tagalog", "Thai", "Urdu", "Vietnamese", "Yiddish"], "subtitles": ["Croatian", "English", "Filipino", "French", "German", "Hebrew", "Hindi", "Italian", "Japanese", "Korean", "Persian", "Polish", "Portuguese", "Russian", "Spanish", "Tagalog", "Thai", "Traditional Chinese", "Vietnamese"]}
+
+TMDB_API_KEY = (os.environ.get('TMDB_API_KEY'))
+
+
 
 #*############################################################################*#
 #*#                             USER OPERATIONS                              #*#
@@ -19,53 +25,9 @@ def create_user(name, email, password):
     """Create and return a new user.
 
     >>> create_user('jane', 'jane.doe@email.com', 'password1')
-    # TODO: update docstring
-
-    >>> create_user('', 'jane.doe@email.com', 'password1')
-    # TODO: update docstring
-
-    >>> create_user('jane', '', 'password1')
-    # TODO: update docstring
-
-    >>> create_user('jane', 'jane.doe@email.com', '')
-    # TODO: update docstring
-
-    user cannot pass a name that's other than alpha chars
-    >>> create_user('1', 'jane.doe@email.com', 'password1')
-    # TODO: update docstring
-
-    >>> create_user('@', 'jane.doe@email.com', 'password1')
-    # TODO: update docstring
-
-    user cannot pass an email that's not an email
-    >>> create_user('jane', 'jane.doe', 'password1')
-    # TODO: update docstring
-
-    >>> create_user('jane', 'janedoe@emailcom', 'password1')
-    # TODO: update docstring
-
-    >>> create_user('jane', '@.', 'password1')
-    # TODO: update docstring
-
-    name cannot be > 50 chars:
-    >>> create_user('jane12345678901234156789012345678901234567890123415678901234567890123456789012345', 'jane.doe@email.com', 'password1')
-    # TODO: update docstring
-
-    email cannot be > 80 chars:
-    >>> create_user('jane', 'jane.doe@email.com123456789012341567890123456789012345678901234156789012345678901', 'password1')
-    # TODO: update docstring
-
-    password cannot be > 20 chars:
-    >>> create_user('jane', 'jane.doe@email.com', 'password1234567890123')
-    # TODO: update docstring
-
-    if user already exists, do not duplicate, simply log them in instead:
-    >>> create_user('jane', 'jane.doe@email.com', 'password1')
-    # TODO: update docstring
+    <User id=1 email=jane.doe@gmail.com>
     """
     
-                                                                                # TODO: add steps to first check if unique user exists based on email, if so, fail gracefully and simply log them in to their existing account w/o creating new user
-
     user = User(fname=name, 
                 email=email, 
                 password=password,
@@ -75,12 +37,6 @@ def create_user(name, email, password):
     db.session.commit()  #TODO:  going to need to loop through a second pass to set PURL_name = User.ID
 
     return user
-
-
-# def get_all_users():
-#     """Return all users."""
-
-#     return User.query.all()
 
 
 def get_user_by_email(email):
@@ -98,8 +54,8 @@ def update_user_fname(user_id, name):
     
     The new name will be captured via user input field.
 
-    >>> update_user_name("1", "jane")
-    # TODO: update docstring
+    >>> update_user_name("1", "wombat")
+    <User id=1 email=jane.doe@email.com>
     """
 
     user = User.query.get(user_id)
@@ -114,8 +70,8 @@ def update_user_email(user_id, email):
     The new email will be captured via user input field.
     Validation will happen upstream.
 
-    >>> update_user_name(user, "jane@email.com")
-    # TODO: update docstring
+    >>> update_user_name("1", "wombat@email.com")
+    <User id=1 email=wombat@email.com>
     """
 
     user = User.query.get(user_id)
@@ -130,33 +86,15 @@ def update_user_password(user_id, password):
     The new password will be captured via user input field.
     Validation will happen upstream.
 
-    >>> update_user_name(user, "JANESpassword1")
-    # TODO: update docstring
+    >>> update_user_name("1", "wombat")
+    "success"
     """
 
     user = User.query.get(user_id)
     user.password = password
     db.session.commit()
 
-    return user
-
-
-#  don't forget to update line 74, too.  need to set an intial unique default for successful page load
-# def update_user_purl(user_id, name):
-#     """Update the unique PURL parameter of an existing user.
-    
-#     The new parameter/alias/string/name will be captured via user input field.
-#     Validation will happen upstream.
-
-#     >>> update_user_name(user, "wombat")
-#     # TODO: update docstring
-#     """
-
-#     user = User.query.get(user_id)
-#     user.purl_name = name
-#     db.session.commit()
-
-#     return user
+    return "success"
 
 
 #*############################################################################*#
@@ -166,17 +104,17 @@ def update_user_password(user_id, password):
 def add_user_connection(requestee, user):
     """Create and store a user's social network connection invitation.
 
-    new connection should get created:
+    # new connection should get created:
     >>> add_user_connection(1, 2)
-    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2> 
 
-    user shouldn't be both requestor and requestee                              # TODO:  add in this logic with if statement?
+    # user shouldn't be both requestor and requestee
     >>> add_user_connection(1, 2)
-    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2> 
 
-    only one record should exist per requestor+requestee+status combination     # TODO:  add in this logic with if statement?
+    # only one record should exist per requestor+requestee+status combination  
     >>> add_user_connection(1, 2)
-    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2>           # TODO: validate docstring response
+    <UserNetwork id=1 status="Pending" requestor_id:1 requestee_id:2> 
     """
 
     user_connection = db.UserNetwork(requestor_id = user.id,
@@ -189,6 +127,8 @@ def add_user_connection(requestee, user):
 
     return user_connection
 
+
+# TODO: implement new feature later to update/"approve" pending connection requests
 # def update_user_connection_by_id(connection_id):
 #     """Update a UserNetwork by primary key
 
@@ -198,18 +138,18 @@ def add_user_connection(requestee, user):
 #     pass
 
 
-def get_connections_by_user(user):                                              # TODO: implement new feature later to update/"approve" pending connection requests
-    """Return all of a User's requested connections.
+# def get_connections_by_user(user):
+#     """Return all of a User's requested connections.
 
-    Should return all requested connections, regardless of outcome/status.
+#     Should return all requested connections, regardless of outcome/status.
 
-    # TODO: update docstring with doctest
-    """
+#     # TODO: update docstring with doctest
+#     """
 
-    return UserNetwork.query.filter(UserNetwork.requestor_id == (User.id))
+#     return UserNetwork.query.filter(UserNetwork.requestor_id == (User.id))
 
     
-# def get_pending_connections_by_user(user):                                    # TODO: implement new feature later to approve pending connection requests
+# def get_pending_connections_by_user(user):
 #     """Return all pending connections where User is the Requestee.
 
 #     Should return only the connections where:
@@ -256,7 +196,7 @@ def add_genre_preference(user, param_genre):
     """ Create a genre preference for a user.
 
     >>> add_genre_preference('1', '[7442]')
-    {self.id}
+    <Preference id=1 related to user_id=1>
     """
 
     if param_genre == "" or param_genre == "any" or param_genre == "all":
@@ -275,7 +215,11 @@ def add_genre_preference(user, param_genre):
 
 
 def get_current_user_preferences(user):
-    """Return the most recent collection of this User's default preferences."""
+    """Return the most recent collection of this User's default preferences.
+    
+    >>> get_current_user_preferences('1')
+    <Preference id=1 related to user_id=1>
+    """
     
     current_user_prefs = Preference.query.filter(Preference.user_id==User.id).order_by(Preference.id.desc()).first()
 
@@ -303,7 +247,7 @@ def disable_genre_preference(user_id, genre_id):
     """ Disable a genre preference a user had stored previously.
 
     >>> disable_genre_preference('1', '[7442]')
-    <GenrePreference id={self.id} user="1" genre='[7442]' isActive=False>'
+    <GenrePreference id=1 user="1" genre='[7442]' isActive=False>'
     """
 
     user_genre_preference = GenrePreference.query.filter(user_id, genre_id, isActive != false).all()
@@ -325,7 +269,6 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
 
     >>> search_films_by_parameters("the last Unicorn", "", "", 5, 10, 1970, 2020, "", "", "", "")
     [{'vtype': 'series', 'img': 'https://occ-0-2218-2219.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABf_yO5gOqfvRDqXfZchg9ysuqquBHNcUGu7I4OrjoH0az-nZA95YDPowaJ62xdKREiX43b-6DiIHLm5WWTaEN0GAPg.jpg?r=004', 'nfid': 81190627, 'imdbid': 'tt10329028', 'title': 'The Unicorn', 'clist': '"US":"United States"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjMyZTdlNjAtODZmOC00OGI2LTliOWEtNThmYjNiN2E2Njk2XkEyXkFqcGdeQXVyNjg4NzAyOTA@._V1_SX300.jpg', 'imdbrating': 7.1, 'top250tv': 0, 'synopsis': 'A widowed father of two girls navigates the world of dating, surprised to learn that many women consider him a hot commodity.', 'titledate': '2020-11-03', 'avgrating': 0.0, 'year': 2019, 'runtime': 0, 'top250': 0, 'id': 67089}, {'vtype': 'movie', 'img': 'https://occ-0-2851-38.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABc001T5vhL0kgjnVsvwBAotinqk-GwLwGliKtwmCh44P_U4tXxGjmzMNqW_bTY8hUC7yIE9LcVAu__JsF7wakKDyBagtnuLDVA-BG7lJAWK4tt-AFjgEb5H_fiQ.jpg?r=cb3', 'nfid': 81034317, 'imdbid': 'tt2338454', 'title': 'Unicorn Store', 'clist': '"CA":"Canada","FR":"France","DE":"Germany","NL":"Netherlands","PL":"Poland","GB":"United Kingdom","US":"United States","AR":"Argentina","AU":"Australia","BE":"Belgium","more":"+22"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjUyMTY2OTkwMF5BMl5BanBnXkFtZTgwODEyODA3NzM@._V1_SX300.jpg', 'imdbrating': 5.5, 'top250tv': 0, 'synopsis': 'After failing out of art school and taking a humdrum office job, a whimsical painter gets a chance to fulfill her lifelong dream of adopting a unicorn.', 'titledate': '2019-04-05', 'avgrating': 0.0, 'year': 2019, 'runtime': 5513, 'top250': 0, 'id': 61649}]
-
     """
 
     url = "https://unogsng.p.rapidapi.com/search"
@@ -475,9 +418,6 @@ def get_by_filmid(str):
 
     >>> get_by_filmid('60035334')
     {"RESULT":{"nfinfo":{"image1":"https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg","title":"The Last Unicorn","synopsis":"This animated tale follows a unicorn who believes she may be the last of her species and is searching high and low for someone just like her.","matlevel":"35","matlabel":"Contains nothing in theme, language, nudity, sex, violence or other matters that, in the view of the Rating Board, would offend parents whose younger children view the motion picture","avgrating":"3.8214536","type":"movie","updated":"","unogsdate":"2015-07-10 01:09:00","released":"1982","netflixid":"60035334","runtime":"1h32m","image2":"https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg","download":"1"},"imdbinfo":{"rating":"7.5","votes":"23234","metascore":"70","genre":"Animation, Adventure, Drama, Family, Fantasy","awards":"1 nomination.","runtime":"92 min","plot":"From a riddle-speaking butterfly, a unicorn learns that she is supposedly the last of her kind, all the others having been herded away by the Red Bull. The unicorn sets out to discover the truth behind the butterfly&amp;#39;s words. She is eventually joined on her quest by Schmendrick, a second-rate magician, and Molly Grue, a now middle-aged woman who dreamed all her life of seeing a unicorn. Their journey leads them far from home, all the way to the castle of King Haggard...","country":"UK, France, West Germany, Japan, USA","language":"English, German","imdbid":"tt0084237"},"mgname":["Animal Tales","Family Sci-Fi & Fantasy","Children & Family Films","Films for ages 8 to 10","Films based on childrens books","Films for ages 11 to 12"],"Genreid":["5507","52849","783","561","10056","6962"],"people":[{"actor":["Alan Arkin","Jeff Bridges","Mia Farrow","Tammy Grimes","Angela Lansbury","Robert Klein","Keenan Wynn","Christopher Lee","Rene Auberjonois","Paul Frees","Jack Lester","Brother Theodore","Don Messick","Ed Peck","Kenneth Jennings","Nellie Bellflower"]},{"creator":["Peter S. Beagle"]},{"director":["Jules Bass","Arthur Rankin Jr."]}],"country":[]}}
-
-    >>> search_by_id(search_by_title('the last unicorn'))
-    60035334
     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
 
@@ -853,8 +793,10 @@ def get_all_query_history(user):                                                
 def get_all_locations():
     """ Return a dictionary of each of Netflix's service locations.
 
-    >>> get_all_locations()
-    [{'country': 'Argentina ', 'id': 21, 'countrycode': 'AR'}, {'country': 'Australia ', 'id': 23, 'countrycode': 'AU'}, {'country': 'Belgium ', 'id': 26, 'countrycode': 'BE'}, {'country': 'Brazil ', 'id': 29, 'countrycode': 'BR'}, {'country': 'Canada ', 'id': 33, 'countrycode': 'CA'}, {'country': 'Switzerland ', 'id': 34, 'countrycode': 'CH'}, {'country': 'Germany ', 'id': 39, 'countrycode': 'DE'}, {'country': 'France ', 'id': 45, 'countrycode': 'FR'}, {'country': 'United Kingdom', 'id': 46, 'countrycode': 'GB'}, {'country': 'Mexico ', 'id': 65, 'countrycode': 'MX'}, {'country': 'Netherlands ', 'id': 67, 'countrycode': 'NL'}, {'country': 'Sweden ', 'id': 73, 'countrycode': 'SE'}, {'country': 'United States', 'id': 78, 'countrycode': 'US'}, {'country': 'Iceland ', 'id': 265, 'countrycode': 'IS'}, {'country': 'Japan ', 'id': 267, 'countrycode': 'JP'}, {'country': 'Portugal ', 'id': 268, 'countrycode': 'PT'}, {'country': 'Italy ', 'id': 269, 'countrycode': 'IT'}, {'country': 'Spain ', 'id': 270, 'countrycode': 'ES'}, {'country': 'Czech Republic ', 'id': 307, 'countrycode': 'CZ'}, {'country': 'Greece ', 'id': 327, 'countrycode': 'GR'}, {'country': 'Hong Kong ', 'id': 331, 'countrycode': 'HK'}, {'country': 'Hungary ', 'id': 334, 'countrycode': 'HU'}, {'country': 'Israel ', 'id': 336, 'countrycode': 'IL'}, {'country': 'India ', 'id': 337, 'countrycode': 'IN'}, {'country': 'South Korea', 'id': 348, 'countrycode': 'KR'}, {'country': 'Lithuania ', 'id': 357, 'countrycode': 'LT'}, {'country': 'Poland ', 'id': 392, 'countrycode': 'PL'}, {'country': 'Romania ', 'id': 400, 'countrycode': 'RO'}, {'country': 'Russia', 'id': 402, 'countrycode': 'RU'}, {'country': 'Singapore ', 'id': 408, 'countrycode': 'SG'}, {'country': 'Slovakia ', 'id': 412, 'countrycode': 'SK'}, {'country': 'Thailand ', 'id': 425, 'countrycode': 'TH'}, {'country': 'Turkey ', 'id': 432, 'countrycode': 'TR'}, {'country': 'South Africa', 'id': 447, 'countrycode': 'ZA'}]
+    >>> res = get_all_locations()
+    >>> res[0]
+    {'country': 'Argentina ', 'id': 21, 'countrycode': 'AR'}
+    <Location id=21 location=Argenina>
     """
 
     url = "https://unogsng.p.rapidapi.com/countries"
@@ -1030,6 +972,7 @@ def get_keyword_name_by_id(keyword_id):
     keyword = TmdbKeyword.query.filter(TmdbKeyword.id == keyword_id).first()   
 
     return keyword.named
+
 
 if __name__ == '__main__':
     from server import app
