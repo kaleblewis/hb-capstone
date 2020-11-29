@@ -84,18 +84,14 @@
                 <option value="movie"> movie </option>
                 <option value="series"> series </option>
               </select>
-     <!-- <br>     <br> 
+     <br>     <br> 
               <label for="preferred-subtitle">Select your default subtitles:</label>
               <select id="preferred-subtitle" name="preferred-subtitle">
                 <option value="any" selected>any/all</option>
-                {% for key, value in languages.items() %}
-                  {% if key == 'subtitles' %}
-                    {% for item in value %}
-                  <option value="{{item}}">{{item}}</option>  
-                  {% endfor %}
-                  {% endif %}
+                {% for language in languages['subtitles'] %}
+                  <option value="{{language}}">{{language}}</option>  
                 {% endfor %}
-              </select> -->
+              </select>
     <br>
               <br>
               <label for="preferred-audio">Select your default audio:</label>

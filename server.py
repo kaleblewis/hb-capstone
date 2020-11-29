@@ -394,15 +394,25 @@ def recommendations_page():
 @app.route('/search', methods=['POST'])
 def render_specific_movie():
     """Serve up search results based on user's specific input parameters"""
+    
+    current_user = crud.get_user_by_email(session['email'])
+    # current_user_prefs = get_current_user_preferences(current_user)
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    all_genres = crud.get_stored_genres()
+
 
     search_term = request.form.get('search-input')
     search_result = crud.get_movies_by_title(search_term)
 
-    if search_result['id'] != '':
+    if search_result != None:
         flash(f"search results for term: {search_term}")
         session['render-search-results'] = "many"
-        return render_template("homepage.html", 
-        current_recommendations=search_result)
+        return render_template("homepage2.html", 
+            user=current_user,
+            user_genres=current_user_preferred_genres, 
+            all_genres=all_genres, 
+            languages=LANGUAGES,
+            current_recommendations=search_result)
 
     else:
         flash(f"...crickets chirping....  	🦗")

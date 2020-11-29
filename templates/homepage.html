@@ -21,13 +21,13 @@
 </select>
 <br>  
 <br>
-<!-- <label for="preferred-subtitle">Select your default subtitles:</label>
+<label for="preferred-subtitle">Select your default subtitles:</label>
 <select id="preferred-subtitle" name="preferred-subtitle">
   <option value="" selected>any/all</option>
   {% for language in languages['subtitles'] %}
-        <option value="{{language}}">{{language}}</option>  
+    <option value="{{language}}">{{language}}</option>  
   {% endfor %}
-</select> -->
+</select>
 <br>
 <label for="preferred-audio">Select your default audio:</label>
 <select id="preferred-audio" name="preferred-audio">
@@ -112,51 +112,6 @@
 {% endblock %}
 
 
-{% block content %}
-<div class="content">
-
-        
-  {% if session['render-search-results'] is defined %} 
-    {% if session['render-search-results'] == "one" %}
-      {% if current_recommendations['title'] is defined %}
-
-          {% for item in current_results %}
-            {{item}}
-          {% endfor %}
-
-      {% endif %}
-
-    {% elif session['render-search-results'] == "many" %}
-      {% if current_recommendations['title'] is defined %}
-
-        {% for item in current_results %}
-          {{item}}
-        {% endfor %}
-
-      {% endif %}
-
-    {% elif session['render-search-results'] == "filmography" %}
-      {% if current_recommendations['title'] is defined %}
-
-        {% for item in current_results %}
-          {{item}}
-        {% endfor %}
-
-      {% endif %}
-
-    {% else %}
-     
-    please try again
-
-    {% endif %}
-  {% endif %}
-  
-
-
-
-  </div>
-
-{% endblock %}
 {% endblock %}
 {% block js %}
 {% endblock %}

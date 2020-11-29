@@ -11,7 +11,7 @@ from flask.json import jsonify
 from urllib.parse import quote, unquote
 from sqlalchemy import update
 
-MDB_API_KEY = (os.environ.get('TMDB_API_KEY'))
+TMDB_API_KEY = (os.environ.get('TMDB_API_KEY'))
 
 
 
