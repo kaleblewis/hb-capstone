@@ -111,6 +111,52 @@
 
 {% endblock %}
 
+
+{% block content %}
+<div class="content">
+
+        
+  {% if session['render-search-results'] is defined %} 
+    {% if session['render-search-results'] == "one" %}
+      {% if current_recommendations['title'] is defined %}
+
+          {% for item in current_results %}
+            {{item}}
+          {% endfor %}
+
+      {% endif %}
+
+    {% elif session['render-search-results'] == "many" %}
+      {% if current_recommendations['title'] is defined %}
+
+        {% for item in current_results %}
+          {{item}}
+        {% endfor %}
+
+      {% endif %}
+
+    {% elif session['render-search-results'] == "filmography" %}
+      {% if current_recommendations['title'] is defined %}
+
+        {% for item in current_results %}
+          {{item}}
+        {% endfor %}
+
+      {% endif %}
+
+    {% else %}
+     
+    please try again
+
+    {% endif %}
+  {% endif %}
+  
+
+
+
+  </div>
+
+{% endblock %}
 {% endblock %}
 {% block js %}
 {% endblock %}

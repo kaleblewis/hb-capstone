@@ -393,16 +393,15 @@ def recommendations_page():
 
 @app.route('/search', methods=['POST'])
 def render_specific_movie():
-    """Serve up *one* search result based on user's specific input parameters"""
+    """Serve up search results based on user's specific input parameters"""
 
     search_term = request.form.get('search-input')
-    search_result = crud.get_movie_details_by_filmid((crud.search_by_id(\
-        crud.search_by_title(search_term))))
+    search_result = crud.get_movies_by_title(search_term)
 
-    if search_result['imdbid'] != '':
+    if search_result['id'] != '':
         flash(f"search results for term: {search_term}")
-        session['render-search-results'] = "one"
-        return render_template("recommendations.html", 
+        session['render-search-results'] = "many"
+        return render_template("homepage.html", 
         current_recommendations=search_result)
 
     else:
