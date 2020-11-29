@@ -449,11 +449,9 @@ def get_nfinfo_by_id(netflixid):
         accepts parameter: 'filmid' netflix id does not contain alpha chars
         returns: dictionary of netflix info... most importantly: title
 
-    #TODO: update docstring
+    >>> get_nfinfo_details_by_filmid('60035334')
+    {'image1': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'title': 'The Last Unicorn', 'synopsis': 'This animated tale follows a unicorn who believes she may be the last of her species and is searching high and low for someone just like her.', 'matlevel': '35', 'matlabel': 'Contains nothing in theme, language, nudity, sex, violence or other matters that, in the view of the Rating Board, would offend parents whose younger children view the motion picture', 'avgrating': '3.8214536', 'type': 'movie', 'updated': '', 'unogsdate': '2015-07-10 01:09:00', 'released': '1982', 'netflixid': '60035334', 'runtime': '1h32m', 'image2': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'download': '1'}
     """
-# #     >>> get_nfinfo_details_by_filmid('60035334')
-# #     {'image1': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'title': 'The Last Unicorn', 'synopsis': 'This animated tale follows a unicorn who believes she may be the last of her species and is searching high and low for someone just like her.', 'matlevel': '35', 'matlabel': 'Contains nothing in theme, language, nudity, sex, violence or other matters that, in the view of the Rating Board, would offend parents whose younger children view the motion picture', 'avgrating': '3.8214536', 'type': 'movie', 'updated': '', 'unogsdate': '2015-07-10 01:09:00', 'released': '1982', 'netflixid': '60035334', 'runtime': '1h32m', 'image2': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'download': '1'}
-# #     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
 
     querystring = {"t":"loadvideo","q":f"{netflixid}"}
@@ -739,8 +737,6 @@ def get_top10_films_by_genre_name(current_user, genre_name):
     return recommendations
 
 
-
-
 #*############################################################################*#
 #*#                        QUERYHISTORY OPERATIONS                           #*#
 #*############################################################################*#
@@ -834,6 +830,7 @@ def create_location(id, name, abbr, subtitle="", audio=""):
 
     return location
 
+
 def get_all_genres():
     """ Return a dictionary of each of Netflix's IDs and Genre names.
 
@@ -851,7 +848,6 @@ def get_all_genres():
     }
 
     headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')  
-
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
