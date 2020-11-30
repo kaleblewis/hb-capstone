@@ -442,23 +442,21 @@ def show_title(filmid):
             current_recommendations=title)
 
 
-@app.route('/actor/<actorname>',  methods=['GET'])
-def show_all_films_by_person_name(actorname):
-    """Show film results for a particular actor."""
+@app.route('/people/<person_id>',  methods=['GET'])
+def show_all_films_by_person_name(person_id):
+    """Show film results for a particular person."""
 
-    actor_name = unquote(actorname)
-
-    filmography = crud.get_all_films_by_person_name(actor_name)
+    filmography = crud.get_titles_with_person(person_id)
 
     current_user = crud.get_user_by_email(session['email'])
     # current_user_prefs = get_current_user_preferences(current_user)
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-    flash(f"Filmography based on name:  '{actorname}' ")
-    session['render-search-results'] = "filmography"
+    # flash(f"Filmography based on name:  '{actorname}' ")
+    session['render-search-results'] = "many"
 
-    return render_template('recommendations.html', 
+    return render_template('homepage2.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
