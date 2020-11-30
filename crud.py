@@ -1298,21 +1298,58 @@ def get_keywords_with_movie_id(movie_id):
     return search_results['keywords']
 
 
+def get_providers_in_USA_with_movie_id(movie_id):
+    """Return online movie providers from movie id.
+
+    Returns US response only.
+    600+ other options available.
+
+    # TODO:  decide how to wrangle the different TV/movie endpoints??
+        # https://developers.themoviedb.org/3/movies/get-movie-details
+        # https://developers.themoviedb.org/3/tv/get-tv-details
+        
+    >>> get_providers_in_USA_with_movie_id(603).keys()
+    dict_keys(['flatrate', 'rent', 'buy'])
+    """
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers?api_key={TMDB_API_KEY}"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    providers = dict()
+
+    # # bubble up the US service results into the top layer of dict
+    providers['flatrate'] = search_results['results']['US']['flatrate']
+    providers['rent'] = search_results['results']['US']['rent']
+    providers['buy'] = search_results['results']['US']['buy']
+
+    return providers
+
+
 def get_person_details_from_person_id(person_id):
     """Return recommendations from people_id.
 
     # https://developers.themoviedb.org/3/people/get-person-details
     # https://developers.themoviedb.org/3/people/get-person-combined-credits
+    # https://developers.themoviedb.org/3/people/get-person-external-ids
     
     >>>get_person_details_from_person_id(15309)['name']
     Lori Petty
     """
 
-    url = f"https://api.themoviedb.org/3/person/{person_id}?api_key={TMDB_API_KEY}&append_to_response=combined_credits"
+    url = f"https://api.themoviedb.org/3/person/{person_id}?api_key={TMDB_API_KEY}&append_to_response=combined_credits,external_ids"
 
     response = requests.get(url)
 
     search_results = json.loads(response.text)
+
+    print(search_results['external_ids'])
+
+    # bubble up the IDs into the top layer of dict
+    for external_source in search_results['external_ids'].keys():
+        search_results[external_source] = search_results['external_ids'][external_source]
 
     return search_results
 
@@ -1408,7 +1445,7 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     [{'aspect_ratio': 0.6706349206349206, 'file_path': '/qwFRLa87lFLhuXi0Is33jMBSuUB.jpg', 'height': 1008, 'iso_639_1': None, 'vote_average': 5.312, 'vote_count': 1, 'width': 676}, {'aspect_ratio': 0.6708407871198568, 'file_path': '/vsTC6jddyfy25GirpCVtZ7GOB7A.jpg', 'height': 1118, 'iso_639_1': 'zh', 'vote_average': 0.0, 'vote_count': 0, 'width': 750}, {'aspect_ratio': 0.6741573033707865, 'file_path': '/uSgDJaLSFh2oOUMRevaxJWwbh4b.jpg', 'height': 1780, 'iso_639_1': 'zh', 'vote_average': 0.0, 'vote_count': 0, 'width': 1200}]
     """
 
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&append_to_response=images&include_image_language={language_id},null"
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&append_to_response=similar,images&include_image_language={language_id},null"
 
     response = requests.get(url)
 
@@ -1424,7 +1461,11 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     for key, value in people.items():
         search_results[key] = value
     
-    print(search_results)
+    #append the provider data so it ends up in the same level of the dict
+    providers = get_providers_in_USA_with_movie_id(movie_id)
+
+    for key, value in providers.items():
+        search_results[key] = value
 
     return search_results
 
