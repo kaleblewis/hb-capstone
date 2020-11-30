@@ -1356,11 +1356,15 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     [{'aspect_ratio': 0.6706349206349206, 'file_path': '/qwFRLa87lFLhuXi0Is33jMBSuUB.jpg', 'height': 1008, 'iso_639_1': None, 'vote_average': 5.312, 'vote_count': 1, 'width': 676}, {'aspect_ratio': 0.6708407871198568, 'file_path': '/vsTC6jddyfy25GirpCVtZ7GOB7A.jpg', 'height': 1118, 'iso_639_1': 'zh', 'vote_average': 0.0, 'vote_count': 0, 'width': 750}, {'aspect_ratio': 0.6741573033707865, 'file_path': '/uSgDJaLSFh2oOUMRevaxJWwbh4b.jpg', 'height': 1780, 'iso_639_1': 'zh', 'vote_average': 0.0, 'vote_count': 0, 'width': 1200}]
     """
 
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&append_to_response=keywords,images&include_image_language={language_id},null"
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&append_to_response=images&include_image_language={language_id},null"
 
     response = requests.get(url)
 
     search_results = json.loads(response.text)
+
+    # append the keyword data so it ends up in the same level of the dict as the 
+    # rest of the data/KVPs
+    search_results['keywords'] = get_keywords_with_movie_id(movie_id)
 
     return search_results
 

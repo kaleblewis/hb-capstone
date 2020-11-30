@@ -425,7 +425,7 @@ def render_specific_movie():
 def show_title(filmid):
     """Show full details on a particular title."""
 
-    title = crud.get_movie_details_by_filmid(filmid)
+    title = crud.get_full_details_with_movie_id(filmid)
 
     current_user = crud.get_user_by_email(session['email'])
     # current_user_prefs = get_current_user_preferences(current_user)
@@ -434,7 +434,7 @@ def show_title(filmid):
 
     session['render-search-results'] = "one"
 
-    return render_template('recommendations.html', 
+    return render_template('homepage2.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 
