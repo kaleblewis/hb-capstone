@@ -1257,7 +1257,50 @@ def get_IMDB_id_by_movie_id(movie_id):
 
     response = requests.get(url)
 
-    return json.loads(response.text)
+    return json.loads(response.text)['imdb_id']
+
+
+def get_netflix_id_by_IMDB_id(imdb_id):
+    """ Pass 'imdbid' to *unofficial* netflix API to receive netflix 'filmid'.
+
+    Accepts string of alpha and numeric chars
+        accepts parameter: 'imdbid' which begins with two alpha chars
+        returns result: 'filmid' netflix id does not contain alpha chars
+
+    >>> search_by_id('tt0084237')
+    60035334
+
+    >>> search_by_id(search_by_title('the last unicorn'))
+    60035334
+    """
+
+    url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
+
+    querystring = {"t":"getimdb","q":f"{imdb_id}"}
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
+        }
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
+
+    n_response = requests.request("GET", url, headers=headers, params=querystring)
+
+    n_list = []
+    n_payload = json.loads(n_response.text)
+    n_list.append(n_payload)
+
+    n_dictionary = (n_list[0])
+
+    netflix_id = ""
+
+    try:
+        if n_dictionary['filmid']:
+            netflix_id = n_dictionary['filmid']
+    except KeyError:
+        netflix_id = False
+
+    return netflix_id
 
 
 def get_image_with_movie_id(movie_id):
@@ -1331,14 +1374,14 @@ def get_providers_in_USA_with_movie_id(movie_id):
         if search_results['results']['US']['rent']:
             providers['rent'] = search_results['results']['US']['rent']
     except KeyError:
-        providers['flatrate'] = None
+        providers['rent'] = None
     
     try:
         if search_results['results']['US']['buy']:
             providers['buy'] = search_results['results']['US']['buy']
     except KeyError:
-        providers['flatrate'] = None
-    
+        providers['buy'] = None
+
     return providers
 
 
@@ -1358,8 +1401,6 @@ def get_person_details_from_person_id(person_id):
     response = requests.get(url)
 
     search_results = json.loads(response.text)
-
-    print(search_results['external_ids'])
 
     # bubble up the IDs into the top layer of dict
     for external_source in search_results['external_ids'].keys():
@@ -1480,6 +1521,10 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
 
     for key, value in providers.items():
         search_results[key] = value
+
+    for provider in providers['flatrate']:
+        if provider['provider_name'] == 'Netflix':
+            search_results['netflix_id'] = get_netflix_id_by_IMDB_id(get_IMDB_id_by_movie_id(movie_id))
 
     return search_results
 
