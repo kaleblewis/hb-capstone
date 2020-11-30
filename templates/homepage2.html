@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %} Homepage {% endblock %}
+
+{% block body %}
+
+<div id="search-result" class="row">
+
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 title-summary">
+
+
+<!-- TODO: make search sidebar show up only when user is logged in -->
+{% block sidebar %}
+<div class="sidebar">
+<h3>update your search parameters below:</h3>
+          
+<form action='/recommendations' method="POST">
+  <div class="form-group">
+
+<label for="movie-or-series-input"> movie or series?</label>           
+<select id="movie-or-series-input" name="movie-or-series-input">
+  <option value="" selected>any/all</option>
+  <option value="movie"> movie </option>
+  <option value="series"> series </option>
+</select>
+<br>  
+<br>
+<label for="preferred-subtitle">Select your default subtitles:</label>
+<select id="preferred-subtitle" name="preferred-subtitle">
+  <option value="" selected>any/all</option>
+  {% for language in languages['subtitles'] %}
+    <option value="{{language}}">{{language}}</option>  
+  {% endfor %}
+</select>
+<br>
+<label for="preferred-audio">Select your default audio:</label>
+<select id="preferred-audio" name="preferred-audio">
+  <option value="" selected>any/all</option>
+  {% for language in languages['audio'] %}
+        <option value="{{language['id']}}">{{language['language']}}</option>  
+  {% endfor %}
+</select>
+<br>
+<br>
+<label for="date-range-start"> production date "from when?":</label>           
+<select id="date-range-start" name="date-range-start">
+  <option value="" selected>any/all</option>
+  <option value=2020>released within past year</option>
+  <option value=2000>on or after 2000</option>
+  <option value=1990>on or after 1990</option>
+  <option value=1980>on or after 1980</option>
+  <option value=1970>on or after 1970</option>
+  <option value=1960>on or after 1960</option>
+  <option value=1950>on or after 1950</option>
+  <option value=1940>on or after 1940</option>
+  <option value=1930>on or after 1930</option>
+  <option value=1920>on or after 1920</option>
+  <option value=1910>on or after 1910</option>
+</select>
+<br>        
+<label for="date-range-end"> production date "to when?":</label>           
+<select id="date-range-end" name="date-range-end">
+  <option value="" selected>any/all</option>
+  <option value=2020>released within past year</option>
+  <option value=2000>up until 2000</option>
+  <option value=1990>up until 1990</option>
+  <option value=1980>up until 1980</option>
+  <option value=1970>up until 1970</option>
+  <option value=1960>up until 1960</option>
+  <option value=1950>up until 1950</option>
+  <option value=1940>up until 1940</option>
+  <option value=1930>up until 1930</option>
+  <option value=1920>up until 1920</option>
+  <option value=1910>up until 1910</option>
+</select>
+<br>
+<br>
+<label for="start-rating-input"> minimum imdb rating:</label>
+<input type="number"
+    id="start-rating-input"
+    name="start-rating-input"
+    placeholder="1-10"
+    min="0" 
+    max="9"
+    value="3" />
+
+<br>
+<label for="end-rating-input"> maximum imdb rating:</label>
+<input type="number"
+   id="end-rating-input"
+   name="end-rating-input"
+   placeholder="1-5"
+   min="1" 
+   max="10"
+   value="10" />
+<br>
+<br>
+<label for="genre-input">one of genre(s):
+    <br> (inclusive "OR" criteria)
+</label>         
+<select id="genre-input" name="genre-input">
+  <option value="all" selected>any/all</option>
+  {% for obj in all_genres %}
+  {% for field in obj.__table__.columns._data.keys() %}
+    {% if field == 'name' %}
+    <option value="{{ obj['id'] }}">{{ obj['name'] }}</option>
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+</select>
+<br>
+
+<input type="submit" value="search" id="submit-input"/>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="content">
+    <div class="search-result">
+        
+  {% if current_recommendations is defined %} 
+    {% if session['render-search-results'] == "one" %}
+  
+      {% if current_recommendations is defined %}
+    
+
+        <p><b>
+        <img src="http://image.tmdb.org/t/p/w185/{{ current_recommendations['poster_path'] }}" width="40" height="60"> 
+        {{ current_recommendations['title'] }}   ({{ current_recommendations['release_date'][:4]}})</b> </p>
+
+        {% if current_recommendations['title'] != current_recommendations['original_title'] %} <p><i>originally: "{{ current_recommendations['original_title'] }}"</i> </p> {% endif %}
+
+        <p>{% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  |  {% endif %} <a href="https://www.imdb.com/title/{{ current_recommendations['imdb_id'] }}"> View trailer on imdb </a></p>
+
+        <p> {% if current_recommendations['popularity'] is defined %} Popularity: {{ current_recommendations['popularity'] }} | {% endif %}  
+            {% if current_recommendations['vote_count'] is defined %} Total Votes: {{ current_recommendations['vote_count'] }} | {% endif %}  
+            {% if current_recommendations['vote_average'] is defined %} Average Vote: {{ current_recommendations['vote_average'] }} 
+            ⭐ ⭐ ⭐ ★ ★ {% endif %}  
+        </p>
+
+        
+        {% if current_recommendations['tagline'] is defined %} <h4>{{ current_recommendations['tagline'] }} </h4>{% endif %}
+      
+        {% if current_recommendations['overview'] is defined %} <p><b>Synopsis:</b> <i>{{ current_recommendations['overview'] }} </i></p>{% endif %} 
+
+
+        {% if current_recommendations['genres'] != [] %}<p> 🎭 Genres:   {% for genre in current_recommendations['genres'] %} 
+          <a href="/genre/{{ genre['name'] }}"> {{ genre['name']}}</a>
+          {%- if not loop.last -%} , {% endif %} 
+        {% endfor %} </p>{% endif %}
+
+        {% if current_recommendations['actors'] != [] %}<p> Top Cast:   {% for actors in current_recommendations['actors'] %} 
+          <a href="/people/{{ actors['id'] }}"> {{ actors['name'] }}</a>
+          {%- if not loop.last -%} , {% endif %} 
+        {% endfor %} </p>{% endif %}
+              
+        {% if current_recommendations['directors'] != [] %}<p> Director(s):   {% for directors in current_recommendations['directors'] %} 
+          <a href="/people/{{ directors['id'] }}"> {{ directors['name'] }}</a>
+          {%- if not loop.last -%} , {% endif %} 
+        {% endfor %} </p>{% endif %}
+
+
+        {% if current_recommendations['composers'] != [] %}<p>   Composer(s):   {% for composers in current_recommendations['composers'] %} 
+          <a href="/people/{{ composers['id'] }}"> {{ composers['name'] }}</a>
+          {%- if not loop.last -%} , {% endif %} 
+        {% endfor %} </p>{% endif %}
+            
+        {% if current_recommendations['keywords'] != [] %}<p>   Keywords:   {% for keyword in current_recommendations['keywords'] %} 
+          <a href="/keyword/{{ keyword['name'] }}"> {{ keyword['name'] }}</a>
+            {%- if not loop.last -%} , {% endif %} 
+          {% endfor %} </p>{% endif %}
+
+        {% if current_recommendations['production_companies'] != [] %}<p> Produced by:   {% for company in current_recommendations['production_companies'] %}  
+          <a href="/studio/{{ company['name'] }}"> {{ company['name'] }}</a>,  
+            {% if loop.last %}
+              <a href="/studio/{{ company['name'] }}"> {{ company['name'] }}</a>
+            {% endif %} 
+          {% endfor %} </p>{% endif %} 
+
+
+        {% endif %}
+
+
+    {% elif session['render-search-results'] == "many" %}
+    
+
+    {% for result_number, movie_result in current_recommendations.items() %}  
+                
+      {% if result_number == 'error' %}
+          {{ movie_result }}
+      
+      {% elif movie_result['title'] is defined %}
+        
+            
+          <b><a href="/title/{{ movie_result['id'] }}"> 
+            {% if movie_result['poster_path'] != None %} <img src="http://image.tmdb.org/t/p/w185/{{ movie_result['poster_path'] }}" width="40" height="60">  {% endif %}
+            {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %} ({{ movie_result['release_date'][:4]}})</b>  {% endif %}<br> 
+
+          {% if movie_result['title'] != movie_result['original_title'] %} <p><i>originally: "{{ movie_result['original_title'] }}"</i> </p> {% endif %}
+
+          <p>  {% if movie_result['popularity'] is defined %} Popularity:  {{ movie_result['popularity'] }} | {% endif %} 
+               {% if movie_result['vote_count'] is defined %} Total Votes: {{ movie_result['vote_count'] }} | {% endif %} 
+               {% if movie_result['vote_average'] is defined %} Average Vote: {{ movie_result['vote_average'] }} {% endif %}
+          </p>      
+
+          {% if movie_result['overview'] is defined %} <p><b>Synopsis:</b> <i>{{ movie_result['overview'] }} </i></p>{% endif %} 
+
+          {#    {% if movie_result['production_companies'] is defined %} Produced by:   {% for obj in production_companies %}  #}
+          {#   <a href="/studio/{{ production_companies['id'] }}"> {{production_companies['name']}}</a>,  #}
+          {#       {% endfor %} {% endif %} #}
+
+          <br><hr><br>
+
+          {% endif %}
+
+      {% endfor %}
+   
+
+    {% elif session['render-search-results'] == "filmography" %}
+    
+
+        {% for item in current_recommendations %}
+          {{item}}
+        {% endfor %}
+
+    
+
+    {% else %}
+     
+    please try again
+
+    {% endif %}
+  {% endif %}
+
+  {{ current_recommendations }}
+
+</div>
+</div>
+
+{% endblock %}
+{% endblock %}
+{% block js %}
+{% endblock %}
