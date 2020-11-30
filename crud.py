@@ -1302,6 +1302,85 @@ def get_netflix_id_by_IMDB_id(imdb_id):
 
     return netflix_id
 
+def get_netflix_details_by_netflix_id(netflix_id):
+    """Pass 'netflix_id' to receive all KVPs
+
+    >>> get_nfinfo_details_by_filmid('60035334')
+    {'image1': \
+    'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', \
+    'title': 'The Last Unicorn', 'synopsis': 'This animated tale follows a \
+    unicorn who believes she may be the last of her species and is  searching \
+    high and low for someone just like her.', 'matlevel': '35', 'matlabel': \
+    'Contains nothing in theme, language, nudity, sex, violence or other \
+    matters that, in the view of the Rating Board, would offend parents whose \
+    younger children view the motion picture', 'avgrating': '3.8214536', \
+    'type': 'movie', 'updated': '', 'unogsdate': '2015-07-10 01:09:00', \
+    'released': '1982', 'netflixid': '60035334', 'runtime': '92 min', \
+    'image2': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', \
+    'download': '1', 'rating': '7.5', 'votes': '23234', 'metascore': '70', \
+    'genre': 'Animation, Adventure, Drama, Family, Fantasy', 'awards': \
+    '1 nomination.', 'plot': 'From a riddle-speaking butterfly, a unicorn \
+    learns that she is supposedly the last of her kind, all the others having \
+    been herded away by the Red Bull. The unicorn sets out to discover the \
+    truth behind the butterfly&amp;#39;s words. She is eventually joined on \
+    her quest by Schmendrick, a second-rate magician, and Molly Grue, a now \
+    middle-aged woman who dreamed all her life of seeing a unicorn. Their \
+    journey leads them far from home, all the way to the castle of King \
+    Haggard...', 'country': [], 'language': 'English, German', 'imdbid': \
+    'tt0084237', 'mgname': ['Animal Tales', 'Family Sci-Fi & Fantasy', \
+    'Children & Family Films', 'Films for ages 8 to 10', 'Films based on \
+    childrens books', 'Films for ages 11 to 12'], 'genreid': ['5507', '52849', \
+    '783', '561', '10056', '6962'], 'actors': ['Alan Arkin', 'Jeff Bridges', \
+    'Mia Farrow', 'Tammy Grimes', 'Angela Lansbury', 'Robert Klein', \
+    'Keenan Wynn', 'Christopher Lee', 'Rene Auberjonois', 'Paul Frees', \
+    'Jack Lester', 'Brother Theodore', 'Don Messick', 'Ed Peck', \
+    'Kenneth Jennings', 'Nellie Bellflower'], 'creators': ['Peter S. Beagle'], \
+    'directors': ['Jules Bass', 'Arthur Rankin Jr.']}
+    """
+    url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
+
+    querystring = {"t":"loadvideo","q":f"{netflix_id}"}
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "unogs-unogs-v1.p.rapidapi.com"
+        }
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    n_list = []
+    n_payload = json.loads(response.text)
+    n_list.append(n_payload)
+
+    n_dictionary = n_list[0].values()
+    new_list = list(n_dictionary)
+    n_str_result = new_list[0]
+
+    #extract a *dictionary* of the NETFLIX specific data 
+    nfinfo = n_str_result['nfinfo']
+    nfinfo['runtime'] = '' # <-- strip this runtime, it's a mash of hrs and mins
+
+    #extract a *dictionary* of the IMDB specific data 
+    imdbinfo = n_str_result['imdbinfo'] # <-- we get runtime in just mins here
+
+    #combine the imdbinfo KVPs into one dictionary
+    dictionary_results =  {}
+
+    # Make sure every key of the 2 dictionaries get into the final dictionary
+    dictionary_results.update(nfinfo)
+    dictionary_results.update(imdbinfo)
+
+    #extract and append key:value(list) of GENRE NAMES
+    dictionary_results['mgname'] = n_str_result['mgname']
+
+    #extract and append key:value(list) of GENRE IDs
+    dictionary_results['genreid'] = n_str_result['Genreid']  
+    #  yes, that's a capital "G" for some reason  ^
+
+    #return one big flattened dictionary of all of the KVPs from the API response
+    return dictionary_results
+
 
 def get_image_with_movie_id(movie_id):
     """Return image types and paths from movie id.
@@ -1524,7 +1603,14 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
 
     for provider in providers['flatrate']:
         if provider['provider_name'] == 'Netflix':
-            search_results['netflix_id'] = get_netflix_id_by_IMDB_id(get_IMDB_id_by_movie_id(movie_id))
+            netflix_id = get_IMDB_id_by_movie_id(movie_id)
+            search_results['netflix_id'] = get_netflix_id_by_IMDB_id(netflix_id)
+            search_results['netflix_info'] = get_netflix_details_by_netflix_id(netflix_id)
+
+            print()
+            print()
+            print()
+            print(search_results['netflix_info'])
 
     return search_results
 
