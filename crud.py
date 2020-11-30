@@ -1321,10 +1321,24 @@ def get_providers_in_USA_with_movie_id(movie_id):
     providers = dict()
 
     # # bubble up the US service results into the top layer of dict
-    providers['flatrate'] = search_results['results']['US']['flatrate']
-    providers['rent'] = search_results['results']['US']['rent']
-    providers['buy'] = search_results['results']['US']['buy']
-
+    try:
+        if search_results['results']['US']['flatrate']:
+            providers['flatrate'] = search_results['results']['US']['flatrate']
+    except KeyError:
+        providers['flatrate'] = None
+    
+    try:
+        if search_results['results']['US']['rent']:
+            providers['rent'] = search_results['results']['US']['rent']
+    except KeyError:
+        providers['flatrate'] = None
+    
+    try:
+        if search_results['results']['US']['buy']:
+            providers['buy'] = search_results['results']['US']['buy']
+    except KeyError:
+        providers['flatrate'] = None
+    
     return providers
 
 
