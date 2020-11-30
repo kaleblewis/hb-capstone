@@ -493,20 +493,20 @@ def show_top10_films_by_genre_name(genrename):
 
 @app.route('/keyword/<keyword>',  methods=['GET'])
 def show_top10_films_by_keyword(keyword):
-    """Show top-10 best rated films results for a particular keyword."""
+    """Show films results for a particular keyword."""
 
-    keyword_name = unquote(keyword)
+    keyword_id = crud.get_keyword_id_by_name(keyword)
     current_user = crud.get_user_by_email(session['email'])
 
-    films_of_keyword = crud.get_top10_films_by_keyword_name(current_user, keyword_name)
+    films_of_keyword = crud.get_titles_with_keyword(keyword_id)
     # current_user_prefs = get_current_user_preferences(current_user)
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-    flash(f"results based on keyword name:  '{keyword_name}' ")
+    flash(f"results based on keyword name:  '{keyword}' ")
     session['render-search-results'] = "many"
 
-    return render_template('recommendations.html', 
+    return render_template('homepage2.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=all_genres, 

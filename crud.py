@@ -1317,6 +1317,58 @@ def get_person_details_from_person_id(person_id):
     return search_results
 
 
+def get_top_10_cast_from_credits_with_movie_id(movie_id):
+    """ Return the top 10 cast by popularity for given movie.
+
+    >>>get_top_10_cast_from_credits_with_movie_id(550)
+
+    """
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}"
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    layer = {}
+
+    for person in search_results['cast']:
+        layer[person['popularity']] = person
+
+    dictionary_items = layer.items()
+
+    sorted_cast = sorted(layer.items())
+    
+    actors = []
+    # append top 10 cast
+    for person in sorted_cast[-1:-11:-1]:
+        print()
+        print(person[1])
+        actors.append(person[1])
+
+    directors = []
+    # append directors
+    for index, person in enumerate(search_results['crew']):
+        if 'job' in person.keys():
+            if 'Director' in person.values():
+                directors.append(person)
+
+    composers = []
+    # append composers
+    for index, person in enumerate(search_results['crew']):
+        if 'job' in person.keys():
+            if 'Original Music Composer' in person.values():
+                composers.append(person)
+
+    people = {}
+
+    people['actors'] = actors
+    people['directors'] = directors
+    people['composers'] = composers
+
+    return people
+
+
 def get_basic_details_with_movie_id(movie_id):
     """Return preliminary movie details from movie id.
 
@@ -1365,6 +1417,14 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     # append the keyword data so it ends up in the same level of the dict as the 
     # rest of the data/KVPs
     search_results['keywords'] = get_keywords_with_movie_id(movie_id)
+
+    #append the people data so it ends up in the same level of the dict
+    people = get_top_10_cast_from_credits_with_movie_id(movie_id)
+
+    for key, value in people.items():
+        search_results[key] = value
+    
+    print(search_results)
 
     return search_results
 
