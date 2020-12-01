@@ -1302,6 +1302,7 @@ def get_netflix_id_by_IMDB_id(imdb_id):
 
     return netflix_id
 
+
 def get_netflix_details_by_netflix_id(netflix_id):
     """Pass 'netflix_id' to receive all KVPs
 
@@ -1380,6 +1381,36 @@ def get_netflix_details_by_netflix_id(netflix_id):
 
     #return one big flattened dictionary of all of the KVPs from the API response
     return dictionary_results
+
+
+def get_imdb_details_with_imdb_id(imdb_id):
+    """Pass imdb_id to receive useful imdb rating/etc data.
+    
+    >>>get_imdb_details_with_imdb_id('tt0036855')['Year']
+    1944
+    """
+
+    url = "https://movie-database-imdb-alternative.p.rapidapi.com/"
+
+    querystring = {"i":f"{imdb_id}","r":"json"}
+
+    headers = {
+        'x-rapidapi-key': "",
+        'x-rapidapi-host': "movie-database-imdb-alternative.p.rapidapi.com"
+        }
+    headers['x-rapidapi-key'] = os.environ.get('API_TOKEN_1')
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    search_results = json.loads(response.text)
+
+    ratings = {}
+
+    for rating in search_results['Ratings']:
+        key_name = str(rating['Source']).lower().replace(" ", "_")
+        search_results["ratings_"+key_name] = rating
+
+    return search_results
 
 
 def get_image_with_movie_id(movie_id):
@@ -1589,34 +1620,44 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     # rest of the data/KVPs
     search_results['keywords'] = get_keywords_with_movie_id(movie_id)
 
-    #append the people data so it ends up in the same level of the dict
+    # append the people data so it ends up in the same level of the dict
     people = get_top_10_cast_from_credits_with_movie_id(movie_id)
 
     for key, value in people.items():
         search_results[key] = value
     
-    #append the provider data so it ends up in the same level of the dict
+    # append the provider data so it ends up in the same level of the dict
     providers = get_providers_in_USA_with_movie_id(movie_id)
 
     for key, value in providers.items():
         search_results[key] = value
 
-    for provider in providers['flatrate']:
-        if provider['provider_name'] == 'Netflix':
-            netflix_id = get_IMDB_id_by_movie_id(movie_id)
-            search_results['netflix_id'] = get_netflix_id_by_IMDB_id(netflix_id)
-            netflix_info = get_netflix_details_by_netflix_id(netflix_id)
+    # append Netflix data if Netflix is an available provider
 
-            search_results['netflix_matlevel'] = netflix_info['matlevel']
-            search_results['netflix_matlabel'] = netflix_info['matlabel']
-            search_results['netflix_type'] = netflix_info['type']
-            search_results['netflix_downloadable'] = netflix_info['download']
-            search_results['netflix_metascore'] = netflix_info['metascore']
-            search_results['netflix_awards'] = netflix_info['awards']
-            search_results['netflix_genres'] = netflix_info['mgname']
-            search_results['netflix_genreids'] = netflix_info['genreid']
-            search_results['netflix_image1'] = netflix_info['image1']
-            search_results['netflix_image2'] = netflix_info['image2']
+    if providers['flatrate'] != None:
+        for provider in providers['flatrate']:
+            if provider['provider_name'] == 'Netflix':
+
+                imdb_id = search_results['imdb_id']
+                search_results['netflix_id'] = get_netflix_id_by_IMDB_id(imdb_id)
+                netflix_info = get_netflix_details_by_netflix_id(search_results['netflix_id'])
+      
+                search_results['netflix_matlevel'] = netflix_info['matlevel']
+                search_results['netflix_matlabel'] = netflix_info['matlabel']
+                search_results['netflix_type'] = netflix_info['type']
+                search_results['netflix_downloadable'] = netflix_info['download']
+                search_results['netflix_metascore'] = netflix_info['metascore']
+                search_results['netflix_awards'] = netflix_info['awards']
+                search_results['netflix_genres'] = netflix_info['mgname']
+                search_results['netflix_genreids'] = netflix_info['genreid']
+                search_results['netflix_image1'] = netflix_info['image1']
+                search_results['netflix_image2'] = netflix_info['image2']
+
+    # append IMDb info with better ratings data, etc
+    imdb_data = get_imdb_details_with_imdb_id(search_results['imdb_id'])
+    
+    for key, value in imdb_data.items():
+        search_results['imdb_' + key] = value
 
     return search_results
 

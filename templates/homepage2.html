@@ -134,10 +134,12 @@
         {% if current_recommendations['title'] != current_recommendations['original_title'] %} <p><i>originally: "{{ current_recommendations['original_title'] }}"</i> </p> {% endif %}
 
         <p>{% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  |{% endif %} 
-          {% if current_recommendations['netflix_type'] == 'movie' %}🎬 {{ current_recommendations['netflix_type'] }} {% elif current_recommendations['netflix_type'] == 'series' %} | 📺 {{ current_recommendations['netflix_type'] }}{% endif %}
-          {% if current_recommendations['netflix_downloadable'] == '1' %}| 📶 downloadable from Netflix {% endif %}
-          {% if current_recommendations['netflix_matlevel'] != "" %}|<a title="{{ current_recommendations['netflix_matlabel'] }}"> 🔰 {{ current_recommendations['netflix_matlabel'] }} </a> {% endif %}</p>  
-        </p>
+          {% if netflix_id is defined %}
+            {% if current_recommendations['netflix_type'] == 'movie' %}🎬 {{ current_recommendations['netflix_type'] }} {% elif current_recommendations['netflix_type'] == 'series' %} | 📺 {{ current_recommendations['netflix_type'] }}{% endif %}
+            {% if current_recommendations['netflix_downloadable'] == '1' %}| 📶 downloadable from Netflix {% endif %}
+            {% if current_recommendations['netflix_matlevel'] != "" %}|<a title="{{ current_recommendations['netflix_matlabel'] }}"> 🔰 {{ current_recommendations['netflix_matlabel'] }} </a> {% endif %}
+        {% endif %}
+        </p>  
         
 
         <p>
@@ -155,8 +157,9 @@
             {% if current_recommendations['vote_average'] is defined %} Average Vote: {{ current_recommendations['vote_average'] }} 
             ⭐ ⭐ ⭐ ★ ★ {% endif %}  
         </p>
+        {% if netflix_id is defined %}
         {% if current_recommendations['netflix_top250'] is defined %}{% if movie_result['top250tv'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %} {% endif %}
-        {% if current_recommendations['netflix_awards'] != '' %} <p>🏆 {{ current_recommendations['netflix_awards'] }}</p> {% endif %}
+        {% if current_recommendations['netflix_awards'] != '' %} <p>🏆 {{ current_recommendations['netflix_awards'] }}</p> {% endif %}{% endif %}
 
         <hr>
         {% if current_recommendations['tagline'] is defined %} <h4>{{ current_recommendations['tagline'] }} </h4>{% endif %}
