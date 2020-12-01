@@ -1614,6 +1614,14 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
 
     search_results = json.loads(response.text)
 
+    # pull "similar" nested info up a level, so it can be displayed in jinja
+    similar_titles = dict()
+
+    for title in search_results['similar']['results']:
+        similar_titles[title['id']] = title
+    
+    search_results['similar'] = similar_titles
+
     # append the keyword data so it ends up in the same level of the dict as the 
     # rest of the data/KVPs
     search_results['keywords'] = get_keywords_with_movie_id(movie_id)
@@ -1660,7 +1668,7 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
         key_phrase = "imdb_" + str(key).lower()
 
         search_results[key_phrase] = value
-
+    print(search_results)
     return search_results
 
 

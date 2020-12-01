@@ -405,7 +405,7 @@ def render_specific_movie():
     search_result = crud.get_movies_by_title(search_term)
 
     if search_result != None:
-        flash(f"search results for term: {search_term}")
+        flash(f"search results: {search_term}")
         session['render-search-results'] = "many"
         return render_template("homepage2.html", 
             user=current_user,
@@ -442,8 +442,8 @@ def show_title(filmid):
             current_recommendations=title)
 
 
-@app.route('/people/<person_id>',  methods=['GET'])
-def show_all_films_by_person_name(person_id):
+@app.route('/people/<person_id>_<person_name>',  methods=['GET'])
+def show_all_films_by_person_name(person_id, person_name):
     """Show film results for a particular person."""
 
     filmography = crud.get_titles_with_person(person_id)
@@ -453,7 +453,7 @@ def show_all_films_by_person_name(person_id):
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-    # flash(f"Filmography based on name:  '{actorname}' ")
+    flash(f'{person_name}')
     session['render-search-results'] = "many"
 
     return render_template('homepage2.html', 

@@ -192,17 +192,17 @@
         <hr>
 
         {% if current_recommendations['actors'] != [] %}<p> Top Cast:   {% for actors in current_recommendations['actors'] %} 
-          <a href="/people/{{ actors['id'] }}"> {{ actors['name'] }}</a>
+          <a href="/people/{{ actors['id'] }}_{{ actors['name'] }}"> {{ actors['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
               
         {% if current_recommendations['directors'] != [] %}<p> Director(s):   {% for directors in current_recommendations['directors'] %} 
-          <a href="/people/{{ directors['id'] }}"> {{ directors['name'] }}</a>
+          <a href="/people/{{ directors['id'] }}_{{ directors['name'] }}"> {{ directors['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
 
         {% if current_recommendations['composers'] != [] %}<p>   Composer(s):   {% for composers in current_recommendations['composers'] %} 
-          <a href="/people/{{ composers['id'] }}"> {{ composers['name'] }}</a>
+          <a href="/people/{{ composers['id'] }}_{{ composers['name'] }}"> {{ composers['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
 
@@ -224,6 +224,16 @@
           {% endfor %} </p>{% endif %} 
 
           <hr>
+
+          {% if current_recommendations['similar'] is defined %}{% if current_recommendations['similar'] != None %}<p> Similar:   {% for item in current_recommendations['similar'].items() %}  
+              <a href="/title/{{ item[1]['id'] }}"><img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} ({{item[1]['release_date'][:4]}}) - {{item[1]['overview']}}" width="40" height="60"></a>  
+            {% endfor %} </p>{% endif %} {% endif %} 
+
+
+
+
+          <hr>
+
         {% endif %}
 
 
@@ -237,10 +247,13 @@
       
       {% elif movie_result['title'] is defined %}
         
-            
+      
           <b><a href="/title/{{ movie_result['id'] }}"> 
-            {% if movie_result['poster_path'] != None %} <img src="http://image.tmdb.org/t/p/w185/{{ movie_result['poster_path'] }}" width="40" height="60">  {% endif %}
-            {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %} ({{ movie_result['release_date'][:4]}})</b>  {% endif %}<br> 
+
+            {% if movie_result['poster_path'] is defined %}{% if movie_result['poster_path'] != None %} 
+            <img src="http://image.tmdb.org/t/p/w185/{{ movie_result['poster_path'] }}" width="40" height="60"> {% endif %}{% endif %}
+
+            {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %} ({{ movie_result['release_date'][:4]}}) {% endif %}<br> </b> 
 
           {% if movie_result['title'] != movie_result['original_title'] %} <p><i>originally: "{{ movie_result['original_title'] }}"</i> </p> {% endif %}
 
