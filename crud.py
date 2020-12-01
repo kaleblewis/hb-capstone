@@ -1544,8 +1544,6 @@ def get_top_10_cast_from_credits_with_movie_id(movie_id):
     actors = []
     # append top 10 cast
     for person in sorted_cast[-1:-11:-1]:
-        print()
-        print(person[1])
         actors.append(person[1])
 
     directors = []
@@ -1657,7 +1655,11 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     imdb_data = get_imdb_details_with_imdb_id(search_results['imdb_id'])
     
     for key, value in imdb_data.items():
-        search_results['imdb_' + key] = value
+        
+        # key_term = str(key)
+        key_phrase = "imdb_" + str(key).lower()
+
+        search_results[key_phrase] = value
 
     return search_results
 

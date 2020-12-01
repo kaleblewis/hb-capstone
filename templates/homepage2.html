@@ -133,34 +133,44 @@
 
         {% if current_recommendations['title'] != current_recommendations['original_title'] %} <p><i>originally: "{{ current_recommendations['original_title'] }}"</i> </p> {% endif %}
 
-        <p>{% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  |{% endif %} 
-          {% if netflix_id is defined %}
-            {% if current_recommendations['netflix_type'] == 'movie' %}🎬 {{ current_recommendations['netflix_type'] }} {% elif current_recommendations['netflix_type'] == 'series' %} | 📺 {{ current_recommendations['netflix_type'] }}{% endif %}
+        <p>{% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  {% endif %} 
+          {% if current_recommendations['imdb_type'] is defined %}
+            {% if current_recommendations['imdb_type'] == 'movie' %}| 🎬 {{ current_recommendations['imdb_type'] }} {% elif current_recommendations['imdb_type'] == 'series' %} | 📺 {{ current_recommendations['imdb_type'] }}{% endif %}
+            {% endif %}{% if netflix_id is defined %}
             {% if current_recommendations['netflix_downloadable'] == '1' %}| 📶 downloadable from Netflix {% endif %}
             {% if current_recommendations['netflix_matlevel'] != "" %}|<a title="{{ current_recommendations['netflix_matlabel'] }}"> 🔰 {{ current_recommendations['netflix_matlabel'] }} </a> {% endif %}
-        {% endif %}
+          {% endif %}
+          {% if current_recommendations['imdb_rated'] is defined %}|  Rated: {{ current_recommendations['imdb_rated'] }} {% endif %}
         </p>  
         
 
         <p>
-          {% if current_recommendations['imdb_id'] != None %}  <a href="https://www.imdb.com/title/{{ current_recommendations['imdb_id'] }}">View trailer on IMDb</a>  |{% endif %} 
+          {% if current_recommendations['imdb_id'] != None %}  <a href="https://www.imdb.com/title/{{ current_recommendations['imdb_id'] }}">View trailer on IMDb</a>  {% endif %} 
           {% if current_recommendations['flatrate'] != None %} {% for service in current_recommendations['flatrate'] %} {% if service['provider_name'] == 'Netflix' %}
-          <a href="https://www.netflix.com/title/{{ current_recommendations['netflix_id'] }}">Watch now on Netflix</a> 
+          <a href="https://www.netflix.com/title/{{ current_recommendations['netflix_id'] }}">| Watch now on Netflix</a> 
             {% endif %} {% endfor %} {% endif %} 
           {% if current_recommendations['rent'] != None %}| available for online rental</a>  {% endif %} 
           {% if current_recommendations['buy'] != None %}| available for online purchase </a>  {% endif %} 
         </p>
 
       
-        <p> {% if current_recommendations['popularity'] is defined %} Popularity: {{ current_recommendations['popularity'] }} | {% endif %}  
-            {% if current_recommendations['vote_count'] is defined %} Total Votes: {{ current_recommendations['vote_count'] }} | {% endif %}  
-            {% if current_recommendations['vote_average'] is defined %} Average Vote: {{ current_recommendations['vote_average'] }} 
-            ⭐ ⭐ ⭐ ★ ★ {% endif %}  
+        <p> 
+          {% if current_recommendations['vote_average'] is defined %}<a title="Total TMDb Votes: {{ current_recommendations['vote_count'] }}">  TMDb score: {{ current_recommendations['vote_average'] }} 
+          ⭐ ⭐ ⭐ ★ ★ </a> |{% endif %}  
+          {% if current_recommendations['imdb_imdbrating'] is defined %}<a title="Total TMDb Votes: {{ current_recommendations['imdb_imdbvotes'] }}">  IMDb score: {{ current_recommendations['imdb_imdbrating'] }} 
+          ⭐ ⭐ ⭐ ★ ★ {% endif %}  
+          {% if current_recommendations['imdb_ratings'] is defined %}{% if current_recommendations['imdb_ratings'] != [] %}{% for ratings in current_recommendations['imdb_ratings'] %} 
+          {% if ratings['Source'] != 'Internet Movie Database' %}
+           | {{ ratings['Source'] }} score: {{ ratings['Value'] }}  ⭐ ⭐ ⭐ ★ ★ </a>
+          {% endif %}{% endfor %}{% endif %}{% endif %}
         </p>
+
+
+    </p>
         {% if netflix_id is defined %}
         {% if current_recommendations['netflix_top250'] is defined %}{% if movie_result['top250tv'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %} {% endif %}
         {% if current_recommendations['netflix_awards'] != '' %} <p>🏆 {{ current_recommendations['netflix_awards'] }}</p> {% endif %}{% endif %}
-
+        {% if current_recommendations['imdb_awards'] is defined %}{% if current_recommendations['imdb_awards'] != "N/A" %}<p> 🏆 {{ current_recommendations['imdb_awards'] }} </p>{% endif %}{% endif %}
         <hr>
         {% if current_recommendations['tagline'] is defined %} <h4>{{ current_recommendations['tagline'] }} </h4>{% endif %}
       
