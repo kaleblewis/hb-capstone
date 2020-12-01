@@ -134,31 +134,49 @@
         {% if current_recommendations['title'] != current_recommendations['original_title'] %} <p><i>originally: "{{ current_recommendations['original_title'] }}"</i> </p> {% endif %}
 
         <p>{% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  |{% endif %} 
+          {% if current_recommendations['netflix_type'] == 'movie' %}🎬 {{ current_recommendations['netflix_type'] }} {% elif current_recommendations['netflix_type'] == 'series' %} | 📺 {{ current_recommendations['netflix_type'] }}{% endif %}
+          {% if current_recommendations['netflix_downloadable'] == '1' %}| 📶 downloadable from Netflix {% endif %}
+          {% if current_recommendations['netflix_matlevel'] != "" %}|<a title="{{ current_recommendations['netflix_matlabel'] }}"> 🔰 {{ current_recommendations['netflix_matlabel'] }} </a> {% endif %}</p>  
+        </p>
+        
+
+        <p>
           {% if current_recommendations['imdb_id'] != None %}  <a href="https://www.imdb.com/title/{{ current_recommendations['imdb_id'] }}">View trailer on IMDb</a>  |{% endif %} 
           {% if current_recommendations['flatrate'] != None %} {% for service in current_recommendations['flatrate'] %} {% if service['provider_name'] == 'Netflix' %}
-          <a href="https://www.netflix.com/title/{{ current_recommendations['netflix_id'] }}">Watch now on Netflix</a>  |
+          <a href="https://www.netflix.com/title/{{ current_recommendations['netflix_id'] }}">Watch now on Netflix</a> 
             {% endif %} {% endfor %} {% endif %} 
-          {% if current_recommendations['rent'] != None %} available for online rental | </a>  {% endif %} 
-          {% if current_recommendations['buy'] != None %} available for online purchase </a>  {% endif %} 
-        
+          {% if current_recommendations['rent'] != None %}| available for online rental</a>  {% endif %} 
+          {% if current_recommendations['buy'] != None %}| available for online purchase </a>  {% endif %} 
         </p>
 
+      
         <p> {% if current_recommendations['popularity'] is defined %} Popularity: {{ current_recommendations['popularity'] }} | {% endif %}  
             {% if current_recommendations['vote_count'] is defined %} Total Votes: {{ current_recommendations['vote_count'] }} | {% endif %}  
             {% if current_recommendations['vote_average'] is defined %} Average Vote: {{ current_recommendations['vote_average'] }} 
             ⭐ ⭐ ⭐ ★ ★ {% endif %}  
         </p>
+        {% if current_recommendations['netflix_top250'] is defined %}{% if movie_result['top250tv'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %} {% endif %}
+        {% if current_recommendations['netflix_awards'] != '' %} <p>🏆 {{ current_recommendations['netflix_awards'] }}</p> {% endif %}
 
-        
+        <hr>
         {% if current_recommendations['tagline'] is defined %} <h4>{{ current_recommendations['tagline'] }} </h4>{% endif %}
       
         {% if current_recommendations['overview'] is defined %} <p><b>Synopsis:</b> <i>{{ current_recommendations['overview'] }} </i></p>{% endif %} 
 
+        <hr>
 
         {% if current_recommendations['genres'] != [] %}<p> 🎭 Genres:   {% for genre in current_recommendations['genres'] %} 
           <a href="/genre/{{ genre['name'] }}"> {{ genre['name']}}</a>
-          {%- if not loop.last -%} , {% endif %} 
-        {% endfor %} </p>{% endif %}
+          {%- if not loop.last -%}, {% endif %}{% endfor %}{% endif %}{% if current_recommendations['netflix_genres'] is defined %}{% for nf_genre in current_recommendations['netflix_genres'] %}, {{ nf_genre }}{% endfor %}{% endif %} 
+          </p>
+
+                    
+        {% if current_recommendations['keywords'] != [] %}<p>   Keywords:   {% for keyword in current_recommendations['keywords'] %} 
+          <a href="/keyword/{{ keyword['name'] }}"> {{ keyword['name'] }}</a>
+            {%- if not loop.last -%} , {% endif %} 
+          {% endfor %} </p>{% endif %}
+          
+        <hr>
 
         {% if current_recommendations['actors'] != [] %}<p> Top Cast:   {% for actors in current_recommendations['actors'] %} 
           <a href="/people/{{ actors['id'] }}"> {{ actors['name'] }}</a>
@@ -170,21 +188,17 @@
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
 
-
         {% if current_recommendations['composers'] != [] %}<p>   Composer(s):   {% for composers in current_recommendations['composers'] %} 
           <a href="/people/{{ composers['id'] }}"> {{ composers['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
-            
-        {% if current_recommendations['keywords'] != [] %}<p>   Keywords:   {% for keyword in current_recommendations['keywords'] %} 
-          <a href="/keyword/{{ keyword['name'] }}"> {{ keyword['name'] }}</a>
-            {%- if not loop.last -%} , {% endif %} 
-          {% endfor %} </p>{% endif %}
 
-        {% if current_recommendations['production_companies'] != [] %}<p> Produced by:   {% for company in current_recommendations['production_companies'] %}  
-          <a href="/studio/{{ company['name'] }}"> {{ company['name'] }}</a>,  
+        {% if current_recommendations['production_companies'] != [] %}<p> Production Studio(s):  {% for company in current_recommendations['production_companies'] %}  
+          <a href="/studio/{{ company['name'] }}"> {{ company['name'] }}</a>
             {%- if not loop.last -%} , {% endif %} 
           {% endfor %} </p>{% endif %} 
+
+          <hr>
 
         {% if current_recommendations['flatrate'] != None %}<p> Streaming services:   {% for company in current_recommendations['flatrate'] %}  
           <img src="http://image.tmdb.org/t/p/w185/{{ company['logo_path'] }}" width="40" height="40">   
@@ -196,12 +210,7 @@
             {%- if not loop.last -%}  {% endif %} 
           {% endfor %} </p>{% endif %} 
 
-        {% if current_recommendations['buy'] != None %}<p> Online purchase :   {% for company in current_recommendations['buy'] %}  
-          <img src="http://image.tmdb.org/t/p/w185/{{ company['logo_path'] }}" width="40" height="40">   
-            {%- if not loop.last -%}  {% endif %} 
-          {% endfor %} </p>{% endif %} 
-
-
+          <hr>
         {% endif %}
 
 

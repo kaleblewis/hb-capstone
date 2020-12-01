@@ -1605,16 +1605,20 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
         if provider['provider_name'] == 'Netflix':
             netflix_id = get_IMDB_id_by_movie_id(movie_id)
             search_results['netflix_id'] = get_netflix_id_by_IMDB_id(netflix_id)
-            search_results['netflix_info'] = get_netflix_details_by_netflix_id(netflix_id)
+            netflix_info = get_netflix_details_by_netflix_id(netflix_id)
 
-            print()
-            print()
-            print()
-            print(search_results['netflix_info'])
+            search_results['netflix_matlevel'] = netflix_info['matlevel']
+            search_results['netflix_matlabel'] = netflix_info['matlabel']
+            search_results['netflix_type'] = netflix_info['type']
+            search_results['netflix_downloadable'] = netflix_info['download']
+            search_results['netflix_metascore'] = netflix_info['metascore']
+            search_results['netflix_awards'] = netflix_info['awards']
+            search_results['netflix_genres'] = netflix_info['mgname']
+            search_results['netflix_genreids'] = netflix_info['genreid']
+            search_results['netflix_image1'] = netflix_info['image1']
+            search_results['netflix_image2'] = netflix_info['image2']
 
     return search_results
-
-
 
 
 if __name__ == '__main__':
