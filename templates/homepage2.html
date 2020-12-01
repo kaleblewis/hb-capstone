@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %} Homepage {% endblock %}
+
+{% block title %}  
+{% if current_recommendations is defined %}
+    {% if session['render-search-results'] == "one" %}{{ current_recommendations['title'] }}
+    {% elif session['render-search-results'] == "many" %}{% for msg in get_flashed_messages() %}{{ msg }}{% endfor %}
+    {% else %} HackBright is great! :) {% endif %}
+{% endif %}
+{% endblock %}
 
 {% block body %}
 
