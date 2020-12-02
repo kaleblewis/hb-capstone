@@ -1023,8 +1023,8 @@ def get_people_with_name(str):
     return recommendations
 
 
-def get_studio_with_name(str):
-    """Return studio/production company info with string of name.
+def get_studio_info_from_name(str):
+    """Return studio/production company info from string of name.
 
     >>>get_studio_with_name('Studio Ghibli')
     {10342: {'id': 10342, 'logo_path': '/eS79pslnoKbWg7t3PMA9ayl0bGs.png', 'name': 'Studio Ghibli', 'origin_country': 'JP'}}
@@ -1041,7 +1041,7 @@ def get_studio_with_name(str):
     
     for index, title in enumerate(search_results['results']):
         recommendations[title.get('id')] = title
-
+    print()
     return recommendations
 
 
@@ -1141,7 +1141,7 @@ def get_titles_with_person(person_id):
     return recommendations
 
 
-def get_titles_with_studio(studio_id):
+def get_titles_from_studio(studio_id):
     """Return recommendations from studio_id.
     
     >>>get_titles_by_studio('10342')[1]
@@ -1162,8 +1162,19 @@ def get_titles_with_studio(studio_id):
     count = 1
     
     for index, title in enumerate(search_results['results']):
-        recommendations[(index + 1)] = title
-
+        recommendations[title['id']] = title
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(recommendations)
+    print()
+    print()
+    print()
+    print()
+    print()
     return recommendations
 
 
@@ -1617,59 +1628,98 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     # pull "similar" nested info up a level, so it can be displayed in jinja
     similar_titles = dict()
 
-    for title in search_results['similar']['results']:
-        similar_titles[title['id']] = title
-    
+    try:
+        for title in search_results['similar']['results']:
+            similar_titles[title['id']] = title
+
+    except KeyError:
+        pass
+
     search_results['similar'] = similar_titles
 
     # append the keyword data so it ends up in the same level of the dict as the 
     # rest of the data/KVPs
-    search_results['keywords'] = get_keywords_with_movie_id(movie_id)
+    try:
+        search_results['keywords'] = get_keywords_with_movie_id(movie_id)
 
+    except KeyError:
+        pass
+    
     # append the people data so it ends up in the same level of the dict
-    people = get_top_10_cast_from_credits_with_movie_id(movie_id)
+    try:
+        people = get_top_10_cast_from_credits_with_movie_id(movie_id)
 
-    for key, value in people.items():
-        search_results[key] = value
+        for key, value in people.items():
+            search_results[key] = value
+
+    except KeyError:
+        pass
     
     # append the provider data so it ends up in the same level of the dict
-    providers = get_providers_in_USA_with_movie_id(movie_id)
+    try:
+        providers = get_providers_in_USA_with_movie_id(movie_id)
 
-    for key, value in providers.items():
-        search_results[key] = value
+        for key, value in providers.items():
+            search_results[key] = value
+
+    except KeyError:
+        pass
 
     # append Netflix data if Netflix is an available provider
+    try:
+        if providers['flatrate'] != None:
+            for provider in providers['flatrate']:
+                if provider['provider_name'] == 'Netflix':
 
-    if providers['flatrate'] != None:
-        for provider in providers['flatrate']:
-            if provider['provider_name'] == 'Netflix':
+                    imdb_id = search_results['imdb_id']
+                    search_results['netflix_id'] = get_netflix_id_by_IMDB_id(imdb_id)
+                    netflix_info = get_netflix_details_by_netflix_id(search_results['netflix_id'])
+        
+                    search_results['netflix_matlevel'] = netflix_info['matlevel']
+                    search_results['netflix_matlabel'] = netflix_info['matlabel']
+                    search_results['netflix_type'] = netflix_info['type']
+                    search_results['netflix_downloadable'] = netflix_info['download']
+                    search_results['netflix_metascore'] = netflix_info['metascore']
+                    search_results['netflix_awards'] = netflix_info['awards']
+                    search_results['netflix_genres'] = netflix_info['mgname']
+                    search_results['netflix_genreids'] = netflix_info['genreid']
+                    search_results['netflix_image1'] = netflix_info['image1']
+                    search_results['netflix_image2'] = netflix_info['image2']
 
-                imdb_id = search_results['imdb_id']
-                search_results['netflix_id'] = get_netflix_id_by_IMDB_id(imdb_id)
-                netflix_info = get_netflix_details_by_netflix_id(search_results['netflix_id'])
-      
-                search_results['netflix_matlevel'] = netflix_info['matlevel']
-                search_results['netflix_matlabel'] = netflix_info['matlabel']
-                search_results['netflix_type'] = netflix_info['type']
-                search_results['netflix_downloadable'] = netflix_info['download']
-                search_results['netflix_metascore'] = netflix_info['metascore']
-                search_results['netflix_awards'] = netflix_info['awards']
-                search_results['netflix_genres'] = netflix_info['mgname']
-                search_results['netflix_genreids'] = netflix_info['genreid']
-                search_results['netflix_image1'] = netflix_info['image1']
-                search_results['netflix_image2'] = netflix_info['image2']
+    except KeyError:
+        pass
 
     # append IMDb info with better ratings data, etc
-    imdb_data = get_imdb_details_with_imdb_id(search_results['imdb_id'])
-    
-    for key, value in imdb_data.items():
+    try:
+        imdb_data = get_imdb_details_with_imdb_id(search_results['imdb_id'])
         
-        # key_term = str(key)
-        key_phrase = "imdb_" + str(key).lower()
+        for key, value in imdb_data.items():
+            
+            # key_term = str(key)
+            key_phrase = "imdb_" + str(key).lower()
 
-        search_results[key_phrase] = value
+            search_results[key_phrase] = value
+
+    except KeyError:
+        pass
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
     print(search_results)
+    print()
+    print()
+    print()
+    print()
+    print()
+
     return search_results
+
+    # TODO: debug items that aren't actually found
+    # TODO: {'success': False, 'status_code': 34, 'status_message': 'The resource you requested could not be found.', 'similar': {}, 'flatrate': None, 'rent': None, 'buy': None}
 
 
 if __name__ == '__main__':

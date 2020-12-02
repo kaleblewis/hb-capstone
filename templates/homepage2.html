@@ -214,7 +214,7 @@
         {% endfor %} </p>{% endif %}
 
         {% if current_recommendations['production_companies'] != [] %}<p> Production Studio(s):  {% for company in current_recommendations['production_companies'] %}  
-          <a href="/studio/{{ company['name'] }}"> {{ company['name'] }}</a>
+          <a href="/studio/{{ company['id'] }}_{{ company['name'] }}"> {{ company['name'] }}</a>
             {%- if not loop.last -%} , {% endif %} 
           {% endfor %} </p>{% endif %} 
 

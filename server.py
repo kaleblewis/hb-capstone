@@ -478,7 +478,7 @@ def show_top10_films_by_genre_name(genrename):
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-    flash(f"results based on genre name:  '{genrename}' ")
+    flash(f"{genrename}")
     session['render-search-results'] = "many"
 
     return render_template('recommendations.html', 
@@ -501,7 +501,7 @@ def show_top10_films_by_keyword(keyword):
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-    flash(f"results based on keyword name:  '{keyword}' ")
+    flash(f"{keyword}")
     session['render-search-results'] = "many"
 
     return render_template('homepage2.html', 
@@ -510,6 +510,31 @@ def show_top10_films_by_keyword(keyword):
             all_genres=all_genres, 
             languages=LANGUAGES,
             current_recommendations=films_of_keyword)
+
+
+@app.route('/studio/<studio_id>_<studio_name>',  methods=['GET'])
+def get_films_from_a_given_studio(studio_id, studio_name):
+    """Show films results from a particular production studio."""
+
+    studio = crud.get_studio_info_from_name(studio_name)
+
+    films_from_studio = crud.get_titles_from_studio(studio_id)
+
+    current_user = crud.get_user_by_email(session['email'])
+    # current_user_prefs = get_current_user_preferences(current_user)
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    all_genres = crud.get_stored_genres()
+
+    flash(f"{studio_name}")
+    session['render-search-results'] = "many"
+
+    return render_template('homepage2.html', 
+            user=current_user,
+            # user_genres=current_user_preferred_genres, 
+            all_genres=all_genres, 
+            languages=LANGUAGES,
+            current_recommendations=films_from_studio,
+            studio = studio)
 
 
 
