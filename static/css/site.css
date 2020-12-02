@@ -61,9 +61,17 @@
     font-size: smaller;
   }
 
+
+
+
+
+
+
   .clear {
     clear: both
   }
+
+
 
 
 
@@ -194,7 +202,7 @@
   
   .sidebar {
     margin: 0;
-    padding: 0;
+    padding: 10px;
     width: 250px;
     background-color: #f9f9f9;
     position: absolute;
@@ -222,7 +230,39 @@
 
   .sidebar label   {
     font-size: 12px;
+    font-weight: bolder;
   }
+
+  .search-parameters-values  {
+    font-size: smaller;
+    font-weight: lighter;
+    margin: 7px;
+  }
+
+  .user-preference-search-parameters {
+    /* border: 1px solid fuchsia; */
+    padding: 10px;
+  }
+
+  .search-parameters {
+    /* border: 1px solid blue; */
+    width: 85%;
+  }
+
+  .user-preference-btn {
+    /* border: 1px solid red; */
+    float: right;
+  }
+
+  .user-preference-btn {
+    border: none;
+    outline:none;
+    background-color: transparent;
+  }
+
+
+
+
 
   /* CONTENT container */
 
