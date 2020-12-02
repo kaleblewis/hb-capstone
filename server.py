@@ -14,6 +14,7 @@ from urllib.parse import quote, unquote
 # import google.oauth2.credentials
 
 LANGUAGES = {"audio": [{'id': 'ar', 'language': 'Arabic'}, {'id': 'zh-yue', 'language': 'Cantonese'}, {'id': 'hr', 'language': 'Croatian'}, {'id': 'en', 'language': 'English'}, {'id': 'fr', 'language': 'French'}, {'id': 'de', 'language': 'German'}, {'id': 'gu', 'language': 'Gujarati'}, {'id': 'he', 'language': 'Hebrew'}, {'id': 'hi', 'language': 'Hindi'}, {'id': 'it', 'language': 'Italian'}, {'id': 'ja', 'language': 'Japanese'}, {'id': 'km', 'language': 'Khmer'}, {'id': 'ko', 'language': 'Korean'}, {'id': 'zh', 'language': 'Mandarin Chinese'}, {'id': 'fa', 'language': 'Farsi'}, {'id': 'pl', 'language': 'Polish'}, {'id': 'pt', 'language': 'Portuguese'}, {'id': 'ru', 'language': 'Russian'}, {'id': 'sr', 'language': 'Serbian'}, {'id': 'es', 'language': 'Spanish'}, {'id': 'tl', 'language': 'Tagalog'}, {'id': 'th', 'language': 'Thai'}, {'id': 'ur', 'language': 'Urdu'}, {'id': 'vi', 'language': 'Vietnamese'}, {'id': 'yi', 'language': 'Yiddish'}], "subtitles": ["Croatian", "English", "Filipino", "French", "German", "Hebrew", "Hindi", "Italian", "Japanese", "Korean", "Persian", "Polish", "Portuguese", "Russian", "Spanish", "Tagalog", "Thai", "Traditional Chinese", "Vietnamese"]}
+GENRES = [{"id": 28,"name": "Action"}, {"id": 12,"name": "Adventure"}, {"id": 16,"name": "Animation"}, {"id": 35,"name": "Comedy"}, {"id": 80,"name": "Crime"}, {"id": 99,"name": "Documentary"}, {"id": 18,"name": "Drama"}, {"id": 10751,"name": "Family"}, {"id": 14,"name": "Fantasy"}, {"id": 36,"name": "History"}, {"id": 27,"name": "Horror"}, {"id": 10402,"name": "Music"}, {"id": 9648,"name": "Mystery"}, {"id": 10749,"name": "Romance"}, {"id": 878,"name": "Science Fiction"}, {"id": 10770,"name": "TV Movie"}, {"id": 53,"name": "Thriller"}, {"id": 10752,"name": "War"}, {"id": 37,"name": "Western"}]
 
 app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
@@ -75,7 +76,7 @@ def show_user():
 
     if login_user:
         return render_template('profile.html', user=login_user,
-            all_genres=all_genres, user_genres = user_preferred_genres,
+            all_genres=GENRES, user_genres = user_preferred_genres,
             languages=LANGUAGES)
 
     else:
@@ -371,7 +372,7 @@ def recommendations_page():
             user=current_user,
             # user_prefs=current_user_prefs,
             user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=search_results)
         
@@ -382,7 +383,7 @@ def recommendations_page():
             return render_template("recommendations.html",  
             user=current_user,
             user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=search_results)    
 
@@ -410,7 +411,7 @@ def render_specific_movie():
         return render_template("homepage2.html", 
             user=current_user,
             user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=search_result)
 
@@ -437,7 +438,7 @@ def show_title(filmid):
     return render_template('homepage2.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=title)
 
@@ -459,7 +460,7 @@ def show_all_films_by_person_name(person_id, person_name):
     return render_template('homepage2.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=filmography)
 
@@ -484,7 +485,7 @@ def show_top10_films_by_genre_name(genrename):
     return render_template('recommendations.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=films_of_genre)
 
@@ -507,7 +508,7 @@ def show_top10_films_by_keyword(keyword):
     return render_template('homepage2.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=films_of_keyword)
 
@@ -531,7 +532,7 @@ def get_films_from_a_given_studio(studio_id, studio_name):
     return render_template('homepage2.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
-            all_genres=all_genres, 
+            all_genres=GENRES, 
             languages=LANGUAGES,
             current_recommendations=films_from_studio,
             studio = studio)

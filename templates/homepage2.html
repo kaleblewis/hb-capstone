@@ -19,28 +19,20 @@
 <!-- TODO: make search sidebar show up only when user is logged in -->
 {% block sidebar %}
 <div class="sidebar">
-<h3>update your search parameters below:</h3>
-          
+<p></p>
+      
 <form action='/recommendations' method="POST">
-  <div class="form-group">
+  <div class="form-group search-parameters">
 
-<label for="movie-or-series-input"> movie or series?</label>           
+<label for="movie-or-series-input"> Movie or series?</label><br>         
 <select id="movie-or-series-input" name="movie-or-series-input">
-  <option value="" selected>any/all</option>
-  <option value="movie"> movie </option>
-  <option value="series"> series </option>
-</select>
-<br>  
-<br>
-<label for="preferred-subtitle">Select your default subtitles:</label>
-<select id="preferred-subtitle" name="preferred-subtitle">
-  <option value="" selected>any/all</option>
-  {% for language in languages['subtitles'] %}
-    <option value="{{language}}">{{language}}</option>  
-  {% endfor %}
+  <option value="" disabled>any/all</option>
+  <option value="movie"selected> movie </option>
+  <option value="series" disabled> series </option>
 </select>
 <br>
-<label for="preferred-audio">Select your default audio:</label>
+
+<label for="preferred-audio">Original audio:</label><br>
 <select id="preferred-audio" name="preferred-audio">
   <option value="" selected>any/all</option>
   {% for language in languages['audio'] %}
@@ -48,8 +40,8 @@
   {% endfor %}
 </select>
 <br>
-<br>
-<label for="date-range-start"> production date "from when?":</label>           
+
+<label for="date-range-start"> Release date "from when?":</label>           
 <select id="date-range-start" name="date-range-start">
   <option value="" selected>any/all</option>
   <option value=2020>released within past year</option>
@@ -64,8 +56,9 @@
   <option value=1920>on or after 1920</option>
   <option value=1910>on or after 1910</option>
 </select>
-<br>        
-<label for="date-range-end"> production date "to when?":</label>           
+<br>      
+<br>  
+<label for="date-range-end"> Release date "to when?":</label>           
 <select id="date-range-end" name="date-range-end">
   <option value="" selected>any/all</option>
   <option value=2020>released within past year</option>
@@ -82,7 +75,7 @@
 </select>
 <br>
 <br>
-<label for="start-rating-input"> minimum imdb rating:</label>
+<label for="start-rating-input"> Score minimum:</label><br>
 <input type="number"
     id="start-rating-input"
     name="start-rating-input"
@@ -92,7 +85,7 @@
     value="3" />
 
 <br>
-<label for="end-rating-input"> maximum imdb rating:</label>
+<label for="end-rating-input"> Score maximum:</label><br>
 <input type="number"
    id="end-rating-input"
    name="end-rating-input"
@@ -102,21 +95,14 @@
    value="10" />
 <br>
 <br>
-<label for="genre-input">one of genre(s):
-    <br> (inclusive "OR" criteria)
+<label for="genre-input">Genre(s):
 </label>         
-<select id="genre-input" name="genre-input">
-  <option value="all" selected>any/all</option>
-  {% for obj in all_genres %}
-  {% for field in obj.__table__.columns._data.keys() %}
-    {% if field == 'name' %}
-    <option value="{{ obj['id'] }}">{{ obj['name'] }}</option>
-    {% endif %}
-  {% endfor %}
-{% endfor %}
-</select>
 <br>
-
+{% for genre in all_genres %}
+<input type="checkbox" id="genre_{{genre['id']}}" name="{{genre['name']}}" value="{{genre['id']}}" checked>
+<label for="{{genre['name']}}"> {{genre['name']}}</label><br>
+{% endfor %}
+<br>
 <input type="submit" value="search" id="submit-input"/>
 </div>
 </div>
@@ -161,7 +147,7 @@
         </p>
 
       
-        <p> 
+        <p> <span class="movie-ratings"> 
           {% if current_recommendations['vote_average'] is defined %}<a title="Total TMDb Votes: {{ current_recommendations['vote_count'] }}">  TMDb score: {{ current_recommendations['vote_average'] }} 
           ⭐ ⭐ ⭐ ★ ★ </a> |{% endif %}  
           {% if current_recommendations['imdb_imdbrating'] is defined %}<a title="Total TMDb Votes: {{ current_recommendations['imdb_imdbvotes'] }}">  IMDb score: {{ current_recommendations['imdb_imdbrating'] }} 
@@ -170,7 +156,7 @@
           {% if ratings['Source'] != 'Internet Movie Database' %}
            | {{ ratings['Source'] }} score: {{ ratings['Value'] }}  ⭐ ⭐ ⭐ ★ ★ </a>
           {% endif %}{% endfor %}{% endif %}{% endif %}
-        </p>
+          <span class="movie-ratings"> </p>
 
 
     </p>
@@ -186,7 +172,7 @@
         <hr>
 
         {% if current_recommendations['genres'] != [] %}<p> 🎭 Genres:   {% for genre in current_recommendations['genres'] %} 
-          <a href="/genre/{{ genre['name'] }}"> {{ genre['name']}}</a>
+          <!-- <a href="/genre/{{ genre['name'] }}"> --> {{ genre['name']}}</a>
           {%- if not loop.last -%}, {% endif %}{% endfor %}{% endif %}{% if current_recommendations['netflix_genres'] is defined %}{% for nf_genre in current_recommendations['netflix_genres'] %}, {{ nf_genre }}{% endfor %}{% endif %} 
           </p>
 
@@ -264,10 +250,10 @@
 
           {% if movie_result['title'] != movie_result['original_title'] %} <p><i>originally: "{{ movie_result['original_title'] }}"</i> </p> {% endif %}
 
-          <p>  {% if movie_result['popularity'] is defined %} Popularity:  {{ movie_result['popularity'] }} | {% endif %} 
+              <p><span class="movie-ratings"> {% if movie_result['popularity'] is defined %} Popularity:  {{ movie_result['popularity'] }} | {% endif %} 
                {% if movie_result['vote_count'] is defined %} Total Votes: {{ movie_result['vote_count'] }} | {% endif %} 
                {% if movie_result['vote_average'] is defined %} Average Vote: {{ movie_result['vote_average'] }} {% endif %}
-          </p>      
+              </span> </p>      
 
                 {% if movie_result['overview'] is defined %} <p><b>Synopsis:</b> <i>{{ movie_result['overview'] }} </i></p>{% endif %} 
           

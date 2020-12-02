@@ -12,6 +12,16 @@
     text-decoration: none;
   }
 
+  .search-result a {
+    color:#333333;
+    text-decoration: none;
+  }
+
+  .search-result a:hover {
+    color:#FB3530;
+    text-decoration: underline;
+  }
+
   .movie-year {
     color: #666666;
     font-weight: lighter;
@@ -45,6 +55,10 @@
     width: 74%;
     float: left;
     border: 1px solid red;
+  }
+
+  .movie-ratings {
+    font-size: smaller;
   }
 
   .clear {
@@ -172,16 +186,21 @@
 
 
 
+
+
+
+
 /* SIDEBAR container */
   
   .sidebar {
     margin: 0;
     padding: 0;
-    width: 200px;
+    width: 250px;
     background-color: #f9f9f9;
-    position: fixed;
+    position: absolute;
     height: 100%;
     overflow: auto;
+    overflow: hidden;
   }
   
   .sidebar a {
@@ -205,11 +224,15 @@
   /* CONTENT container */
 
   div.content {
-    margin-left: 200px;
+    margin-left: 275px;
     padding: 1px 16px;
   }
   
 
+
+  .sidebar label   {
+    font-size: 12px;
+  }
   
 
   /* SCREEN SIZE VARIATIONS */
