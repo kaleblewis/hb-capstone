@@ -239,12 +239,8 @@
           <label for="genre-input">Select your default genre(s):</label>         
           <select id="genre-input" name="genre-input">
             <option value="all" selected>any/all</option>
-            {% for obj in all_genres %}
-            {% for field in obj.__table__.columns._data.keys() %}
-              {% if field == 'name' %}
-              <option value="{{ obj[field] }}">{{ obj[field] }}</option>
-              {% endif %}
-            {% endfor %}
+            {% for genre in all_genres %}
+              <option value="{{ genre['id'] }}">{{ genre['name'] }}</option>
           {% endfor %}
           </select>
 <br>

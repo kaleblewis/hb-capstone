@@ -31,7 +31,7 @@
     width: 95%;
     height: auto;
     border: 1px solid black;
-    align-items: center;
+  
   }
 
   .movie-results-poster {
@@ -219,7 +219,10 @@
     background-color: #555;
     color: white;
   }
-  
+
+  .sidebar label   {
+    font-size: 12px;
+  }
 
   /* CONTENT container */
 
@@ -230,9 +233,7 @@
   
 
 
-  .sidebar label   {
-    font-size: 12px;
-  }
+ 
   
 
   /* SCREEN SIZE VARIATIONS */
