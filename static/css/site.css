@@ -3,7 +3,55 @@
   body {
     margin: 0;
     font-family: 'Lato', 'Montserrat', sans-serif;
+    color: #333333;
   }
+
+  h2 a, h2 {
+    color:#333333;
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .movie-year {
+    color: #666666;
+    font-weight: lighter;
+  }
+
+  .movie-results {
+    width: 95%;
+    height: auto;
+    border: 1px solid black;
+    align-items: center;
+  }
+
+  .movie-results-poster {
+    width: 12%;
+    height: 95%;
+    float: left;
+    border: 1px solid red;
+    text-align: center;
+    min-width: 60px;
+  
+  }
+
+  .movie-results-poster img {
+    width: 80%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center }
+
+  .movie-results-details {
+    width: 74%;
+    float: left;
+    border: 1px solid red;
+  }
+
+  .clear {
+    clear: both
+  }
+
+
 
 
 
@@ -16,16 +64,52 @@
   
   /* Links inside the navbar */
   .navbar a {
-    float: left;
+    /* float: left; */
     font-size: 16px;
     text-align: center;
     color: #f8f6f6;
     padding: 14px 16px;
   }
-  
+
+
+  #nav-bar-brand {
+    border: 1px solid green;
+    float: left;
+    /* padding: 20px; */
+
+  }
+
+  #nav-bar-secondary {
+    border: 1px solid red;
+    float: right;
+    text-align: left;
+    width: 60%;
+    
+  }
+
+  #nav-search {
+    border: 1px solid greenyellow;
+    float: right;
+    width: 59%;
+    padding: 16px;
+    text-align: right;
+  }
+
+  #nav-profile {
+    border: 1px solid purple;
+    float: right;
+    width: 75px;;
+  }
+
+  #nav-bar-profile.dropdown:hover {
+    background: #FB3530;
+    fill: FB3530
+
+  }
+
   /* The dropdown container itself */
   .dropdown {
-    float: left;
+    /* float: left; */
     overflow: hidden;
   }
   
@@ -44,6 +128,7 @@
   /* Add a red background color to navbar links on hover */
   .navbar a:hover, .dropdown:hover .dropbtn {
     background-color: #FB3530;                                                   /*  HB red!!! :D  */
+    color: white
   }
   
   /* Dropdown content (hidden by default) */
@@ -51,19 +136,20 @@
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    min-width: 140px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
   }
   
   /* Links inside the dropdown */
   .dropdown-content a {
-    float: none;
+    float: left;
     color: #444;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     text-align: left;
+    font-size: smaller;
   }
   
   /* Add a grey background color to dropdown links on hover */
@@ -76,6 +162,13 @@
     display: block;
   }
   
+
+
+
+  .nav-bar-icon {
+    filter: invert(100%);
+  }
+
 
 
 
@@ -127,7 +220,34 @@
       position: relative;
     }
     .sidebar a {float: left;}
+
     div.content {margin-left: 0;}
+    
+    #nav-bar-brand {
+      float: left;
+      /* padding: 20px; */
+      width: 100%;
+      text-align: center;
+  
+    }
+
+    #nav-bar-secondary {
+      float: right;
+      text-align: right;
+      width: 100%
+    }
+  
+    #nav-search {
+      float: right;
+      width: 59%;
+      padding: 12px;
+    }
+  
+    #nav-profile {
+      float: right;
+      width: 28%;
+    }
+  
   }
   
   @media screen and (max-width: 400px) {
@@ -135,4 +255,16 @@
       text-align: center;
       float: none;
     }
+
+    #nav-search {
+      float: right;
+      width: 100%;
+      padding: 12px;
+    }
+  
+    #nav-profile {
+      float: right;
+      width: 100%;
+    }
+
   }

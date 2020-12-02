@@ -27,6 +27,8 @@
             crossorigin="anonymous"></script>
         <!-- netflix2 -->
         <script src="https://cdn.jsdelivr.net/npm/netflix2@0.2.1/lib/netflix2.min.js"></script>
+        
+
 
     </head>
     <body>
@@ -92,10 +94,28 @@
                                 {% elif session['logged_in'] == True %}     
 
                                
-                                
-                                    <a href="/">recommendations</a>
-                                    <a> <form action='/search' method="POST">
-                                        <div class="form-group">
+                               
+                                    
+                                <div class="dropdown" id='nav-bar-brand'>
+                                    <button class="dropbtn" href="/">
+                                        <img src="/static/assets/'logo'.svg" width="30" height="30" alt="" class="nav-bar-icon">
+                                    </button>
+                                </div>
+
+                                <div id='nav-bar-secondary'>
+
+                                    <div class="dropdown" id="nav-profile">
+                                        <button class="dropbtn" href="/profile"><img src="/static/assets/profile.svg" width="30" height="30" alt="" class="nav-bar-icon">
+                                            <i class="fa fa-caret-down"></i>
+                                        </button>
+                                            <div class="dropdown-content">
+                                                <a href="/profile">Profile</a>
+                                                <a href="/logout">Log out</a>
+                                            </div>
+                                    </div>
+                                            
+                                    <form action='/search' method="POST">
+                                        <div class="form-group" id="nav-search">
                                             <label for="search-field"></label>
                                             <input type="search"
                                                 id="search-input"
@@ -104,18 +124,14 @@
                                                 required
                                                 autofocus />
                                             <input type="submit" value="🔍" />
-                                            </div>
-                                        </form>
-                                        </a>
+                                        </div>
+                                    </form>
+                                    
 
-                                    <div class="dropdown">
-                                        <button class="dropbtn" href="/profile">profile
-                                            <i class="fa fa-caret-down"></i>
-                                        </button>
-                                            <div class="dropdown-content">
-                                                <a href="/profile">preferences</a>
-                                                <a href="/logout">log out</a>
-                                            </div>
+                                  
+                                </div>
+
+
                                 {% else %}
                                     
                                 <form action='/login' method="POST">
