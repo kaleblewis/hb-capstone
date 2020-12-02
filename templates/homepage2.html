@@ -22,17 +22,26 @@
 <p></p>
       
 <form action='/recommendations' method="POST">
-  <div class="form-group search-parameters">
 
-<label for="movie-or-series-input"> Movie or series?</label><br>         
+<div class="form-group user-preference-search-parameters" id="">
+<div class="form-group search-parameters" id="">
+<label for="movie-or-series-input"> Movie or series?</label> </div>     
+<div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
+  <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
+  </button></div> </div> 
 <select id="movie-or-series-input" name="movie-or-series-input">
   <option value="" disabled>any/all</option>
   <option value="movie"selected> movie </option>
   <option value="series" disabled> series </option>
 </select>
 <br>
-
-<label for="preferred-audio">Original audio:</label><br>
+  
+<div class="form-group user-preference-search-parameters" id="">
+<div class="form-group search-parameters" id="">
+  <label for="preferred-audio">Original audio:</label></div>    
+  <div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
+    <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
+    </button></div> </div> 
 <select id="preferred-audio" name="preferred-audio">
   <option value="" selected>any/all</option>
   {% for language in languages['audio'] %}
@@ -40,8 +49,13 @@
   {% endfor %}
 </select>
 <br>
-
-<label for="date-range-start"> Release date "from when?":</label>           
+  
+<div class="form-group user-preference-search-parameters" id="">
+<div class="form-group search-parameters" id="">
+  <label for="date-range-start"> Release date "from when?":</label></div>     
+  <div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
+    <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
+    </button></div>   </div>      
 <select id="date-range-start" name="date-range-start">
   <option value="" selected>any/all</option>
   <option value=2020>released within past year</option>
@@ -57,8 +71,13 @@
   <option value=1910>on or after 1910</option>
 </select>
 <br>      
-<br>  
-<label for="date-range-end"> Release date "to when?":</label>           
+  
+<div class="form-group user-preference-search-parameters" id="">
+<div class="form-group search-parameters" id=""> 
+<label for="date-range-end"> Release date "to when?":</label> </div>      
+<div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
+  <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
+  </button></div>  </div>       
 <select id="date-range-end" name="date-range-end">
   <option value="" selected>any/all</option>
   <option value=2020>released within past year</option>
@@ -73,9 +92,14 @@
   <option value=1920>up until 1920</option>
   <option value=1910>up until 1910</option>
 </select>
-<br>
-<br>
-<label for="start-rating-input"> Score minimum:</label><br>
+<br>  
+
+<div class="form-group user-preference-search-parameters" id="">
+<div class="form-group search-parameters" id="">
+<label for="start-rating-input"> Score minimum:</label></div>    
+<div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
+  <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
+  </button></div> </div> 
 <input type="number"
     id="start-rating-input"
     name="start-rating-input"
@@ -83,9 +107,13 @@
     min="0" 
     max="9"
     value="3" />
-
-<br>
-<label for="end-rating-input"> Score maximum:</label><br>
+  
+<div class="form-group user-preference-search-parameters" id="">
+<div class="form-group search-parameters" id="">
+<label for="end-rating-input"> Score maximum:</label></div>    
+<div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
+  <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
+  </button></div> </div> 
 <input type="number"
    id="end-rating-input"
    name="end-rating-input"
@@ -94,8 +122,13 @@
    max="10"
    value="10" />
 <br>
-<br>
-<label for="genre-input">Genre(s):
+  
+<div class="form-group user-preference-search-parameters" id="">
+<div class="form-group search-parameters" id="">
+<label for="genre-input">Genre(s):</div>    
+  <div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
+    <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
+    </button></div> 
 </label>         
 <br>
 {% for genre in all_genres %}
@@ -104,7 +137,6 @@
 {% endfor %}
 <br>
 <input type="submit" value="search" id="submit-input"/>
-</div>
 </div>
 
 {% endblock %}
