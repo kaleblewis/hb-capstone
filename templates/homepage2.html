@@ -208,15 +208,15 @@
 
       
         <p> <span class="movie-ratings"> 
-          {% if current_recommendations['vote_average'] is defined %}<a title="Total TMDb Votes: {{ current_recommendations['vote_count'] }}">  TMDb score: {{ current_recommendations['vote_average'] }} 
-          ⭐ ⭐ ⭐ ★ ★ </a> |{% endif %}  
+          {% if current_recommendations['vote_average'] is defined %}  TMDb score: {{ current_recommendations['vote_average'] }} 
+          <div class="Stars" id="tmdb-stars" style="--rating: 2.3;" aria-label="Total TMDb Votes: {{ current_recommendations['vote_count'] }}"></div>|{% endif %}  
           {% if current_recommendations['imdb_imdbrating'] is defined %}<a title="Total TMDb Votes: {{ current_recommendations['imdb_imdbvotes'] }}">  IMDb score: {{ current_recommendations['imdb_imdbrating'] }} 
           ⭐ ⭐ ⭐ ★ ★ {% endif %}  
           {% if current_recommendations['imdb_ratings'] is defined %}{% if current_recommendations['imdb_ratings'] != [] %}{% for ratings in current_recommendations['imdb_ratings'] %} 
           {% if ratings['Source'] != 'Internet Movie Database' %}
            | {{ ratings['Source'] }} score: {{ ratings['Value'] }}  ⭐ ⭐ ⭐ ★ ★ </a>
           {% endif %}{% endfor %}{% endif %}{% endif %}
-          <span class="movie-ratings"> </p>
+          </span></p>
 
 
     </p>
