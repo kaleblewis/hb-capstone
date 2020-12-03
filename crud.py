@@ -1657,26 +1657,6 @@ def discover_films_by_parameters(current_user, movie_or_series, audio, end_year,
     if genre_list != "any":
         base_url = f"{base_url}&&with_genres={genre_list}"
 
-
-
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(base_url)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-
-
-
-
-
-
     response = requests.get(base_url)
 
     search_results = json.loads(response.text)

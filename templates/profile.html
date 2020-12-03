@@ -13,11 +13,15 @@
     <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p>
     {#  <p><b>Linked streaming accounts:</b>  </p> #}
     {# <p><b>Share personal URL to connect:</b> <a href="/@{{ user.purl_name }}">"/@{{ user.purl_name }}" </a></p> #}
-    {#    <p><b>Friends & family network:</b>  </p> #}
+    {#    <p><b>Friend network:</b>  </p> #}
     <br>
+
+
     {% if user.preferences %} 
     <hr>
-    <h2>default search parameters:</h2>
+    <div class="opener">
+      <h4>default search parameters</h4>
+      <div class="hidden-div">
 
 
     <p><b>subtitles language(s):</b> {{ user.preferences[-1].subtitle }} </p>
@@ -43,7 +47,7 @@
     <p><b>viewing location:</b>  {{ user.preferences[-1].location.name }} 	</p>
     
     <br>
-      {% endif %}
+  </div>  {% endif %}
     <hr>
 
     <h3>update your name:</h3>

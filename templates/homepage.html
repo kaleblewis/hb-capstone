@@ -132,8 +132,8 @@
     name="start-rating-input"
     placeholder="1-10"
     min="0" 
-    max="9"
-    value="5" />
+    max="8"
+    value="7" />
   </div>
 </div>
 
@@ -202,8 +202,19 @@
         <div class="movie-full-details-box">
 
         <!-- style="background-image: url('http://image.tmdb.org/t/p/w500/{{current_recommendations['images']['backdrops'][0]['file_path'] }}');"> -->
-        <h1>{{ current_recommendations['title'] }}   <span class="movie-year">{% if  current_recommendations['release_date'] is defined %}({{ current_recommendations['release_date'][:4]}}){% endif %}</span> </h1>
 
+        <div class="movie-results-header-row">
+
+
+          <div class="movie-results-header-row-pin">
+            <button class="user-preference-btn" id="">
+              <img src="/static/assets/pin.svg" width="20" height="20" alt="" class="tiny-icon">
+              </button>
+          </div>
+
+          <div class="movie-results-header-row-title">
+        <h1>{{ current_recommendations['title'] }}   <span class="movie-year">{% if  current_recommendations['release_date'] is defined %}({{ current_recommendations['release_date'][:4]}}){% endif %}</span> </h1>
+            </div></div>
         {% if current_recommendations['title'] != current_recommendations['original_title'] %} <p><i>originally: "{{ current_recommendations['original_title'] }}"</i> </p> {% endif %}
 
         <p>{% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  {% endif %} 
@@ -222,8 +233,8 @@
           {% if current_recommendations['flatrate'] != None %} {% for service in current_recommendations['flatrate'] %} {% if service['provider_name'] == 'Netflix' %}
           <a href="https://www.netflix.com/title/{{ current_recommendations['netflix_id'] }}">| Watch now on Netflix</a> 
             {% endif %} {% endfor %} {% endif %} 
-          {% if current_recommendations['rent'] != None %}| available for online rental</a>  {% endif %} 
-          {% if current_recommendations['buy'] != None %}| available for online purchase </a>  {% endif %} 
+          {# {% if current_recommendations['rent'] != None %}| available for online rental</a>  {% endif %} 
+          {% if current_recommendations['buy'] != None %}| available for online purchase </a>  {% endif %} #} 
         </p>
 
       
@@ -236,33 +247,46 @@
            | {{ ratings['Source'] }} score: {{ ratings['Value'] }}  ⭐ ⭐ ⭐ ★ ★ </a>
           {% endif %}{% endfor %}{% endif %}{% endif %}
           </span></p>
-</div>
+          </div></p>
 
-    </p>
+
         {% if netflix_id is defined %}
         {% if current_recommendations['netflix_top250'] is defined %}{% if movie_result['top250tv'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %} {% endif %}
         {% if current_recommendations['netflix_awards'] != '' %} <p>🏆 {{ current_recommendations['netflix_awards'] }}</p> {% endif %}{% endif %}
         {% if current_recommendations['imdb_awards'] is defined %}{% if current_recommendations['imdb_awards'] != "N/A" %}<p> 🏆 {{ current_recommendations['imdb_awards'] }} </p>{% endif %}{% endif %}
-        <hr>
+        
         {% if current_recommendations['tagline'] is defined %} <h4>{{ current_recommendations['tagline'] }} </h4>{% endif %}
       
         {% if current_recommendations['overview'] is defined %} <p><b>Synopsis:</b> <i>{{ current_recommendations['overview'] }} </i></p>{% endif %} 
 
-        <hr>
+        
 
-        {% if current_recommendations['genres'] != [] %}<p> 🎭 Genres:   {% for genre in current_recommendations['genres'] %} 
+        {% if current_recommendations['genres'] != [] %} 
+        <div class="opener">
+          <h4> Searchable Genres </h4>
+          <div class="hidden-div">
+          {% for genre in current_recommendations['genres'] %} 
           <!-- <a href="/genre/{{ genre['name'] }}"> --> {{ genre['name']}}</a>
           {%- if not loop.last -%}, {% endif %}{% endfor %}{% endif %}{% if current_recommendations['netflix_genres'] is defined %}{% for nf_genre in current_recommendations['netflix_genres'] %}, {{ nf_genre }}{% endfor %}{% endif %} 
-          </p>
+          </p> </div></div>
 
-                    
-        {% if current_recommendations['keywords'] != [] %}<p>   Keywords:   {% for keyword in current_recommendations['keywords'] %} 
+             
+        {% if current_recommendations['keywords'] != [] %}
+        
+        <div class="opener">
+          <h4>Searchable Keywords <span class="side-note-to-headers"> (beware of spoilers) </span> </h4>
+          <div class="hidden-div">
+        {% for keyword in current_recommendations['keywords'] %} 
           <a href="/keyword/{{ keyword['name'] }}"> {{ keyword['name'] }}</a>
             {%- if not loop.last -%} , {% endif %} 
-          {% endfor %} </p>{% endif %}
-          
-        <hr>
+          {% endfor %} </p>
+          {% endif %}
+          </div></div>
+        
 
+        <div class="opener">
+          <h4>Searchable Cast & Crew</h4>
+          <div class="hidden-div">
         {% if current_recommendations['actors'] != [] %}<p> Top Cast:   {% for actors in current_recommendations['actors'] %} 
           <a href="/people/{{ actors['id'] }}_{{ actors['name'] }}"> {{ actors['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
@@ -282,9 +306,12 @@
           <a href="/studio/{{ company['id'] }}_{{ company['name'] }}"> {{ company['name'] }}</a>
             {%- if not loop.last -%} , {% endif %} 
           {% endfor %} </p>{% endif %} 
+          </div></div>
+          
 
-          <hr>
-
+          <div class="opener">
+            <h4>Available for online steaming</h4>
+            <div class="hidden-div">
         {% if current_recommendations['flatrate'] != None %}<p> Streaming services:   {% for company in current_recommendations['flatrate'] %}  
           <img src="http://image.tmdb.org/t/p/w185/{{ company['logo_path'] }}" width="40" height="40">   
             {%- if not loop.last -%}  {% endif %} 
@@ -294,8 +321,8 @@
           <img src="http://image.tmdb.org/t/p/w185/{{ company['logo_path'] }}" width="40" height="40">   
             {%- if not loop.last -%}  {% endif %} 
           {% endfor %} </p>{% endif %} 
-
-          <hr>
+        </div></div>
+          
 
           {% if current_recommendations['similar'] is defined %}{% if current_recommendations['similar'] != None %}<p> Similar:   {% for item in current_recommendations['similar'].items() %}  
               <a href="/title/{{ item[1]['id'] }}"><img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} ({{item[1]['release_date'][:4]}}) - {{item[1]['overview']}}" width="40" height="60"></a>  
@@ -304,7 +331,7 @@
 
 
 
-          <hr>
+          
 
         {% endif %}
 
@@ -319,12 +346,26 @@
         {% elif movie_result['title'] is defined %}
           <div class="movie-results">
 
-          {% if movie_result['poster_path'] is defined %}{% if movie_result['poster_path'] != None %} 
-              <div class="movie-results-poster"><a href="/title/{{ movie_result['id'] }}"><img src="http://image.tmdb.org/t/p/w185/{{ movie_result['poster_path'] }}" width="40" height="60"> 
-                </a></div>{% endif %}{% endif %}
+          <div class="movie-results-poster">{% if movie_result['poster_path'] is defined %}{% if movie_result['poster_path'] != None %} 
+              <a href="/title/{{ movie_result['id'] }}"><img src="http://image.tmdb.org/t/p/w185/{{ movie_result['poster_path'] }}" width="40" height="60"> 
+                </a>{% endif %}{% endif %}</div>
               
               <div class="movie-results-details">
+                <div class="movie-results-header-row">
+
+
+                  <div class="movie-results-header-row-pin">
+                    <button class="user-preference-btn" id="">
+                      <img src="/static/assets/pin.svg" width="20" height="20" alt="" class="tiny-icon">
+                      </button>
+                  </div>
+
+
+                  <div class="movie-results-header-row-title">
                 <h2><a href="/title/{{ movie_result['id'] }}"> {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %}<span class="movie-year">({{ movie_result['release_date'][:4]}})</span>{% endif %}</h2>
+                </div>
+
+              </div>
 
                 {% if movie_result['title'] != movie_result['original_title'] %} <p><i>originally: "{{ movie_result['original_title'] }}"</i> </p> {% endif %}
 
@@ -338,8 +379,11 @@
               </div>
 
               <div class="clear"></div>
+              
+              <div class="hr-divider">
+                <br><hr><br>
+              </div>
 
-              <br><hr><br>
           </div>
           <div class="clear"></div>
         
@@ -373,4 +417,11 @@
 {% endblock %}
 {% endblock %}
 {% block js %}
+
+<script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+  crossorigin="anonymous"></script>
+
+
 {% endblock %}

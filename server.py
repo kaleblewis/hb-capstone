@@ -328,71 +328,6 @@ def logout():
 #*#                     CONTENT/SEARCHES/RECOMMENDATIONS                     #*#
 #*############################################################################*#
 
-# @app.route('/recommendations', methods=['POST'])
-# def recommendations_page():
-#     """View search results page for recommendation(s)"""
-    
-#     current_user = crud.get_user_by_email(session['email'])
-#     # current_user_prefs = get_current_user_preferences(current_user)
-#     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
-#     all_genres = crud.get_stored_genres()
-
-#     genre_list = request.form.get('genre-input')     # comma-separated list of Netflix genre id's (see genre endpoint for list)
-#     #strip out the curly braces
-#     genre_list = genre_list.replace('{','')
-#     genre_list = genre_list.replace('}','')
-
-#     movie_or_series = request.form.get('movie-or-series-input') # movie or series?
-
-#     start_rating = request.form.get('start-rating-input') # imdb rating 0-10
-#     end_rating = request.form.get('end-rating-input')     # imdb rating 0-10
-
-#     start_year = request.form.get('date-range-start')     # 4 digit year
-#     end_year = request.form.get('date-range-end')         # 4 digit year
-
-#     subtitle = request.form.get('preferred-subtitle')        # *ONE* valid language type
-#     audio = request.form.get('preferred-audio')
-
-#     # new_year = start_year
-#     # TODO:  re-enable ^ this for "recently added" search parameter  
-         
-#     country_list = 78       # <-- hard-coded "USA" for now 
-#                             # TODO: flip this back to dynamic list value later
-
-#     search_results = crud.search_films_by_parameters(current_user, genre_list, 
-#         movie_or_series, start_rating, end_rating, start_year, end_year,
-#         subtitle, audio, country_list)  #new_year,
-#                         # TODO:  re-enable ^ this for "recently added" search parameter  
-
-#     if session['logged_in'] == True:
-
-#         if search_results:
-#             session['render-search-results'] = "many"
-#             return render_template("recommendations.html",  
-#             user=current_user,
-#             # user_prefs=current_user_prefs,
-#             user_genres=current_user_preferred_genres, 
-#             all_genres=GENRES, 
-#             languages=LANGUAGES,
-#             current_recommendations=search_results)
-        
-#         else:
-#             flash("please update your search criteria")
-#             session['render-search-results'] = "update-search-criteria"
-
-#             return render_template("recommendations.html",  
-#             user=current_user,
-#             user_genres=current_user_preferred_genres, 
-#             all_genres=GENRES, 
-#             languages=LANGUAGES,
-#             current_recommendations=search_results)    
-
-#     else:
-#         flash("please try again")
-#         return redirect('/')     
-
-
-
 @app.route('/recommendations', methods=['POST'])
 def discovery_page():
     """View search results page for recommendation(s)"""
@@ -447,13 +382,43 @@ def discovery_page():
         return redirect('/')                             
 
 
+
 @app.route('/search', methods=['POST'])
 def render_specific_movie():
     """Serve up search results based on user's specific input parameters"""
+    
+    current_user = crud.get_user_by_email(session['email'])
+    # current_user_prefs = get_current_user_preferences(current_user)
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    all_genres = crud.get_stored_genres()
 
-    keyword = request.form.get('search-input')
 
-    return redirect('/search/<keyword>')
+    search_term = request.form.get('search-input')
+    search_result = crud.get_movies_by_title(search_term)
+
+    if search_result != None:
+        flash(f"search results for term: {search_term}")
+        session['render-search-results'] = "many"
+        return render_template("homepage.html", 
+            user=current_user,
+            user_genres=current_user_preferred_genres, 
+            all_genres=GENRES, 
+            languages=LANGUAGES,
+            current_recommendations=search_result)
+
+    else:
+        flash(f"...crickets chirping....  	🦗")
+        flash(f"try a different search term, {session['name']}?")
+        return redirect('/')                                                    
+
+
+# @app.route('/search', methods=['POST'])
+# def render_specific_movie():
+#     """Serve up search results based on user's specific input parameters"""
+
+#     keyword = request.form.get('search-input')
+
+#     return redirect('/search/<keyword>')
   
 
 
