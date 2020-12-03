@@ -213,6 +213,30 @@ def get_user_preferences():
                     'genres': str(current_preferred_genres)})
 
 
+@app.route('/addtowatchlist', methods=['POST'])
+def add_title_to_watchlist(title_id):
+    """Set a new entry for a group of a user's current preferences"""
+
+    existing_user = crud.get_user_by_email(session['email']) 
+
+    crud.add_title_to_watchlist(existing_user, title_id)
+                                  
+    return
+
+
+@app.route('/getuserwatchlist.json', methods=['GET'])
+def get_user_watchlist():
+    """Get the User's watchlist."""
+
+    current_user = crud.get_user_by_email(session['email']) 
+    current_watchlist = crud.get_user_watchlist(current_user)
+
+    return jsonify({'user': str(current_user.id),
+                    'title_id': str(current_watchlist.title_id), 
+                    'added_date_time': str(current_watchlist.added_date_time), 
+                    'watched_date_time': str(current_watchlist.watched_date_time)})
+
+
 #*############################################################################*#
 #*#                       USER  LOGIN/LOGOUT/CREATION                        #*#
 #*############################################################################*#

@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import db, User, Preference, QueryHistory, Location, Genre, GenrePreference, TmdbKeyword, connect_to_db
+from model import db, User, Preference, QueryHistory, Location, Genre, GenrePreference, TmdbKeyword, Watchlist, connect_to_db
 import datetime
 import os
 import sys
@@ -188,6 +188,28 @@ def add_user_preference_to_preferences(user, param_subtitle="any",
     db.session.commit()
 
     return user_preferences
+
+
+def add_title_to_watchlist(user, title_id):
+    """Store a title to User's watchlist"""
+
+    add_to_watchlist = Watchlist(
+        added_date_time = datetime.datetime.now(),
+        user_id = user.id,
+        title_id = title_id)
+
+    db.session.add(add_to_watchlist)
+    db.session.commit()
+
+    return user_preferences
+
+
+def get_user_watchlist(user):
+    """Return all of this User's watchlist."""
+
+    user_watchlist = Watchlist.query.filter(User.id).all()                     
+
+    return user_watchlist
 
 
 def add_genre_preference(user, param_genre):

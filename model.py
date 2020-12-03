@@ -89,6 +89,25 @@ class Preference(db.Model):
             related to user_id={self.user_id}>'    
 
 
+class Watchlist(db.Model):
+    """A user's watchlist."""
+
+    __tablename__ = 'watchlist'
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    title_id = db.Column(db.String(20))  #TMDb external FK
+    added_date_time = db.Column(db.DateTime)
+    watched_date_time = db.Column(db.DateTime)
+    user_scored_title = db.Column(db.Integer)
+
+    user = db.relationship('User', backref='watchlist')
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} id={self.id} \
+            user_id={self.user_id} title_id={self.title_id}>'    
+
+
 class QueryHistory(db.Model):
     """A user's history of queries which were already run."""
 
