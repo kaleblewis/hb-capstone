@@ -1640,7 +1640,7 @@ def discover_films_by_parameters(current_user, movie_or_series, audio, end_year,
     All of the front end parameters are optional.
     Some ordering/sorting will be handled on the front end instead of via querystring parameter
     """
-    base_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&sort_by=popularity.desc&include_adult=false&page=5"
+    base_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&sort_by=vote_count.desc&include_adult=false&&vote_count.gte=100&page=5"
 
     if audio != "any":
         base_url = f"{base_url}&with_original_language={audio}"

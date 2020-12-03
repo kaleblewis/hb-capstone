@@ -43,7 +43,7 @@ def homepage():
             user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
             return render_template('homepage.html', user=login_user, 
-            all_genres=all_genres, user_genres = user_preferred_genres, 
+            all_genres=GENRES, user_genres = user_preferred_genres, 
             languages=LANGUAGES)
             
         else:
@@ -417,16 +417,6 @@ def discovery_page():
     # subtitle = request.form.get('preferred-subtitle')        
     audio = request.form.get('preferred-audio') # *ONE* valid language type
 
-
-    print()
-    print(genre_list)
-    print(movie_or_series)
-    print(start_rating)
-    print(end_year)
-    print(audio)
-    print()
-    print()
-
     search_results = crud.discover_films_by_parameters(current_user, movie_or_series, audio, end_year, start_rating, genre_list)  #new_year,
                          
 
@@ -434,7 +424,7 @@ def discovery_page():
 
         if search_results:
             session['render-search-results'] = "many"
-            return render_template("homepage2.html",  
+            return render_template("homepage.html",  
             user=current_user,
             user_genres=current_user_preferred_genres, 
             all_genres=GENRES, 
@@ -463,11 +453,6 @@ def render_specific_movie():
 
     keyword = request.form.get('search-input')
 
-    print()
-    print(keyword)
-    print()
-    print()
-
     return redirect('/search/<keyword>')
   
 
@@ -481,26 +466,12 @@ def render_specific_search_results(keyword):
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(keyword)
-    print()
-    print()
-    print()
-    print()
-    print()
-
     search_result = crud.get_movies_by_title(keyword)
 
     if search_result != None:
         flash(f"    {keyword}")
         session['render-search-results'] = "many"
-        return render_template("homepage2.html", 
+        return render_template("homepage.html", 
             user=current_user,
             user_genres=current_user_preferred_genres, 
             all_genres=GENRES, 
@@ -526,7 +497,7 @@ def show_title(filmid):
 
     session['render-search-results'] = "one"
 
-    return render_template('homepage2.html', 
+    return render_template('homepage.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=GENRES, 
@@ -548,7 +519,7 @@ def show_all_films_by_person_name(person_id, person_name):
     flash(f'{person_name}')
     session['render-search-results'] = "many"
 
-    return render_template('homepage2.html', 
+    return render_template('homepage.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=GENRES, 
@@ -596,7 +567,7 @@ def show_top10_films_by_keyword(keyword):
     flash(f"{keyword}")
     session['render-search-results'] = "many"
 
-    return render_template('homepage2.html', 
+    return render_template('homepage.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=GENRES, 
@@ -620,7 +591,7 @@ def get_films_from_a_given_studio(studio_id, studio_name):
     flash(f"{studio_name}")
     session['render-search-results'] = "many"
 
-    return render_template('homepage2.html', 
+    return render_template('homepage.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=GENRES, 
