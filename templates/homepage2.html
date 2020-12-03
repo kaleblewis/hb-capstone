@@ -23,6 +23,16 @@
       
 <form action='/recommendations' method="POST">
 
+  {% for msg in get_flashed_messages() %}
+<div class="form-group user-preference-search-parameters" id="">
+<label>Current search: <br> 
+  <div class="flash-msg">
+      {{ msg }}
+  </div>
+</label>
+</div>
+{% endfor %}
+
 
   <div class="form-group user-preference-search-parameters" id="">
     <div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
@@ -179,10 +189,14 @@
   
       {% if current_recommendations is defined %}
     
+      <!-- {{ current_recommendations['images']['backdrops'][0]['file_path'] }}  -->
+        
+          {% if current_recommendations['images']['backdrops'][0]['file_path'] is defined %} {% if current_recommendations['images']['backdrops'][0]['file_path'] != None %} 
+          <div class="movie-images">
+            <div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][0]['file_path'] }} "></div><div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][1]['file_path'] }} "></div><div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][2]['file_path'] }} "></div>
+          </div>{% endif %}{% endif %}
 
-        <p><b>
-          {% if current_recommendations['poster_path'] != None %} <img src="http://image.tmdb.org/t/p/w185/{{ current_recommendations['poster_path'] }}" width="40" height="60">  {% endif %}
-        {{ current_recommendations['title'] }}   ({{ current_recommendations['release_date'][:4]}})</b> </p>
+        <h1>{{ current_recommendations['title'] }}   <span class="movie-year">{% if  current_recommendations['release_date'] is defined %}({{ current_recommendations['release_date'][:4]}}){% endif %}</span> </h1>
 
         {% if current_recommendations['title'] != current_recommendations['original_title'] %} <p><i>originally: "{{ current_recommendations['original_title'] }}"</i> </p> {% endif %}
 
@@ -208,9 +222,8 @@
 
       
         <p> <span class="movie-ratings"> 
-          {% if current_recommendations['vote_average'] is defined %}  TMDb score: {{ current_recommendations['vote_average'] }} 
-          <div class="Stars" id="tmdb-stars" style="--rating: 2.3;" aria-label="Total TMDb Votes: {{ current_recommendations['vote_count'] }}"></div>|{% endif %}  
-          {% if current_recommendations['imdb_imdbrating'] is defined %}<a title="Total TMDb Votes: {{ current_recommendations['imdb_imdbvotes'] }}">  IMDb score: {{ current_recommendations['imdb_imdbrating'] }} 
+          {% if current_recommendations['vote_average'] is defined %}  TMDb score: {{ current_recommendations['vote_average'] }} |{% endif %}  
+          {% if current_recommendations['imdb_imdbrating'] is defined %}  IMDb score: {{ current_recommendations['imdb_imdbrating'] }} 
           ⭐ ⭐ ⭐ ★ ★ {% endif %}  
           {% if current_recommendations['imdb_ratings'] is defined %}{% if current_recommendations['imdb_ratings'] != [] %}{% for ratings in current_recommendations['imdb_ratings'] %} 
           {% if ratings['Source'] != 'Internet Movie Database' %}
@@ -292,40 +305,42 @@
 
     {% elif session['render-search-results'] == "many" %}
     
-
-    {% for result_number, movie_result in current_recommendations.items() %}  
-                
-      {% if result_number == 'error' %}
-          {{ movie_result }}
-      
-      {% elif movie_result['title'] is defined %}
+      {% for result_number, movie_result in current_recommendations.items() %}  
+                  
+        {% if result_number == 'error' %}
+            {{ movie_result }}
         
-          
-        {% if movie_result['poster_path'] is defined %}{% if movie_result['poster_path'] != None %} 
+        {% elif movie_result['title'] is defined %}
           <div class="movie-results">
-            <div class="movie-results-poster"><a href="/title/{{ movie_result['id'] }}"> <img src="http://image.tmdb.org/t/p/w185/{{ movie_result['poster_path'] }}" width="40" height="60"> {% endif %}{% endif %}
-            </a></div>
-            <div class="movie-results-details">
-              <h2><a href="/title/{{ movie_result['id'] }}"> {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %}<span class="movie-year">({{ movie_result['release_date'][:4]}})</span>{% endif %}</h2>
 
-          {% if movie_result['title'] != movie_result['original_title'] %} <p><i>originally: "{{ movie_result['original_title'] }}"</i> </p> {% endif %}
+          {% if movie_result['poster_path'] is defined %}{% if movie_result['poster_path'] != None %} 
+              <div class="movie-results-poster"><a href="/title/{{ movie_result['id'] }}"><img src="http://image.tmdb.org/t/p/w185/{{ movie_result['poster_path'] }}" width="40" height="60"> 
+                </a></div>{% endif %}{% endif %}
+              
+              <div class="movie-results-details">
+                <h2><a href="/title/{{ movie_result['id'] }}"> {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %}<span class="movie-year">({{ movie_result['release_date'][:4]}})</span>{% endif %}</h2>
 
-              <p><span class="movie-ratings"> {% if movie_result['popularity'] is defined %} Popularity:  {{ movie_result['popularity'] }} | {% endif %} 
-               {% if movie_result['vote_count'] is defined %} Total Votes: {{ movie_result['vote_count'] }} | {% endif %} 
-               {% if movie_result['vote_average'] is defined %} Average Vote: {{ movie_result['vote_average'] }} {% endif %}
-              </span> </p>      
+                {% if movie_result['title'] != movie_result['original_title'] %} <p><i>originally: "{{ movie_result['original_title'] }}"</i> </p> {% endif %}
+
+                <p><span class="movie-ratings"> 
+                  {% if movie_result['popularity'] is defined %} Popularity:  {{ movie_result['popularity'] }} | {% endif %} 
+                  {% if movie_result['vote_count'] is defined %} Total Votes: {{ movie_result['vote_count'] }} | {% endif %} 
+                  {% if movie_result['vote_average'] is defined %} Average Vote: {{ movie_result['vote_average'] }} {% endif %}
+                </span> </p>      
 
                 {% if movie_result['overview'] is defined %} <p><b>Synopsis:</b> <i>{{ movie_result['overview'] }} </i></p>{% endif %} 
-          
-            </div>
-            <div class="clear"></div>
-            <br><hr><br>
-        
-          </div>
-          {% endif %}
+              </div>
 
-      {% endfor %}
-   
+              <div class="clear"></div>
+
+              <br><hr><br>
+          </div>
+          <div class="clear"></div>
+        
+            {% endif %}
+
+        {% endfor %}
+    
 
     {% elif session['render-search-results'] == "filmography" %}
     
@@ -341,7 +356,10 @@
     please try again
 
     {% endif %}
+    
+</div>
   {% endif %}
+
 
   {{ current_recommendations }}
 

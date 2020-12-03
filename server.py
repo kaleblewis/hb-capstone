@@ -395,6 +395,29 @@ def recommendations_page():
 @app.route('/search', methods=['POST'])
 def render_specific_movie():
     """Serve up search results based on user's specific input parameters"""
+
+    keyword = request.form.get('search-input')
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(keyword)
+    print()
+    print()
+    print()
+    print()
+    print()
+
+    return redirect('/search/<keyword>')
+  
+
+
+@app.route('/search/<keyword>')
+def render_specific_search_results(keyword):
+    """Serve up search results based on user's specific input parameters"""
     
     current_user = crud.get_user_by_email(session['email'])
     # current_user_prefs = get_current_user_preferences(current_user)
@@ -402,11 +425,23 @@ def render_specific_movie():
     all_genres = crud.get_stored_genres()
 
 
-    search_term = request.form.get('search-input')
-    search_result = crud.get_movies_by_title(search_term)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(keyword)
+    print()
+    print()
+    print()
+    print()
+    print()
+
+    search_result = crud.get_movies_by_title(keyword)
 
     if search_result != None:
-        flash(f"search results: {search_term}")
+        flash(f"search results: {keyword}")
         session['render-search-results'] = "many"
         return render_template("homepage2.html", 
             user=current_user,
@@ -418,8 +453,7 @@ def render_specific_movie():
     else:
         flash(f"...crickets chirping....  	🦗")
         flash(f"try a different search term, {session['name']}?")
-        return redirect('/')                                                    # TODO:  debug why this works successfully if searching from '/' page
-                                                                                #        but results in keyerror on [imdbID] if User is searching from '/search' page 
+        return redirect('/')                                                   
 
 
 @app.route('/title/<filmid>')

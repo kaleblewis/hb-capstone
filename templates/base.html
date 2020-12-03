@@ -7,7 +7,6 @@
             {% block title %}{% endblock %}
             </title>
 
-        <link href="/static/css/stars.scss" rel="stylesheet">
         <link href="/static/css/site.css" rel="stylesheet">
         <link rel="icon" href="/static/favicon.ico" sizes="32x32">
 
@@ -45,6 +44,13 @@
 
                             {% if session['name'] == 'no-account-found-please-create-account' %}
                             <!-- and the cookie is set to this wonky value because you need to see the login screen -->
+
+
+                            {% for msg in get_flashed_messages() %}
+                            <p class="flash-msg" style="color:#FB3530">
+                                {{ msg }}
+                            </p>
+                            {% endfor %}    
 
                                 <form action='/createuser' method="POST">
                                     <div class="form-group">
@@ -86,7 +92,7 @@
                                 </form>
 
 
-                                <form action='/existinguser' method="GET">
+                                <form action='/existinguser' method="POST">
                                     <div class="form-group">
                                         <input type="submit" value= "login to existing account" id="existing-acct-btn"/>
                                     </div>
@@ -115,7 +121,7 @@
                                             </div>
                                     </div>
                                             
-                                    <form action='/search' method="POST">
+                                    <form action='/search' method="GET">
                                         <div class="form-group" id="nav-search">
                                             <label for="search-field"></label>
                                             <input type="search"
@@ -205,11 +211,7 @@
                         
                 </div>
                 
-            {% for msg in get_flashed_messages() %}
-                <p class="flash-msg" style="color:#FB3530">
-                    {{ msg }}
-                </p>
-            {% endfor %}
+
 
             <!-- Include the page's content with this block. -->
             {% block body %}
