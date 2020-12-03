@@ -142,7 +142,7 @@
                                 {% else %}
                                     
                                 <form action='/login' method="POST">
-                                    <div class="form-group">
+                                    <div class="form-group" id="login-to-existing-acct">
                                     
                                         <label for="email-field"></label>
                                         <input type="text"
@@ -164,8 +164,8 @@
                                     </div>
                                 </form>
                                 <form action='/newuser' method="GET">
-                                    <div class="form-group">
-                                        <input type="submit" value= "create account" id="new-acct-btn"/>
+                                    <div class="form-group" id="create-new-acct-btn">
+                                        <input type="submit" value= "create account" id="create-new-acct-btn"/>
                                     </div>
                                 </form>
 
@@ -174,8 +174,22 @@
                         {% else %}
                         <!-- if you need to login -->
                         
+
+                        <div class="dropdown" id='nav-bar-brand'>
+                            <button class="dropbtn">
+                                <a href="/"><img src="/static/assets/'logo'.svg" width="30" height="30" alt="" class="nav-bar-icon"></a>
+                            </button>
+                        </div>
+
+
                             <form action='/login' method="POST">
+
                                 <div class="form-group">
+                                   <div> <input type="submit" value= "create account" id="create-new-acct-btn"/>
+                                   </div> </div>
+
+                            
+                                <div class="form-group" id="login-to-existing-acct">
                                 
                                     <label for="email-field"></label>
                                     <input type="text"
@@ -197,9 +211,7 @@
                                 </div>
                             </form>
                             <form action='/newuser' method="GET">
-                                <div class="form-group">
-                                    <input type="submit" value= "create account" id="new-acct-btn"/>
-                                </div>
+
                             </form>
                         {% endif %}
                     </div>

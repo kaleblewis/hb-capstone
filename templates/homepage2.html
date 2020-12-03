@@ -43,7 +43,7 @@
 </label>
 <div class="search-parameters-values">        
 <select id="movie-or-series-input" name="movie-or-series-input">
-  <option value="" disabled>any/all</option>
+  <option value="any" disabled>any/all</option>
   <option value="movie"selected> movie </option>
   <option value="series" disabled> series </option>
 </select>
@@ -60,7 +60,7 @@
   </label>
   <div class="search-parameters-values">       
 <select id="preferred-audio" name="preferred-audio">
-  <option value="" selected>any/all</option>
+  <option value="any" selected>any/all</option>
   {% for language in languages['audio'] %}
         <option value="{{language['id']}}">{{language['language']}}</option>  
   {% endfor %}
@@ -68,7 +68,7 @@
 </div>
 </div>
   
-
+{#
 <div class="form-group user-preference-search-parameters" id="">
   <div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
     <img src="/static/assets/padlock.svg" width="10" height="10" alt="" class="tiny-icon">
@@ -78,7 +78,7 @@
   </label>
   <div class="search-parameters-values">    
 <select id="date-range-start" name="date-range-start">
-  <option value="" selected>any/all</option>
+  <option value="any" selected>any/all</option>
   <option value=2020>released within past year</option>
   <option value=2000>on or after 2000</option>
   <option value=1990>on or after 1990</option>
@@ -92,7 +92,7 @@
   <option value=1910>on or after 1910</option>
 </select>
   </div>     
-</div>
+</div>#}
   
 
 <div class="form-group user-preference-search-parameters" id="">
@@ -104,7 +104,7 @@
 </label>    
 <div class="search-parameters-values">      
 <select id="date-range-end" name="date-range-end">
-  <option value="" selected>any/all</option>
+  <option value="any" selected>any/all</option>
   <option value=2020>released within past year</option>
   <option value=2000>up until 2000</option>
   <option value=1990>up until 1990</option>
@@ -165,9 +165,11 @@
 <label for="genre-input">Genre(s):</div>    
 </label>    
 <div class="search-parameters-values">  
+<input type="radio" id="genre_all" name="genre-input" value="any" checked>
+<label for="any"> Any </label><br>
 {% for genre in all_genres %}
-<input type="checkbox" id="genre_{{genre['id']}}" name="{{genre['name']}}" value="{{genre['id']}}" checked>
-<label for="{{genre['name']}}"> {{genre['name']}}</label><br>
+<input type="radio" id="genre_{{genre['id']}}" name="genre-input" value="{{genre['id']}}">
+<label for="{{genre['id']}}"> {{genre['name']}}</label><br>
 {% endfor %}
 </div>
 </div>   
@@ -192,10 +194,11 @@
       <!-- {{ current_recommendations['images']['backdrops'][0]['file_path'] }}  -->
         
           {% if current_recommendations['images']['backdrops'][0]['file_path'] is defined %} {% if current_recommendations['images']['backdrops'][0]['file_path'] != None %} 
-          <div class="movie-images">
-            <div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][0]['file_path'] }} "></div><div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][1]['file_path'] }} "></div><div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][2]['file_path'] }} "></div>
-          </div>{% endif %}{% endif %}
 
+            <div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][0]['file_path'] }} ">
+                </div>{% endif %}{% endif %}
+
+        <div class="movie-full-details-box" style="background-image: url('http://image.tmdb.org/t/p/w500/{{current_recommendations['images']['backdrops'][0]['file_path'] }}');">
         <h1>{{ current_recommendations['title'] }}   <span class="movie-year">{% if  current_recommendations['release_date'] is defined %}({{ current_recommendations['release_date'][:4]}}){% endif %}</span> </h1>
 
         {% if current_recommendations['title'] != current_recommendations['original_title'] %} <p><i>originally: "{{ current_recommendations['original_title'] }}"</i> </p> {% endif %}
@@ -230,7 +233,7 @@
            | {{ ratings['Source'] }} score: {{ ratings['Value'] }}  ⭐ ⭐ ⭐ ★ ★ </a>
           {% endif %}{% endfor %}{% endif %}{% endif %}
           </span></p>
-
+</div>
 
     </p>
         {% if netflix_id is defined %}

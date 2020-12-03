@@ -40,7 +40,7 @@ def create_user(name, email, password):
 def get_user_by_email(email):
     """Return a user by unique email address.
     
-    >>> get_user_by_email(jane.doe@email.com)
+    >>> get_user_by_email('jane.doe@email.com')
     <User id=1 email=jane.doe@email.com>
     """
 
@@ -52,7 +52,7 @@ def update_user_fname(user_id, name):
     
     The new name will be captured via user input field.
 
-    >>> update_user_name("1", "wombat")
+    >>> update_user_fname("1", "wombat")
     <User id=1 email=jane.doe@email.com>
     """
 
@@ -68,7 +68,7 @@ def update_user_email(user_id, email):
     The new email will be captured via user input field.
     Validation will happen upstream.
 
-    >>> update_user_name("1", "wombat@email.com")
+    >>> update_user_email("1", "wombat@email.com")
     <User id=1 email=wombat@email.com>
     """
 
@@ -84,8 +84,8 @@ def update_user_password(user_id, password):
     The new password will be captured via user input field.
     Validation will happen upstream.
 
-    >>> update_user_name("1", "wombat")
-    "success"
+    >>> update_user_password("1", "wombat")
+    'success'
     """
 
     user = User.query.get(user_id)
@@ -264,9 +264,6 @@ def search_films_by_parameters(current_user, genre_list, movie_or_series, start_
 
     All of the front end parameters are optional.
     Ordering/sorting will be handled on the front end instead of via querystring parameter
-
-    >>> search_films_by_parameters("the last Unicorn", "", "", 5, 10, 1970, 2020, "", "", "", "")
-    [{'vtype': 'series', 'img': 'https://occ-0-2218-2219.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABf_yO5gOqfvRDqXfZchg9ysuqquBHNcUGu7I4OrjoH0az-nZA95YDPowaJ62xdKREiX43b-6DiIHLm5WWTaEN0GAPg.jpg?r=004', 'nfid': 81190627, 'imdbid': 'tt10329028', 'title': 'The Unicorn', 'clist': '"US":"United States"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjMyZTdlNjAtODZmOC00OGI2LTliOWEtNThmYjNiN2E2Njk2XkEyXkFqcGdeQXVyNjg4NzAyOTA@._V1_SX300.jpg', 'imdbrating': 7.1, 'top250tv': 0, 'synopsis': 'A widowed father of two girls navigates the world of dating, surprised to learn that many women consider him a hot commodity.', 'titledate': '2020-11-03', 'avgrating': 0.0, 'year': 2019, 'runtime': 0, 'top250': 0, 'id': 67089}, {'vtype': 'movie', 'img': 'https://occ-0-2851-38.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABc001T5vhL0kgjnVsvwBAotinqk-GwLwGliKtwmCh44P_U4tXxGjmzMNqW_bTY8hUC7yIE9LcVAu__JsF7wakKDyBagtnuLDVA-BG7lJAWK4tt-AFjgEb5H_fiQ.jpg?r=cb3', 'nfid': 81034317, 'imdbid': 'tt2338454', 'title': 'Unicorn Store', 'clist': '"CA":"Canada","FR":"France","DE":"Germany","NL":"Netherlands","PL":"Poland","GB":"United Kingdom","US":"United States","AR":"Argentina","AU":"Australia","BE":"Belgium","more":"+22"', 'poster': 'https://m.media-amazon.com/images/M/MV5BMjUyMTY2OTkwMF5BMl5BanBnXkFtZTgwODEyODA3NzM@._V1_SX300.jpg', 'imdbrating': 5.5, 'top250tv': 0, 'synopsis': 'After failing out of art school and taking a humdrum office job, a whimsical painter gets a chance to fulfill her lifelong dream of adopting a unicorn.', 'titledate': '2019-04-05', 'avgrating': 0.0, 'year': 2019, 'runtime': 5513, 'top250': 0, 'id': 61649}]
     """
 
     url = "https://unogsng.p.rapidapi.com/search"
@@ -351,7 +348,7 @@ def search_by_title(str):
     should begin with two alpha chars
 
     >>> search_by_title('the last unicorn')
-    tt0084237
+    'tt0084237'
     """
     imdb_query_param = quote(str)
 
@@ -384,10 +381,10 @@ def search_by_id(str):
         returns result: 'filmid' netflix id does not contain alpha chars
 
     >>> search_by_id('tt0084237')
-    60035334
+    '60035334'
 
     >>> search_by_id(search_by_title('the last unicorn'))
-    60035334
+    '60035334'
     """
 
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
@@ -414,7 +411,7 @@ def search_by_id(str):
 def get_by_filmid(str):
     """ Pass 'filmid' to receive title details.
 
-    >>> get_by_filmid('60035334')
+    >>> get_by_filmid('60035334').keys()
     {"RESULT":{"nfinfo":{"image1":"https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg","title":"The Last Unicorn","synopsis":"This animated tale follows a unicorn who believes she may be the last of her species and is searching high and low for someone just like her.","matlevel":"35","matlabel":"Contains nothing in theme, language, nudity, sex, violence or other matters that, in the view of the Rating Board, would offend parents whose younger children view the motion picture","avgrating":"3.8214536","type":"movie","updated":"","unogsdate":"2015-07-10 01:09:00","released":"1982","netflixid":"60035334","runtime":"1h32m","image2":"https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg","download":"1"},"imdbinfo":{"rating":"7.5","votes":"23234","metascore":"70","genre":"Animation, Adventure, Drama, Family, Fantasy","awards":"1 nomination.","runtime":"92 min","plot":"From a riddle-speaking butterfly, a unicorn learns that she is supposedly the last of her kind, all the others having been herded away by the Red Bull. The unicorn sets out to discover the truth behind the butterfly&amp;#39;s words. She is eventually joined on her quest by Schmendrick, a second-rate magician, and Molly Grue, a now middle-aged woman who dreamed all her life of seeing a unicorn. Their journey leads them far from home, all the way to the castle of King Haggard...","country":"UK, France, West Germany, Japan, USA","language":"English, German","imdbid":"tt0084237"},"mgname":["Animal Tales","Family Sci-Fi & Fantasy","Children & Family Films","Films for ages 8 to 10","Films based on childrens books","Films for ages 11 to 12"],"Genreid":["5507","52849","783","561","10056","6962"],"people":[{"actor":["Alan Arkin","Jeff Bridges","Mia Farrow","Tammy Grimes","Angela Lansbury","Robert Klein","Keenan Wynn","Christopher Lee","Rene Auberjonois","Paul Frees","Jack Lester","Brother Theodore","Don Messick","Ed Peck","Kenneth Jennings","Nellie Bellflower"]},{"creator":["Peter S. Beagle"]},{"director":["Jules Bass","Arthur Rankin Jr."]}],"country":[]}}
     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
@@ -436,7 +433,6 @@ def get_by_filmid(str):
     imdb_dictionary = imdb_list[0]
     imdb_dictionary['plot'] = unquote(imdb_dictionary['plot'])                  # TODO: Try to find other ways to get rid of goofy chars?
 
-    print(imdb_dictionary)
     return imdb_dictionary
 
 
@@ -447,7 +443,7 @@ def get_nfinfo_by_id(netflixid):
         accepts parameter: 'filmid' netflix id does not contain alpha chars
         returns: dictionary of netflix info... most importantly: title
 
-    >>> get_nfinfo_details_by_filmid('60035334')
+    >>> get_nfinfo_by_id('60035334')
     {'image1': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'title': 'The Last Unicorn', 'synopsis': 'This animated tale follows a unicorn who believes she may be the last of her species and is searching high and low for someone just like her.', 'matlevel': '35', 'matlabel': 'Contains nothing in theme, language, nudity, sex, violence or other matters that, in the view of the Rating Board, would offend parents whose younger children view the motion picture', 'avgrating': '3.8214536', 'type': 'movie', 'updated': '', 'unogsdate': '2015-07-10 01:09:00', 'released': '1982', 'netflixid': '60035334', 'runtime': '1h32m', 'image2': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', 'download': '1'}
     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
@@ -478,8 +474,8 @@ def get_nfinfo_by_id(netflixid):
 def get_imdb_details_by_filmid(str):
     """ Pass 'filmid' to receive imbd details.
 
-    >>> get_by_filmid('60035334')
-    {'poster': 'https://images-na.ssl-images-amazon.com/images/M/MV5BOTBjOTg1ZmMtMjFlZi00ODkyLTkwOGMtY2FmNTc1MTEzMGQyXkEyXkFqcGdeQXVyMjA0MDQ0Mjc@._V1_SX300.jpg', 'language': 'English, German', 'imdbrating': '7.5', 'tomatoConsensus': 'N/A', 'filmid': '60035334', 'imdbid': 'tt0084237', 'totalseasons': '', 'genre': 'Animation, Adventure, Drama, Family, Fantasy', 'imdbtitle': '', 'released': '19 Nov 1982', 'tomatoFresh': '0', 'production': '', 'tomatoUserReviews': '0', 'tomatoRating': '0', 'tomatoMeter': '0', 'country': 'UK, France, West Germany, Japan, USA', 'tomatoUserMeter': '0', 'tomatoReviews': '0', 'localimage': '1', 'tomatoUserRating': '0', 'type': 'movie', 'newid': '15075', 'date': '2020-03-23 01:04:38', 'top250': '0', 'plot': 'From a riddle-speaking butterfly, a unicorn learns that she is supposedly the last of her kind, all the others having been herded away by the Red Bull. The unicorn sets out to discover the truth behind the butterfly&#39;s words. She is eventually joined on her quest by Schmendrick, a second-rate magician, and Molly Grue, a now middle-aged woman who dreamed all her life of seeing a unicorn. Their journey leads them far from home, all the way to the castle of King Haggard...', 'rated': 'G', 'awards': '1 nomination.', 'imdbvotes': '23234', 'metascore': '70', 'tomatoRotten': '0', 'runtime': '92 min', 'top250tv': '0'}
+    >>> get_by_filmid('60035334')['poster']
+    'https://images-na.ssl-images-amazon.com/images/M/MV5BOTBjOTg1ZmMtMjFlZi00ODkyLTkwOGMtY2FmNTc1MTEzMGQyXkEyXkFqcGdeQXVyMjA0MDQ0Mjc@._V1_SX300.jpg'
     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
 
@@ -505,37 +501,8 @@ def get_imdb_details_by_filmid(str):
 def get_movie_details_by_filmid(str):
     """Pass 'filmid' to receive all KVPs
 
-    >>> get_nfinfo_details_by_filmid('60035334')
-    {'image1': \
-    'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', \
-    'title': 'The Last Unicorn', 'synopsis': 'This animated tale follows a \
-    unicorn who believes she may be the last of her species and is  searching \
-    high and low for someone just like her.', 'matlevel': '35', 'matlabel': \
-    'Contains nothing in theme, language, nudity, sex, violence or other \
-    matters that, in the view of the Rating Board, would offend parents whose \
-    younger children view the motion picture', 'avgrating': '3.8214536', \
-    'type': 'movie', 'updated': '', 'unogsdate': '2015-07-10 01:09:00', \
-    'released': '1982', 'netflixid': '60035334', 'runtime': '92 min', \
-    'image2': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', \
-    'download': '1', 'rating': '7.5', 'votes': '23234', 'metascore': '70', \
-    'genre': 'Animation, Adventure, Drama, Family, Fantasy', 'awards': \
-    '1 nomination.', 'plot': 'From a riddle-speaking butterfly, a unicorn \
-    learns that she is supposedly the last of her kind, all the others having \
-    been herded away by the Red Bull. The unicorn sets out to discover the \
-    truth behind the butterfly&amp;#39;s words. She is eventually joined on \
-    her quest by Schmendrick, a second-rate magician, and Molly Grue, a now \
-    middle-aged woman who dreamed all her life of seeing a unicorn. Their \
-    journey leads them far from home, all the way to the castle of King \
-    Haggard...', 'country': [], 'language': 'English, German', 'imdbid': \
-    'tt0084237', 'mgname': ['Animal Tales', 'Family Sci-Fi & Fantasy', \
-    'Children & Family Films', 'Films for ages 8 to 10', 'Films based on \
-    childrens books', 'Films for ages 11 to 12'], 'genreid': ['5507', '52849', \
-    '783', '561', '10056', '6962'], 'actors': ['Alan Arkin', 'Jeff Bridges', \
-    'Mia Farrow', 'Tammy Grimes', 'Angela Lansbury', 'Robert Klein', \
-    'Keenan Wynn', 'Christopher Lee', 'Rene Auberjonois', 'Paul Frees', \
-    'Jack Lester', 'Brother Theodore', 'Don Messick', 'Ed Peck', \
-    'Kenneth Jennings', 'Nellie Bellflower'], 'creators': ['Peter S. Beagle'], \
-    'directors': ['Jules Bass', 'Arthur Rankin Jr.']}
+    >>> get_movie_details_by_filmid('60035334')['image1']
+    'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg'
     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
 
@@ -787,9 +754,7 @@ def get_all_query_history(user):                                                
 def get_all_locations():
     """ Return a dictionary of each of Netflix's service locations.
 
-    >>> res = get_all_locations()
-    >>> res[0]
-    {'country': 'Argentina ', 'id': 21, 'countrycode': 'AR'}
+    >>> get_all_locations()[0]
     <Location id=21 location=Argenina>
     """
 
@@ -941,10 +906,10 @@ def get_all_keywords():
 def get_keyword_id_by_name(keyword_name):
     """Return keyword when given keyword name.
     
-    >>> get_keyword_by_name('suffragist movement')
+    >>> get_keyword_id_by_name('suffragist movement')
     <Keyword id=207958 keyword='suffragist movement'>
 
-    >>> get_keyword_by_name('anti-racism')
+    >>> get_keyword_id_by_name('anti-racism')
     <Keyword id=257456 keyword='anti-racism'>
     """
     
@@ -956,10 +921,10 @@ def get_keyword_id_by_name(keyword_name):
 def get_keyword_name_by_id(keyword_id):
     """Return keyword when given keyword ID.
     
-    >>> get_keyword_by_name('210586')
+    >>> get_keyword_name_by_id('210586')
     <Keyword id=210586 keyword='dark fairy tale'>
 
-    >>> get_keyword_by_name('253306')
+    >>> get_keyword_name_by_id('253306')
     <Keyword id=253306 keyword='feminist literature'>
     """
                      
@@ -976,12 +941,13 @@ def get_keyword_name_by_id(keyword_id):
 def get_movies_by_title(str):
     """Return movies by string of title.
     
-    >>>get_movies_by_title('quitting a job')
+    >>> get_movies_by_title('the last unicorn')
+    {1: {'adult': False, 'backdrop_path': '/fwxOQkzYtRVKs3kzcyukdbsyIuh.jpg', 'genre_ids': [14, 16, 10751, 12], 'id': 10150, 'original_language': 'en', 'original_title': 'The Last Unicorn', 'overview': "From a riddle-speaking butterfly, a unicorn learns that she is supposedly the last of her kind, all the others having been herded away by the Red Bull. The unicorn sets out to discover the truth behind the butterfly's words. She is eventually joined on her quest by Schmendrick, a second-rate magician, and Molly Grue, a now middle-aged woman who dreamed all her life of seeing a unicorn. Their journey leads them far from home, all the way to the castle of King Haggard.", 'popularity': 9.275, 'poster_path': '/grBct9dkEaI6jnH1jJHEwt3g7T4.jpg', 'release_date': '1982-11-19', 'title': 'The Last Unicorn', 'video': False, 'vote_average': 7.2, 'vote_count': 299}}
     """
 
     sort_by = "popularity.desc"
 
-    url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&page=1&include_adult=false&query='{str}'"
+    url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&page=1&include_adult=false&query='{str}'"
 
     response = requests.get(url)
 
@@ -1002,7 +968,7 @@ def get_people_with_name(str):
     Did you know the kid from Willy Wonka was only in one movie ever?
 
     >>> get_people_with_name('Peter Ostrum')
-    {3462: {'known_for_department': 'Acting', 'popularity': 1.068, 'adult': False, 'id': 3462, 'name': 'Peter Ostrum', 'known_for': [{'media_type': 'movie', 'poster_path': '/vmpsZkrs4Uvkp9r1atL8B3frA63.jpg', 'video': False, 'vote_average': 7.5, 'adult': False, 'overview': 'Eccentric candy man Willy Wonka prompts a worldwide frenzy when he announces that golden tickets hidden inside five of his delicious candy bars will admit their lucky holders into his top-secret confectionary. But does Wonka have an agenda hidden amid a world of Oompa Loompas and chocolate rivers?', 'release_date': '1971-06-29', 'title': 'Willy Wonka & the Chocolate Factory', 'vote_count': 2164, 'backdrop_path': '/iiusvOLB4ytkZ6FSFMlGHvt33uW.jpg', 'original_title': 'Willy Wonka & the Chocolate Factory', 'genre_ids': [10751, 14, 35], 'id': 252, 'original_language': 'en'}, {'media_type': 'movie', 'poster_path': '/gbL6TucQnnVnWl5XKjFI4P2IXwu.jpg', 'video': False, 'vote_average': 6.6, 'overview': 'Retrospective documentary on the making of the cult classic "Willy Wonka and the Chocolate Factory."', 'release_date': '2001-11-13', 'title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'vote_count': 12, 'id': 413393, 'original_title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'genre_ids': [99, 14], 'adult': False, 'original_language': 'en'}, {'media_type': 'tv', 'vote_average': 0, 'overview': '', 'origin_country': ['US'], 'first_air_date': '2005-06-13', 'vote_count': 0, 'original_name': '100 Greatest Kid Stars', 'name': '100 Greatest Kid Stars', 'genre_ids': [], 'id': 24956, 'original_language': 'en'}], 'gender': 2, 'profile_path': '/a3jbe78Rs8gjJrFxl0PoVtayNbf.jpg'}}
+    {3462: {'adult': False, 'gender': 2, 'id': 3462, 'known_for': [{'adult': False, 'backdrop_path': '/iiusvOLB4ytkZ6FSFMlGHvt33uW.jpg', 'genre_ids': [10751, 14, 35], 'id': 252, 'media_type': 'movie', 'original_language': 'en', 'original_title': 'Willy Wonka & the Chocolate Factory', 'overview': 'Eccentric candy man Willy Wonka prompts a worldwide frenzy when he announces that golden tickets hidden inside five of his delicious candy bars will admit their lucky holders into his top-secret confectionary. But does Wonka have an agenda hidden amid a world of Oompa Loompas and chocolate rivers?', 'poster_path': '/vmpsZkrs4Uvkp9r1atL8B3frA63.jpg', 'release_date': '1971-06-29', 'title': 'Willy Wonka & the Chocolate Factory', 'video': False, 'vote_average': 7.5, 'vote_count': 2164}, {'adult': False, 'genre_ids': [99, 14], 'id': 413393, 'media_type': 'movie', 'original_language': 'en', 'original_title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'overview': 'Retrospective documentary on the making of the cult classic "Willy Wonka and the Chocolate Factory."', 'poster_path': '/gbL6TucQnnVnWl5XKjFI4P2IXwu.jpg', 'release_date': '2001-11-13', 'title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'video': False, 'vote_average': 6.6, 'vote_count': 12}, {'first_air_date': '2005-06-13', 'genre_ids': [], 'id': 24956, 'media_type': 'tv', 'name': '100 Greatest Kid Stars', 'origin_country': ['US'], 'original_language': 'en', 'original_name': '100 Greatest Kid Stars', 'overview': '', 'vote_average': 0, 'vote_count': 0}], 'known_for_department': 'Acting', 'name': 'Peter Ostrum', 'popularity': 0.6, 'profile_path': '/a3jbe78Rs8gjJrFxl0PoVtayNbf.jpg'}}
 
     >>> get_people_with_name('wachowski').keys()
     dict_keys([9340, 9339, 1737865, 1636722])
@@ -1026,7 +992,7 @@ def get_people_with_name(str):
 def get_studio_info_from_name(str):
     """Return studio/production company info from string of name.
 
-    >>>get_studio_with_name('Studio Ghibli')
+    >>> get_studio_info_from_name('Studio Ghibli')
     {10342: {'id': 10342, 'logo_path': '/eS79pslnoKbWg7t3PMA9ayl0bGs.png', 'name': 'Studio Ghibli', 'origin_country': 'JP'}}
     """
 
@@ -1041,7 +1007,7 @@ def get_studio_info_from_name(str):
     
     for index, title in enumerate(search_results['results']):
         recommendations[title.get('id')] = title
-    print()
+
     return recommendations
 
 
@@ -1092,8 +1058,9 @@ def get_studio_info_from_name(str):
 
 def get_titles_with_keyword(keyword_id):
     """Return recommendations from keyword.
-    
-    >>>get_titles_by_keyword('quitting a job')
+
+    >>> get_movies_by_title('lgbt')[1]['adult']
+    False
     """
 
     sort_by = "popularity.desc"
@@ -1118,7 +1085,7 @@ def get_titles_with_keyword(keyword_id):
 def get_titles_with_person(person_id):
     """Return recommendations from people_id.
     
-    >>>get_titles_by_person('3462')
+    >>> get_titles_with_person('3462')
     {1: {'adult': False, 'backdrop_path': '/iiusvOLB4ytkZ6FSFMlGHvt33uW.jpg', 'popularity': 26.457, 'genre_ids': [10751, 14, 35], 'title': 'Willy Wonka & the Chocolate Factory', 'original_language': 'en', 'original_title': 'Willy Wonka & the Chocolate Factory', 'poster_path': '/vmpsZkrs4Uvkp9r1atL8B3frA63.jpg', 'overview': 'Eccentric candy man Willy Wonka prompts a worldwide frenzy when he announces that golden tickets hidden inside five of his delicious candy bars will admit their lucky holders into his top-secret confectionary. But does Wonka have an agenda hidden amid a world of Oompa Loompas and chocolate rivers?', 'video': False, 'vote_average': 7.5, 'id': 252, 'vote_count': 2193, 'release_date': '1971-06-29'}, 2: {'adult': False, 'backdrop_path': None, 'popularity': 5.806, 'genre_ids': [99, 14], 'title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'original_language': 'en', 'original_title': "Pure Imagination: The Story of 'Willy Wonka and the Chocolate Factory'", 'poster_path': '/gbL6TucQnnVnWl5XKjFI4P2IXwu.jpg', 'overview': 'Retrospective documentary on the making of the cult classic "Willy Wonka and the Chocolate Factory."', 'video': False, 'vote_average': 6.6, 'id': 413393, 'vote_count': 12, 'release_date': '2001-11-13'}}
     """
 
@@ -1144,7 +1111,7 @@ def get_titles_with_person(person_id):
 def get_titles_from_studio(studio_id):
     """Return recommendations from studio_id.
     
-    >>>get_titles_by_studio('10342')[1]
+    >>> get_titles_from_studio('10342')[1]
     {'vote_average': 8.5, 'popularity': 56.698, 'vote_count': 10469, 'release_date': '2001-07-20', 'adult': False, 'backdrop_path': '/mSDsSDwaP3E7dEfUPWy4J0djt4O.jpg', 'title': 'Spirited Away', 'genre_ids': [16, 10751, 14], 'poster_path': '/eO4NHOsitcVpRw0kolJRLxXdxa2.jpg', 'original_language': 'ja', 'original_title': '千と千尋の神隠し', 'id': 129, 'overview': 'A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.', 'video': False}
     """
 
@@ -1163,18 +1130,7 @@ def get_titles_from_studio(studio_id):
     
     for index, title in enumerate(search_results['results']):
         recommendations[title['id']] = title
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(recommendations)
-    print()
-    print()
-    print()
-    print()
-    print()
+    
     return recommendations
 
 
@@ -1243,7 +1199,7 @@ def get_title_by_imdbid(imdb_id):
     """Given IMDB id return title info from TMDB.
 
     >>> get_title_by_imdbid('tt0084237')
-    {'movie_results': [{'video': False, 'vote_average': 8.1, 'overview': 'Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.', 'release_date': '1999-03-30', 'adult': False, 'backdrop_path': '/fNG7i7RqMErkcqhohV2a6cV1Ehy.jpg', 'vote_count': 18106, 'genre_ids': [28, 878], 'title': 'The Matrix', 'original_language': 'en', 'original_title': 'The Matrix', 'poster_path': '/vybQQ7w7vGvF53IsGD0y0JSgIsA.jpg', 'id': 603, 'popularity': 57.411}], 'person_results': [], 'tv_results': [], 'tv_episode_results': [], 'tv_season_results': []}
+    {'movie_results': [{'adult': False, 'backdrop_path': '/fwxOQkzYtRVKs3kzcyukdbsyIuh.jpg', 'genre_ids': [14, 16, 10751, 12], 'id': 10150, 'original_language': 'en', 'original_title': 'The Last Unicorn', 'overview': "From a riddle-speaking butterfly, a unicorn learns that she is supposedly the last of her kind, all the others having been herded away by the Red Bull. The unicorn sets out to discover the truth behind the butterfly's words. She is eventually joined on her quest by Schmendrick, a second-rate magician, and Molly Grue, a now middle-aged woman who dreamed all her life of seeing a unicorn. Their journey leads them far from home, all the way to the castle of King Haggard.", 'poster_path': '/grBct9dkEaI6jnH1jJHEwt3g7T4.jpg', 'release_date': '1982-11-19', 'title': 'The Last Unicorn', 'video': False, 'vote_average': 7.2, 'vote_count': 299, 'popularity': 13.503}], 'person_results': [], 'tv_results': [], 'tv_episode_results': [], 'tv_season_results': []}    
     """
 
     url = f"https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_API_KEY}&external_source=imdb_id&"
@@ -1279,10 +1235,10 @@ def get_netflix_id_by_IMDB_id(imdb_id):
         returns result: 'filmid' netflix id does not contain alpha chars
 
     >>> search_by_id('tt0084237')
-    60035334
+    '60035334'
 
     >>> search_by_id(search_by_title('the last unicorn'))
-    60035334
+    '60035334'
     """
 
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
@@ -1317,37 +1273,8 @@ def get_netflix_id_by_IMDB_id(imdb_id):
 def get_netflix_details_by_netflix_id(netflix_id):
     """Pass 'netflix_id' to receive all KVPs
 
-    >>> get_nfinfo_details_by_filmid('60035334')
-    {'image1': \
-    'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', \
-    'title': 'The Last Unicorn', 'synopsis': 'This animated tale follows a \
-    unicorn who believes she may be the last of her species and is  searching \
-    high and low for someone just like her.', 'matlevel': '35', 'matlabel': \
-    'Contains nothing in theme, language, nudity, sex, violence or other \
-    matters that, in the view of the Rating Board, would offend parents whose \
-    younger children view the motion picture', 'avgrating': '3.8214536', \
-    'type': 'movie', 'updated': '', 'unogsdate': '2015-07-10 01:09:00', \
-    'released': '1982', 'netflixid': '60035334', 'runtime': '92 min', \
-    'image2': 'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg', \
-    'download': '1', 'rating': '7.5', 'votes': '23234', 'metascore': '70', \
-    'genre': 'Animation, Adventure, Drama, Family, Fantasy', 'awards': \
-    '1 nomination.', 'plot': 'From a riddle-speaking butterfly, a unicorn \
-    learns that she is supposedly the last of her kind, all the others having \
-    been herded away by the Red Bull. The unicorn sets out to discover the \
-    truth behind the butterfly&amp;#39;s words. She is eventually joined on \
-    her quest by Schmendrick, a second-rate magician, and Molly Grue, a now \
-    middle-aged woman who dreamed all her life of seeing a unicorn. Their \
-    journey leads them far from home, all the way to the castle of King \
-    Haggard...', 'country': [], 'language': 'English, German', 'imdbid': \
-    'tt0084237', 'mgname': ['Animal Tales', 'Family Sci-Fi & Fantasy', \
-    'Children & Family Films', 'Films for ages 8 to 10', 'Films based on \
-    childrens books', 'Films for ages 11 to 12'], 'genreid': ['5507', '52849', \
-    '783', '561', '10056', '6962'], 'actors': ['Alan Arkin', 'Jeff Bridges', \
-    'Mia Farrow', 'Tammy Grimes', 'Angela Lansbury', 'Robert Klein', \
-    'Keenan Wynn', 'Christopher Lee', 'Rene Auberjonois', 'Paul Frees', \
-    'Jack Lester', 'Brother Theodore', 'Don Messick', 'Ed Peck', \
-    'Kenneth Jennings', 'Nellie Bellflower'], 'creators': ['Peter S. Beagle'], \
-    'directors': ['Jules Bass', 'Arthur Rankin Jr.']}
+    >>> get_netflix_details_by_netflix_id('60035334')['image1']
+    'https://art-s.nflximg.net/2c5cb/e26fea88e4b62bc7f1eeeb8db2a7268e6dd2c5cb.jpg'
     """
     url = "https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi"
 
@@ -1397,8 +1324,8 @@ def get_netflix_details_by_netflix_id(netflix_id):
 def get_imdb_details_with_imdb_id(imdb_id):
     """Pass imdb_id to receive useful imdb rating/etc data.
     
-    >>>get_imdb_details_with_imdb_id('tt0036855')['Year']
-    1944
+    >>> get_imdb_details_with_imdb_id('tt0036855')['Year']
+    '1944'
     """
 
     url = "https://movie-database-imdb-alternative.p.rapidapi.com/"
@@ -1513,8 +1440,8 @@ def get_person_details_from_person_id(person_id):
     # https://developers.themoviedb.org/3/people/get-person-combined-credits
     # https://developers.themoviedb.org/3/people/get-person-external-ids
     
-    >>>get_person_details_from_person_id(15309)['name']
-    Lori Petty
+    >>> get_person_details_from_person_id(15309)['name']
+    'Lori Petty'
     """
 
     url = f"https://api.themoviedb.org/3/person/{person_id}?api_key={TMDB_API_KEY}&append_to_response=combined_credits,external_ids"
@@ -1533,8 +1460,8 @@ def get_person_details_from_person_id(person_id):
 def get_top_10_cast_from_credits_with_movie_id(movie_id):
     """ Return the top 10 cast by popularity for given movie.
 
-    >>>get_top_10_cast_from_credits_with_movie_id(550)
-
+    >>> get_top_10_cast_from_credits_with_movie_id(550)['actors'][0]['id']
+    287
     """
 
     url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}"
@@ -1588,9 +1515,7 @@ def get_basic_details_with_movie_id(movie_id):
         # https://developers.themoviedb.org/3/tv/get-tv-details
         
     >>> get_basic_details_with_movie_id(603)
-    {"adult":false,"backdrop_path":"/fNG7i7RqMErkcqhohV2a6cV1Ehy.jpg","belongs_to_collection":{"id":2344,"name":"The Matrix Collection","poster_path":"/lh4aGpd3U9rm9B8Oqr6CUgQLtZL.jpg","backdrop_path":"/bRm2DEgUiYciDw3myHuYFInD7la.jpg"},"budget":63000000,"genres":[{"id":28,"name":"Action"},{"id":878,"name":"Science Fiction"}],"homepage":"http://www.warnerbros.com/matrix","id":603,"imdb_id":"tt0133093","original_language":"en","original_title":"The Matrix","overview":"Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.","popularity":57.411,"poster_path":"/vybQQ7w7vGvF53IsGD0y0JSgIsA.jpg","production_companies":[{"id":79,"logo_path":"/tpFpsqbleCzEE2p5EgvUq6ozfCA.png","name":"Village Roadshow Pictures","origin_country":"US"},{"id":372,"logo_path":null,"name":"Groucho II Film Partnership","origin_country":""},{"id":1885,"logo_path":"/xlvoOZr4s1PygosrwZyolIFe5xs.png","name":"Silver Pictures","origin_country":"US"},{"id":174,"logo_path":"/IuAlhI9eVC9Z8UQWOIDdWRKSEJ.png","name":"Warner Bros. Pictures","origin_country":"US"}],"production_countries":[{"iso_3166_1":"AU","name":"Australia"},{"iso_3166_1":"US","name":"United States of America"}],"release_date":"1999-03-30","revenue":463517383,"runtime":136,"spoken_languages":[{"english_name":"English","iso_639_1":"en","name":"English"}],"status":"Released","tagline":"Welcome to the Real World.","title":"The Matrix","video":false,"vote_average":8.1,"vote_count":18109}
-
-
+    {'adult': False, 'backdrop_path': '/fNG7i7RqMErkcqhohV2a6cV1Ehy.jpg', 'belongs_to_collection': {'id': 2344, 'name': 'The Matrix Collection', 'poster_path': '/lh4aGpd3U9rm9B8Oqr6CUgQLtZL.jpg', 'backdrop_path': '/bRm2DEgUiYciDw3myHuYFInD7la.jpg'}, 'budget': 63000000, 'genres': [{'id': 28, 'name': 'Action'}, {'id': 878, 'name': 'Science Fiction'}], 'homepage': 'http://www.warnerbros.com/matrix', 'id': 603, 'imdb_id': 'tt0133093', 'original_language': 'en', 'original_title': 'The Matrix', 'overview': 'Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.', 'popularity': 49.914, 'poster_path': '/vybQQ7w7vGvF53IsGD0y0JSgIsA.jpg', 'production_companies': [{'id': 79, 'logo_path': '/tpFpsqbleCzEE2p5EgvUq6ozfCA.png', 'name': 'Village Roadshow Pictures', 'origin_country': 'US'}, {'id': 372, 'logo_path': None, 'name': 'Groucho II Film Partnership', 'origin_country': ''}, {'id': 1885, 'logo_path': '/xlvoOZr4s1PygosrwZyolIFe5xs.png', 'name': 'Silver Pictures', 'origin_country': 'US'}, {'id': 174, 'logo_path': '/IuAlhI9eVC9Z8UQWOIDdWRKSEJ.png', 'name': 'Warner Bros. Pictures', 'origin_country': 'US'}], 'production_countries': [{'iso_3166_1': 'AU', 'name': 'Australia'}, {'iso_3166_1': 'US', 'name': 'United States of America'}], 'release_date': '1999-03-30', 'revenue': 463517383, 'runtime': 136, 'spoken_languages': [{'english_name': 'English', 'iso_639_1': 'en', 'name': 'English'}], 'status': 'Released', 'tagline': 'Welcome to the Real World.', 'title': 'The Matrix', 'video': False, 'vote_average': 8.1, 'vote_count': 18136}
     """
 
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
@@ -1703,25 +1628,71 @@ def get_full_details_with_movie_id(movie_id, language_id='en'):
     except KeyError:
         pass
 
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print(search_results)
-    print()
-    print()
-    print()
-    print()
-    print()
-
     return search_results
 
     # TODO: debug items that aren't actually found
     # TODO: {'success': False, 'status_code': 34, 'status_message': 'The resource you requested could not be found.', 'similar': {}, 'flatrate': None, 'rent': None, 'buy': None}
 
 
+def discover_films_by_parameters(current_user, movie_or_series, audio, end_year, start_rating, genre_list):
+    """ Return a number of results based on parameters from User.
+
+    All of the front end parameters are optional.
+    Some ordering/sorting will be handled on the front end instead of via querystring parameter
+    """
+    base_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&sort_by=popularity.desc&include_adult=false&page=5"
+
+    if audio != "any":
+        base_url = f"{base_url}&with_original_language={audio}"
+
+    # if start_year != "any":
+    #     base_url = f"{base_url}&release_date.gte={start_year}"
+
+    if end_year != "any":
+        base_url = f"{base_url}&release_date.lte={end_year}"
+
+    if start_rating != "any":
+        base_url = f"{base_url}&vote_average.gte={start_rating}"
+
+    if genre_list != "any":
+        base_url = f"{base_url}&&with_genres={genre_list}"
+
+
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(base_url)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+
+
+
+
+
+
+    response = requests.get(base_url)
+
+    search_results = json.loads(response.text)
+
+    recommendations = dict()
+    count = 1
+    
+    for index, title in enumerate(search_results['results']):
+        recommendations[title['id']] = title
+    
+    return recommendations
+
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
+    import doctest
+    doctest.testmod()

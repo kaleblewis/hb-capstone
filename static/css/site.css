@@ -104,16 +104,34 @@
     padding: 14px 16px;
   }
 
+  #login-to-existing-acct {
+    float: right;
+    /* border: 1px solid red; */
+    padding: 18px;
+  }
+
+  #create-new-acct-btn {
+    
+    float: right;
+    /* border: 1px solid red; */
+    padding: 21px;
+    background-color: transparent;
+    color: #222222;
+    border: none;
+    box-shadow: none;
+  }
+
+  
 
   #nav-bar-brand {
-    border: 1px solid green;
+    /* border: 1px solid green; */
     float: left;
     /* padding: 20px; */
 
   }
 
   #nav-bar-secondary {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     float: right;
     text-align: left;
     width: 60%;
@@ -121,7 +139,7 @@
   }
 
   #nav-search {
-    border: 1px solid greenyellow;
+    /* border: 1px solid greenyellow; */
     float: right;
     width: 59%;
     padding: 16px;
@@ -129,7 +147,7 @@
   }
 
   #nav-profile {
-    border: 1px solid purple;
+    /* border: 1px solid purple; */
     float: right;
     width: 75px;;
   }
@@ -195,12 +213,11 @@
     display: block;
   }
   
-
-
-
   .nav-bar-icon {
     filter: invert(100%);
   }
+
+  
 
 
 
@@ -260,15 +277,12 @@
     width: 85%;
   }
 
-  .user-preference-btn {
-    /* border: 1px solid red; */
-    float: right;
-  }
 
   .user-preference-btn {
     border: none;
     outline:none;
     background-color: transparent;
+    float: right;
   }
 
 
@@ -284,14 +298,21 @@
   
 
 
-  .movie-images {
+  .movie-full-details-box {
     width: 95%;
     height: auto;
+    background-image: url("    move to  homepage   <!-- {{ current_recommendations['images']['backdrops'][0]['file_path']");
   } 
   .movie-image {
     width: 30%;
     height: auto;
   } 
+
+
+
+
+
+
 
   /* SCREEN SIZE VARIATIONS */
   @media screen and (max-width: 700px) {
