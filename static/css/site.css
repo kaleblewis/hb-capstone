@@ -21,13 +21,13 @@
   }
 
   .search-result a {
-    color:#333333;
+    /* color:#333333; */
     text-decoration: none;
     font-weight: bolder;
   }
 
   .search-result a:hover {
-    color:#FB3530;
+    /* color:#FB3530; */
     text-decoration: underline;
   }
 
@@ -37,7 +37,7 @@
   }
 
   .search-result {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     width: 85%;
 
   }
@@ -75,6 +75,12 @@
 
   .movie-ratings {
     font-size: smaller;
+   
+  }
+
+  .ratings-value {
+    font-weight: bolder;
+
   }
 
   .side-note-to-headers {
@@ -91,12 +97,16 @@
 .movie-results-header-row-title{
   /* border: 1px solid blue; */
   width: 70%;
+  /* float: left; */
 }
 
 .movie-results-header-row-pin{
   /* border: 1px solid red; */
   float: right;
-  padding: 10px;
+  /* margin: 20px; */
+  padding: 20px;
+  text-align: center;
+  width: 12%;
 
 }
 
@@ -316,6 +326,12 @@
     float: right;
   }
 
+  .tiny-icon {
+    height: 15px;
+    width: 15px;
+    filter: invert(50%);
+  }
+
 
 
 
@@ -324,7 +340,10 @@
 
   div.content {
     margin-left: 275px;
-    padding: 40px;
+  }
+
+  #main-search-content-box {
+    padding: 30px;
   }
 
   .movie-full-details-box {
@@ -332,25 +351,36 @@
     height: auto;
     background-image: url("    move to  homepage   <!-- {{ current_recommendations['images']['backdrops'][0]['file_path']");
   } 
+
   .movie-image {
     width: 30%;
     height: auto;
   } 
 
   .opener {
-    font-weight: bold;
-    padding: 15px;
+    /* padding: 5px; */
   }
   
 	.hidden-div {
-		display: none;
-		border: 1px solid red;
+    display: none;
+    padding: 5px;
+    /* border: 1px solid red; */
 	}
 
+  .mid-size-icon {
+    height: 30px;
+    width: 30px;
+    filter: invert(50%);
+  }
 
-
-
-
+  .movie-results-synopsis-row {
+    font-size: larger;
+    width: 70%;
+  }
+  .movie-results-details-row {
+    /* padding: 15px; */
+    /* color: red; */
+  }
 
   /* SCREEN SIZE VARIATIONS */
   @media screen and (max-width: 700px) {

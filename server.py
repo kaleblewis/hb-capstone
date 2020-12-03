@@ -258,7 +258,6 @@ def user_login():
 
     if login_user:
         if login_user.password == password:
-            flash('Success')
             session['name'] = login_user.fname
             session['email'] = email
             session['isNew'] = False
@@ -421,7 +420,7 @@ def render_specific_movie():
     search_result = crud.get_movies_by_title(search_term)
 
     if search_result != None:
-        flash(f"search results for term: {search_term}")
+        flash(f"{search_term}")
         session['render-search-results'] = "many"
         return render_template("homepage.html", 
             user=current_user,
@@ -518,22 +517,22 @@ def show_all_films_by_person_name(person_id, person_name):
 
 
 
-@app.route('/genre/<genrename>',  methods=['GET'])
-def show_top10_films_by_genre_name(genrename):
+@app.route('/genre/<genre_id>_<genre_name>',  methods=['GET'])
+def show_top10_films_by_genre_name(genre_id, genre_name):
     """Show top-10 best rated films results for a particular genre."""
 
-    genre_name = unquote(genrename)
+    genre_name = unquote(genre_name)
     current_user = crud.get_user_by_email(session['email'])
 
-    films_of_genre = crud.get_top10_films_by_genre_name(current_user, genre_name)
+    films_of_genre = crud.get_titles_with_genre(genre_id)
     # current_user_prefs = get_current_user_preferences(current_user)
     current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
     all_genres = crud.get_stored_genres()
 
-    flash(f"{genrename}")
+    flash(f"{genre_name}")
     session['render-search-results'] = "many"
 
-    return render_template('recommendations.html', 
+    return render_template('homepage.html', 
             user=current_user,
             # user_genres=current_user_preferred_genres, 
             all_genres=GENRES, 
