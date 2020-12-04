@@ -305,7 +305,7 @@
         <div class="movie-results-synopsis-row">  
         {% if current_recommendations['genres'] != [] %} 
         <div class="opener">
-          <h5> Genres </h5>
+          <h5> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>    Genres </h5>
           <div class="hidden-div">
           {% for genre in current_recommendations['genres'] %} 
           <a href="/genre/{{ genre['id'] }}_{{ genre['name'] }}"> {{ genre['name']}}</a>
@@ -316,7 +316,7 @@
         {% if current_recommendations['keywords'] != [] %}
         
         <div class="opener">
-          <h5>Searchable Keywords <span class="side-note-to-headers"> (beware of spoilers) </span> </h5>
+          <h5> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>   Searchable Keywords <span class="side-note-to-headers"> (beware of spoilers) </span> </h5>
           <div class="hidden-div">
         {% for keyword in current_recommendations['keywords'] %} 
           <a href="/keyword/{{ keyword['name'] }}"> {{ keyword['name'] }}</a>
@@ -327,33 +327,34 @@
         
 
         <div class="opener">
-          <h5>Searchable Cast & Crew</h5>
+          <h5> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>   Searchable Cast & Crew </h5>
           <div class="hidden-div">
-        {% if current_recommendations['actors'] != [] %}<span class="movie-year"> Top 10 most popular cast members: </span><br>{% for actors in current_recommendations['actors'] %} 
+        {% if current_recommendations['actors'] != [] %}<span class="movie-ratings ratings-value"> Top 10 most popular cast members: </span><br>{% for actors in current_recommendations['actors'] %} 
           <a href="/people/{{ actors['id'] }}_{{ actors['name'] }}"> {{ actors['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
         
               
-        {% if current_recommendations['directors'] != [] %}<span class="movie-year">Director(s):  </span> {% for directors in current_recommendations['directors'] %} 
+        {% if current_recommendations['directors'] != [] %}<span class="movie-ratings ratings-value">Director(s):  </span> {% for directors in current_recommendations['directors'] %} 
           <a href="/people/{{ directors['id'] }}_{{ directors['name'] }}"> {{ directors['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
 
-        {% if current_recommendations['composers'] != [] %}<span class="movie-year"> Composer(s): </span> {% for composers in current_recommendations['composers'] %} 
+        {% if current_recommendations['composers'] != [] %}<span class="movie-ratings ratings-value"> Composer(s): </span> {% for composers in current_recommendations['composers'] %} 
           <a href="/people/{{ composers['id'] }}_{{ composers['name'] }}"> {{ composers['name'] }}</a>
           {%- if not loop.last -%} , {% endif %} 
         {% endfor %} </p>{% endif %}
 
-        {% if current_recommendations['production_companies'] != [] %}<span class="movie-year"> Production Studio(s): </span> {% for company in current_recommendations['production_companies'] %}  
+        {% if current_recommendations['production_companies'] != [] %}<span class="movie-ratings ratings-value"> Production Studio(s): </span> {% for company in current_recommendations['production_companies'] %}  
           <a href="/studio/{{ company['id'] }}_{{ company['name'] }}"> {{ company['name'] }}</a>
             {%- if not loop.last -%} , {% endif %} 
           {% endfor %} </p>{% endif %} 
           </div></div>
-          
+
 
           <div class="opener">
-            <h5>Available for online streaming</h5>
+            <h5> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>    Available for online streaming
+            </h5>
             <div class="hidden-div">
 
               {% if current_recommendations['flatrate'] != None %}  <div class="opener"><h5><span class="movie-year">Streaming services </span></h5>
@@ -374,18 +375,21 @@
         
         <div class="movie-results-similar-titles-row">  
 
-          {% if current_recommendations['similar'] is defined %}{% if current_recommendations['similar'] != None %}<h5>Similar titles  </h5> {% for item in current_recommendations['similar'].items() %}  
+          {% if current_recommendations['similar'] is defined %}{% if current_recommendations['similar'] != None %}<h5>Similar titles  </h5> 
+          {% for item in current_recommendations['similar'].items() %}  
             {% if current_recommendations['similar'] is defined %}{% if current_recommendations['similar'] != None %}<a href="/title/{{ item[1]['id'] }}">
               {% if item[1]['poster_path'] is defined %}{% if item[1]['poster_path']!= None %}              
               {% if item[1]['overview'] is defined %}{% if item[1]['overview']!= None %}
-              <img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} - {{item[1]['overview']}}" width="40" height="60"></a>  
+              <img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} - {{item[1]['overview']}}"></a>  
               {% endif %} {% endif %} {% endif %} {% endif %} {% endif %} {% endif %}
-            {% endfor %} </p>{% endif %} {% endif %} 
+            {% endfor %} 
+          </p>{% endif %} {% endif %} 
             {# <!-- <img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} ({{item[1]['release_date'][:4]}}) - {{item[1]['overview']}}" width="40" height="60"></a>   --> #}
           </div>
             <!-- {{ current_recommendations }} -->
 
-          
+            <div class="clear"></div>
+        
           </div> 
         {% endif %}
 
@@ -477,16 +481,6 @@
 {% block js %}
 
 
-<script>
-
-  jQuery( document ).ready(function() {
-  
-    jQuery('.opener h5').click(function() {
-      jQuery(this).next('.hidden-div').toggle();
-    })
-    
-  });
-  
-  </script>
+<script src="/static/js/app.js"></script>
 
 {% endblock %}
