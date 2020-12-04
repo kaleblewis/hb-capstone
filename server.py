@@ -515,10 +515,8 @@ def show_all_films_by_person_name(person_id, person_name):
             current_recommendations=filmography)
 
 
-
-
 @app.route('/genre/<genre_id>_<genre_name>',  methods=['GET'])
-def show_top10_films_by_genre_name(genre_id, genre_name):
+def show_films_by_genre_name(genre_id, genre_name):
     """Show top-10 best rated films results for a particular genre."""
 
     genre_name = unquote(genre_name)
@@ -539,6 +537,51 @@ def show_top10_films_by_genre_name(genre_id, genre_name):
             languages=LANGUAGES,
             current_recommendations=films_of_genre)
 
+
+@app.route('/language/<iso_639_1_id>_<english_name>_<name>',  methods=['GET'])
+def get_titles_with_spoken_language(iso_639_1_id, english_name, name):
+    """Show results for a particular original recorded language."""
+
+    current_user = crud.get_user_by_email(session['email'])
+
+    films_of_genre = crud.get_titles_with_original_language(iso_639_1_id)
+    # current_user_prefs = get_current_user_preferences(current_user)
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    all_genres = crud.get_stored_genres()
+
+    flash(f"{name} ({english_name})")
+    session['render-search-results'] = "many"
+
+    return render_template('homepage.html', 
+            user=current_user,
+            # user_genres=current_user_preferred_genres, 
+            all_genres=GENRES, 
+            languages=LANGUAGES,
+            current_recommendations=films_of_genre)
+
+
+@app.route('/language/<iso_639_1_id>_<english_name>',  methods=['GET'])
+def get_titles_with_original_language(iso_639_1_id, english_name):
+    """Show results for a particular original recorded language."""
+
+    current_user = crud.get_user_by_email(session['email'])
+
+    films_of_genre = crud.get_titles_with_original_language(iso_639_1_id)
+    # current_user_prefs = get_current_user_preferences(current_user)
+    current_user_preferred_genres = crud.get_user_genre_preferences_active(current_user)
+    all_genres = crud.get_stored_genres()
+
+
+    flash(f"{english_name}")
+    session['render-search-results'] = "many"
+
+    return render_template('homepage.html', 
+            user=current_user,
+            # user_genres=current_user_preferred_genres, 
+            all_genres=GENRES, 
+            languages=LANGUAGES,
+            current_recommendations=films_of_genre)
+        
 
 @app.route('/keyword/<keyword>',  methods=['GET'])
 def show_top10_films_by_keyword(keyword):

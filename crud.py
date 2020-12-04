@@ -1185,8 +1185,8 @@ def get_titles_with_genre(genre_id):
     return recommendations
 
 
-def get_titles_with_original_language(str):
-    """Return recommendations from keyword.
+def get_titles_with_original_language(iso_639_1_id):
+    """Return recommendations from 2-letter-code.
     
     Accepts a single string of 2 char language.
     Specify an ISO 639-1 string to filter results by their original language value.
@@ -1201,7 +1201,7 @@ def get_titles_with_original_language(str):
 
     sort_by = "popularity.desc"
 
-    url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&include_video=false&page=1&with_original_language={str}"
+    url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=en-US&sort_by={sort_by}&include_adult=false&include_video=false&page=1&with_original_language={iso_639_1_id}"
     # TODO:  decide how to wrangle the different TV/movie endpoints??
     # https://developers.themoviedb.org/3/discover/tv-discover
 
@@ -1213,6 +1213,32 @@ def get_titles_with_original_language(str):
     
     for index, title in enumerate(search_results['results']):
         recommendations[(index + 1)] = title
+
+
+    print()
+    print()
+    print()
+    print()
+    print(iso_639_1_id)
+    print()
+    print()
+    print(url)
+    print()
+    print()
+    print(search_results)
+    print()
+    print()
+    print(recommendations)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+
 
     return recommendations
 

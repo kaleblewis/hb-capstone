@@ -192,14 +192,20 @@
   
       {% if current_recommendations is defined %}
     
-      <!-- {{ current_recommendations['images']['backdrops'][0]['file_path'] }}  -->
+   {#   <!-- {{ current_recommendations['images']['backdrops'][0]['file_path'] }}  --> #}
         
-          {% if current_recommendations['images']['backdrops'][0]['file_path'] is defined %} {% if current_recommendations['images']['backdrops'][0]['file_path'] != None %} 
+      {% if current_recommendations['images']['backdrops'][0]['file_path'] is defined %} {% if current_recommendations['images']['backdrops'][0]['file_path'] != None %} 
 
-            <div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][0]['file_path'] }} ">
-                </div>{% endif %}{% endif %}
+      <div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][0]['file_path'] }} ">
+          </div>{% endif %}{% endif %}
 
+        {# <!-- 
         <div class="movie-full-details-box">
+          {% if current_recommendations['poster_path'] is defined %} {% if current_recommendations['poster_path'] != None %} 
+
+          <div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['poster_path'] }} ">
+              </div>{% endif %}{% endif %} -->  #}
+
 
         <!-- style="background-image: url('http://image.tmdb.org/t/p/w500/{{current_recommendations['images']['backdrops'][0]['file_path'] }}');"> -->
 
@@ -227,13 +233,32 @@
         {% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  {% endif %} 
           {% if current_recommendations['imdb_type'] is defined %}
             {% if current_recommendations['imdb_type'] == 'movie' %}| 🎬 {{ current_recommendations['imdb_type'] }} {% elif current_recommendations['imdb_type'] == 'series' %} | 📺 {{ current_recommendations['imdb_type'] }}{% endif %}
-            {% endif %}{% if netflix_id is defined %}
+            {% endif %}
+            {% if current_recommendations['netflix_id'] is defined %}
             {% if current_recommendations['netflix_downloadable'] == '1' %}| 📶 downloadable from Netflix {% endif %}
             {% if current_recommendations['netflix_matlevel'] != "" %}|<a title="{{ current_recommendations['netflix_matlabel'] }}"> 🔰 {{ current_recommendations['netflix_matlabel'] }} </a> {% endif %}
           {% endif %}
-          {% if current_recommendations['imdb_rated'] is defined %}|  Rated: {{ current_recommendations['imdb_rated'] }} {% endif %}
+
+          {% if current_recommendations['imdb_rated'] is defined %}|  Rated: <span class="ratings-value">{{ current_recommendations['imdb_rated'] }}</span> {% endif %}
  
-        <br>
+
+          {% if current_recommendations['original_language'] is defined %}<p>  Original Language: 
+          {% for language in languages['audio'] %} 
+            {% if language['id'] == current_recommendations['original_language'] %} 
+            <a href="/language/{{ language['id'] }}_{{ language['language'] }}">{{ language['language'] }}</a> 
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            
+          {% if current_recommendations['spoken_languages'] is defined %}|  Spoken Language(s): 
+          {% if current_recommendations['spoken_languages'] != [] %} 
+          {% for language in current_recommendations['spoken_languages'] %} 
+           
+              {% if language['name'] is defined %} 
+               <a href="/language/{{ language['iso_639_1'] }}_{{ language['english_name'] }}_{{ language['name'] }}">
+                {{ language['name'] }} ({{ language['english_name'] }})</a>
+                {%- if not loop.last -%}, {% endif %}{% endif %}{% endfor %}{% endif %}
+                </p>{% endif %}
         <span class="movie-ratings"> 
           {% if current_recommendations['vote_average'] is defined %}  TMDb: <span class="ratings-value">{{ current_recommendations['vote_average'] }} </span>|{% endif %}  
           {% if current_recommendations['imdb_imdbrating'] is defined %}  IMDb: <span class="ratings-value">{{ current_recommendations['imdb_imdbrating'] }}</span>{% endif %}  
@@ -242,7 +267,7 @@
            |  {{ ratings['Source'] }}: <span class="ratings-value">  {{ ratings['Value'] }}  </span>
           {% endif %}{% endfor %}{% endif %}{% endif %}
         </span>
-        <br> <br>
+        <br> <br> 
           <!-- ⭐ ⭐ ⭐ ★ ★ -->
 
           {% if current_recommendations['imdb_id'] != None %}  <a href="https://www.imdb.com/title/{{ current_recommendations['imdb_id'] }}">View trailer on IMDb</a>  {% endif %} 
@@ -318,12 +343,14 @@
           <div class="opener">
             <h4>Available for online steaming</h4>
             <div class="hidden-div">
-        {% if current_recommendations['flatrate'] != None %}<p> Streaming services:   {% for company in current_recommendations['flatrate'] %}  
+        {% if current_recommendations['flatrate'] != None %}<p> Streaming services: <br>
+            {% for company in current_recommendations['flatrate'] %}  
           <img src="http://image.tmdb.org/t/p/w185/{{ company['logo_path'] }}" width="40" height="40">   
             {%- if not loop.last -%}  {% endif %} 
           {% endfor %} </p>{% endif %} 
 
-        {% if current_recommendations['rent'] != None %}<p> Online rental:   {% for company in current_recommendations['rent'] %}  
+        {% if current_recommendations['rent'] != None %}<p> Online rental:  <br>
+           {% for company in current_recommendations['rent'] %}  
           <img src="http://image.tmdb.org/t/p/w185/{{ company['logo_path'] }}" width="40" height="40">   
             {%- if not loop.last -%}  {% endif %} 
           {% endfor %} </p>{% endif %} 
@@ -339,7 +366,7 @@
             {% endfor %} </p>{% endif %} {% endif %} 
             {# <!-- <img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} ({{item[1]['release_date'][:4]}}) - {{item[1]['overview']}}" width="40" height="60"></a>   --> #}
 
-            <!-- {{ current_recommendations }} -->
+            {{ current_recommendations }}
 
           
 
@@ -372,7 +399,7 @@
 
 
                   <div class="movie-results-header-row-title">
-                <h2><a href="/title/{{ movie_result['id'] }}"> {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %}<span class="movie-year">({{ movie_result['release_date'][:4]}}){% endif %}{% if movie_result['title'] != movie_result['original_title'] %}<br> <i>originally: "{{ movie_result['original_title'] }}"</i></span> {% endif %}
+                <h2><a href="/title/{{ movie_result['id'] }}"> {{ movie_result['title'] }} </a>  {% if movie_result['release_date'] is defined %}{% if movie_result['release_date'] != "" %}<span class="movie-year">({{ movie_result['release_date'][:4]}}){% endif %}{% endif %}{% if movie_result['title'] != movie_result['original_title'] %}<br> <i>originally: "{{ movie_result['original_title'] }}"</i></span> {% endif %}
                   </h2>
               </div>
 
@@ -391,7 +418,7 @@
               <div class="clear"></div>
               
               <div class="hr-divider">
-                <br><hr><br>
+                <br><hr>
               </div>
 
           </div>
