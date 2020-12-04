@@ -42,6 +42,7 @@ def homepage():
             login_user = crud.get_user_by_email(session['email'])
             user_preferred_genres = crud.get_user_genre_preferences_active(login_user)
 
+            # flash(f"enter your search criteria here")
             return render_template('homepage.html', user=login_user, 
             all_genres=GENRES, user_genres = user_preferred_genres, 
             languages=LANGUAGES)

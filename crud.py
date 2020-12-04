@@ -1214,32 +1214,6 @@ def get_titles_with_original_language(iso_639_1_id):
     for index, title in enumerate(search_results['results']):
         recommendations[(index + 1)] = title
 
-
-    print()
-    print()
-    print()
-    print()
-    print(iso_639_1_id)
-    print()
-    print()
-    print(url)
-    print()
-    print()
-    print(search_results)
-    print()
-    print()
-    print(recommendations)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-
-
     return recommendations
 
 
@@ -1688,13 +1662,35 @@ def discover_films_by_parameters(current_user, movie_or_series, audio, end_year,
     All of the front end parameters are optional.
     Some ordering/sorting will be handled on the front end instead of via querystring parameter
     """
-    base_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&sort_by=vote_count.desc&include_adult=false&&vote_count.gte=100&page=5"
+    base_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&sort_by=popularity.desc&include_adult=false&page=5"
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(audio)
+    print()
+    print()
+    print()
+    print()
 
     if audio != "any":
         base_url = f"{base_url}&with_original_language={audio}"
 
     # if start_year != "any":
     #     base_url = f"{base_url}&release_date.gte={start_year}"
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(base_url)
+    print()
+    print()
+    print()
+    print()
 
     if end_year != "any":
         base_url = f"{base_url}&release_date.lte={end_year}"
@@ -1709,12 +1705,48 @@ def discover_films_by_parameters(current_user, movie_or_series, audio, end_year,
 
     search_results = json.loads(response.text)
 
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(base_url)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(search_results)
+    print()
+    print()
+    print()
+    print()
+
+
+
     recommendations = dict()
     count = 1
     
     for index, title in enumerate(search_results['results']):
         recommendations[title['id']] = title
     
+
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(recommendations)
+    print()
+    print()
+    print()
+    print()
+
     return recommendations
 
 

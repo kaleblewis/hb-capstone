@@ -12,6 +12,10 @@
     text-decoration: none;
   }
 
+  h5  {
+    padding: none;
+  }
+
   .flash-msg {
     color:#666666;
     font-size: 18px;
@@ -44,9 +48,15 @@
     text-decoration: underline;
   }
 
-  .movie-year {
+  .movie-year {  
     color: #666666;
     font-weight: lighter;
+  }
+
+  .tagline {
+    font-weight: bold;
+    font-size: larger;
+    padding-bottom: 20px;
   }
 
   .search-result {
@@ -82,7 +92,7 @@
    }
 
   .movie-results-details {
-    width: 74%;
+    width: 68%;
     float: left;
     /* border: 1px solid purple; */
   }
@@ -103,32 +113,32 @@
   }
 
 
-.movie-results-header-row {
-  /* border: 1px solid fuchsia; */
+  .movie-results-header-row {
+    /* border: 1px solid fuchsia; */
 
-}
+  }
 
-.movie-results-header-row-title{
-  /* border: 1px solid blue; */
-  width: 70%;
-  /* float: left; */
-}
+  .movie-results-header-row-title{
+    /* border: 1px solid blue; */
+    width: 95%;
+    /* float: left; */
+  }
 
-.movie-results-header-row-pin{
-  /* border: 1px solid red; */
-  float: right;
-  /* margin: 20px; */
-  padding: 20px;
-  text-align: center;
-  width: 12%;
+  .movie-results-header-row-pin{
+    /* border: 1px solid red; */
+    float: right;
+    /* margin: 20px; */
+    padding: 20px;
+    text-align: center;
+    width: 6%;
 
-}
+  }
 
-.hr-divider {
-  /* border: 1px solid red; */
-  padding-top: 39px;
-  width: 87%;
-}
+  .hr-divider {
+    /* border: 1px solid red; */
+    padding-top: 39px;
+    width: 87%;
+  }
 
   .clear {
     clear: both
@@ -145,6 +155,20 @@
     overflow: hidden;
     background-color: #777;
     font-family: inherit;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 7;
+    position: fixed;
+    width: 100%;
+  }
+
+  .navbar {
+    overflow: hidden;
+    background-color: #777;
+    font-family: inherit;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 7;
+    position: fixed;
+    width: 100%;
   }
   
   /* Links inside the navbar */
@@ -243,9 +267,10 @@
     min-width: 140px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    left:auto;
+    left: auto;
     right:0;
     margin-right:-10px;
+    padding-top: 70px;
   }
   
   /* Links inside the dropdown */
@@ -273,9 +298,11 @@
     filter: invert(100%);
   }
 
-  
-
-
+  .placeholder {
+    height: 50px;
+    width: 100%;
+    /* border: 1px solid red; */
+  }
 
 
 
@@ -289,10 +316,12 @@
     padding: 10px;
     width: 230px;
     background-color: #f9f9f9;
-    position: absolute;
+    position: fixed;
     height: 100%;
     overflow: auto;
     overflow: hidden;
+    z-index: 0;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
   
   .sidebar a {
@@ -333,7 +362,6 @@
     width: 85%;
   }
 
-
   .user-preference-btn {
     border: none;
     outline:none;
@@ -347,7 +375,19 @@
     filter: invert(50%);
   }
 
+  #flashed_search_term {
+    padding: 10px;
+    height: 60px;
+    width: 100%;
+    /* border: 1px solid red; */
+  }
 
+  #search-btn {
+    color: white;
+    filter: invert(50%);
+    background-color: white;
+    border: 1px solid red;
+  }
 
 
 
@@ -359,25 +399,33 @@
 
   #main-search-content-box {
     padding: 30px;
+    padding-right: 70px;
+    /* border: 1px solid red; */
   }
 
-  .movie-full-details-box {
+  .movie-full-box {
     width: 95%;
     height: auto;
+    /* border: 1px solid green; */
      } 
 
   .movie-image {
     width: 30%;
     height: auto;
+    /* border: 1px solid lawngreen; */
+    float: left;
+    padding-right: 25px;
+    padding-bottom: 20px;
   } 
 
   .opener {
-    /* padding: 5px; */
+    /* padding: 2px; */
   }
   
 	.hidden-div {
     display: none;
-    padding: 5px;
+    padding-bottom: 20px;
+    padding-left: 30px;
     /* border: 1px solid red; */
 	}
 
@@ -389,12 +437,33 @@
 
   .movie-results-synopsis-row {
     font-size: larger;
-    width: 70%;
+    width: 90%;
+    /* border: 1px solid blueviolet; */
+    float: left;
   }
+
+  .movie-results-expandable-row {
+    font-size: larger;
+    width: 99%;
+    /* border: 1px solid fuchsia; */
+    float: left;
+  }
+
+  .movie-results-similar-titles-row {
+    font-size: larger;
+    width: 99%;
+    /* border: 1px solid fuchsia; */
+    float: left;
+  }
+
   .movie-results-details-row {
     /* padding: 15px; */
-    /* color: red; */
+    /* border: 1px solid red; */
   }
+
+
+
+
 
   /* SCREEN SIZE VARIATIONS */
   @media screen and (max-width: 700px) {
