@@ -222,8 +222,8 @@
               <div class="movie-results-details">
           <div class="movie-results-header-row-title">
             <div class="movie-results-header-row-pin">
-              <button class="user-preference-btn" id="">
-                <img src="/static/assets/pin.svg" alt="" class="mid-size-icon">
+              <button class="user-preference-btn" id=""> <i class="fas fa-thumbtack"></i>
+                <!-- <img src="/static/assets/pin.svg" alt="" class="mid-size-icon"> -->
                 </button>
             </div>
           <!-- </div> -->
@@ -370,12 +370,14 @@
                   {%- if not loop.last -%}  {% endif %} 
                 {% endfor %} </div></div>{% endif %} 
 
+
         </div></div>
         </div>
         
         <div class="movie-results-similar-titles-row">  
 
           {% if current_recommendations['similar'] is defined %}{% if current_recommendations['similar'] != None %}<h5>Similar titles  </h5> 
+          <div id="carousel-wrapper"> <div class="carousel-content">
           {% for item in current_recommendations['similar'].items() %}  
             {% if current_recommendations['similar'] is defined %}{% if current_recommendations['similar'] != None %}<a href="/title/{{ item[1]['id'] }}">
               {% if item[1]['poster_path'] is defined %}{% if item[1]['poster_path']!= None %}              
@@ -383,9 +385,11 @@
               <img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} - {{item[1]['overview']}}"></a>  
               {% endif %} {% endif %} {% endif %} {% endif %} {% endif %} {% endif %}
             {% endfor %} 
-          </p>{% endif %} {% endif %} 
+          </p></div></div>{% endif %} {% endif %} 
             {# <!-- <img src="http://image.tmdb.org/t/p/w185/{{ item[1]['poster_path'] }}" title="{{item[1]['title']}} ({{item[1]['release_date'][:4]}}) - {{item[1]['overview']}}" width="40" height="60"></a>   --> #}
           </div>
+
+
             <!-- {{ current_recommendations }} -->
 
             <div class="clear"></div>

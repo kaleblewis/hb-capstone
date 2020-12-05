@@ -463,6 +463,25 @@
   }
 
 
+  /* carousel */
+  #carousel-wrapper {
+    /* border: 1px solid red; */
+    height: 198px;
+    width: 75%; 
+    overflow: hidden;
+    overflow-x: scroll;
+    margin-left: 30px;
+  }
+
+  .carousel-content {
+    /* border: 1px solid fuchsia; */
+    width: 2335px;
+  }
+
+  .carousel-content img {
+    height: 175px;
+    width: auto;
+  }
 
 
   /* SCREEN SIZE VARIATIONS */
