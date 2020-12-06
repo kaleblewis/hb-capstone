@@ -16,7 +16,7 @@
     padding: none;
   }
 
-  i.fas {
+  .opener i.fas {
     color: #FB3530;
     padding-right: 15px;
   }
@@ -223,12 +223,79 @@
   }
 
   #nav-search {
-    /* border: 1px solid greenyellow; */
+    border: 1px solid greenyellow;
     float: right;
     width: 59%;
     padding: 16px;
     text-align: right;
   }
+
+  #search-input {
+    font-family: inherit;
+    font-size: 100%;
+    height: 25px; 
+    /* padding:10px; */
+    border:0;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    border-radius:20px;
+  }
+
+
+
+  
+  #search-btn {
+    color: white;
+    /* filter: invert(50%); */
+    background-color:transparent;
+    border: 1px solid white;
+    height: 25px; 
+    width: 35px;
+    border-radius:20px;
+ 
+  }
+
+  .search-btn:hover {
+    color: #FB3530;
+    /* text-align: center; */
+    /* filter: invert(50%); */
+    /* background-color: #FB3530; */
+    /* border: 2px solid #FB3530; */
+
+  }
+
+
+
+  select {
+    width: 85%;
+    padding:10px;
+    border-radius:20px;
+    font-family: inherit;
+    font-size: 100%;
+    color: #555;
+    border: 1px solid #555;
+  }
+
+
+  #start-rating-input {
+    width: 74%;
+    padding:10px;
+    border-radius:20px;
+    font-family: inherit;
+    font-size: 100%;
+    color: #555;
+    border: 1px solid #555;
+  }
+
+
+  input:hover, select:hover, textarea:hover, #start-rating-input:hover {
+    color: #FB3530;
+}
+
+textarea:focus, input:focus, #start-rating-input:focus {
+    color: #FB3530;
+}
+
+
 
   #nav-profile {
     /* border: 1px solid purple; */
@@ -238,7 +305,7 @@
 
   #nav-bar-profile.dropdown:hover {
     background: #FB3530;
-    fill: FB3530
+    /* fill: #FB3530: */
 
   }
 
@@ -375,9 +442,10 @@
     outline:none;
     background-color: transparent;
     float: right;
+    color: #555555
   }
 
-  .tiny-icon {
+  .user-preference-search-parameters .tiny-icon {
     height: 15px;
     width: 15px;
     filter: invert(50%);
@@ -390,13 +458,6 @@
     /* border: 1px solid red; */
   }
 
-  #search-btn {
-    color: white;
-    /* filter: invert(50%); */
-    background-color:transparent;
-    border: 3px solid white;
-    border-style: groove;
-  }
 
 
 
@@ -490,6 +551,17 @@
     height: 175px;
     width: auto;
   }
+
+
+
+
+  input:focus,
+  select:focus,
+  textarea:focus,
+  button:focus {
+      outline: none;
+  }
+
 
 
   /* SCREEN SIZE VARIATIONS */
