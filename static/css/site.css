@@ -560,9 +560,6 @@ input[type=radio].with-font:focus + label:before {
     padding-top: 10px;
   } 
 
-  .opener {
-    /* padding: 2px; */
-  }
   
 	.hidden-div {
     display: none;
@@ -583,6 +580,40 @@ input[type=radio].with-font:focus + label:before {
     /* border: 1px solid blueviolet; */
     float: left;
   }
+
+  .profile-detail-row {
+    /* font-size: larger; */
+    width: 99%;
+    border: 1px solid fuchsia;
+    float: left;
+
+  }
+
+
+  .profile-detail-icon {
+    /* font-size: larger; */
+    width: 30px;
+    border: 1px solid teal;
+
+    
+  }
+
+  .profile-detail-title {
+    /* font-size: larger; */
+    width: 20%;
+    border: 1px solid blue;
+
+    
+  }
+
+  .profile-detail-value {
+    /* font-size: larger; */
+    width: 99%;
+    border: 1px solid orange;
+    float: left;
+    
+  }
+
 
   .movie-results-expandable-row {
     font-size: larger;
@@ -608,7 +639,7 @@ input[type=radio].with-font:focus + label:before {
   #carousel-wrapper {
     /* border: 1px solid red; */
     height: 198px;
-    width: 95%; 
+    width: 80%; 
     overflow: hidden;
     overflow-x: scroll;
     margin-left: 30px;

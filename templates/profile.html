@@ -1,28 +1,55 @@
 {% extends 'base.html' %}
 
-{% block title %} My Profile {% endblock %}
+
+{% block title %}  
+  {{ user.fname }}
+{% endblock %}
 
 {% block body %}
-    
-    <h1> {{ user.fname }} </h1>
-    <hr>
-    <h2>account information:</h2>
+<div class="content" id="main-search-content-box">
+  
+  <div class="search-result-box">
+    <p></p>
+    <div class="placeholder">.</div>
 
-    <p><b>Username (email address):</b> {{ user.email }} </p>
+
+
+    <h1> {{ user.fname }} </h1>
+    <div class="profile-section-row"> 
+
+    
+      <div class="opener">
+  
+        <h3> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>  <b> Account information</h3></b> 
+
+        <div class="hidden-div">
+
+        <div class="profile-detail-row">
+          <div class="hidden-div profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+          <div class="hidden-div profile-detail-title">Username (email address)</div>
+          <div class="hidden-div profile-detail-value">{{ user.email }})</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clear"></div>
+
     <p><b>Preferred name:</b> {{ user.fname }} </p>
     <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p>
-    {#  <p><b>Linked streaming accounts:</b>  </p> #}
-    {# <p><b>Share personal URL to connect:</b> <a href="/@{{ user.purl_name }}">"/@{{ user.purl_name }}" </a></p> #}
+    <p><b>Linked streaming accounts:</b>  </p>
+    {# <p><b>Share personal URL to connect:</b> <a ef="/@{{ user.purl_name }}">"/@{{ user.purl_name }}" </a></p> #}
     {#    <p><b>Friend network:</b>  </p> #}
     <br>
+</div></div></div>
 
 
+    <div class="profile-section-row"> 
     {% if user.preferences %} 
-    <hr>
-    <div class="opener">
-      <h4>default search parameters</h4>
-      <div class="hidden-div">
 
+    <div class="opener">
+
+      <h3> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>    Default search preferences </h3>
+      <div class="hidden-div profile-detail-row">
 
     <p><b>subtitles language(s):</b> {{ user.preferences[-1].subtitle }} </p>
     <p><b>audio language(s):</b>  {{ user.preferences[-1].audio }} </p>
@@ -47,8 +74,8 @@
     <p><b>viewing location:</b>  {{ user.preferences[-1].location.name }} 	</p>
     
     <br>
-  </div>  {% endif %}
-    <hr>
+  </div>  </div> </div>  {% endif %}
+
 
     <h3>update your name:</h3>
               
@@ -70,7 +97,7 @@
                 </div>
             </form>
 
-    <hr>
+
 
 {#
     <h3>update your share-able social networking URL which can be used to
@@ -96,7 +123,7 @@
                 </div>
             </form>
 
-    <hr> #}
+   #}
 
     
     <h3>update your username/email address:</h3>
@@ -119,7 +146,7 @@
                 </div>
             </form>
 
-    <hr>
+    <>
 
 
     
@@ -159,7 +186,7 @@
                 </div>
             </form>
 
-    <hr>
+    <>
 
 
 
@@ -254,18 +281,11 @@
 
 {% endblock %}
 
-{% block js %}
-  
-<script>
 
-  jQuery( document ).ready(function() {
-  
-    jQuery('.opener h4').click(function() {
-      jQuery(this).next('.hidden-div').toggle();
-    })
-    
-  });
-  
-  </script>
+
+{% block js %}
+
+
+<script src="/static/js/app.js"></script>
 
 {% endblock %}

@@ -345,7 +345,9 @@ def logout():
     """Log a user out"""
     session['logged_in'] = False
     flash('You have logged out successfully')
-    return render_template('homepage.html') 
+    return render_template('base.html', 
+    all_genres=GENRES, 
+    languages=LANGUAGES)
 
 
 #*############################################################################*#
