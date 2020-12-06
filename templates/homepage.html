@@ -167,15 +167,16 @@
     <div class="user-preference-btn-toggle" id=""><button class="user-preference-btn" id="">
       <i class="fas fa-lock-open fa-lock hide tiny-icon"></i>
       </button></div>
-<div class="form-group search-parameters" id="">
+
+<div class="form-group search-parameters">
 <label for="genre-input">Genre(s):</div>    
 </label>    
 <div class="search-parameters-values">  
-<input type="radio" id="genre_all" name="genre-input" value="any" checked>
-<label for="any"> Any </label><br>
+  <div><input type="radio" class="with-font" id="genre_all" name="genre-input" value="any" >
+    <label for="any"> Any </label></div><br>
+
 {% for genre in all_genres %}
-<input type="radio" id="genre_{{genre['id']}}" name="genre-input" value="{{genre['id']}}">
-<label for="{{genre['id']}}"> {{genre['name']}}</label><br>
+<div><input type="radio" class="with-font" id="genre_{{genre['id']}}" name="genre-input" value="{{genre['id']}}"><label for="genre_{{genre['id']}}">{{genre['name']}}</label></div><br>
 {% endfor %}
 </div>
 </div>   
@@ -221,7 +222,7 @@
           <div class="movie-image"><img src="http://image.tmdb.org/t/p/w500/{{ current_recommendations['images']['backdrops'][0]['file_path'] }} ">
               </div>{% endif %}{% endif %}
     
-              <div class="movie-results-details">
+              <div class="current-recommendations-details">
           <div class="movie-results-header-row-title">
             <div class="movie-results-header-row-pin">
               <button class="user-preference-btn" id=""> 
@@ -240,7 +241,7 @@
 
 
 
-          <div class="movie-results-details">
+          <div class="current-recommendations-details">
         {% if current_recommendations['runtime'] is defined %} 🕐 {{ current_recommendations['runtime'] }} minutes  {% endif %} 
           {% if current_recommendations['imdb_type'] is defined %}
             {% if current_recommendations['imdb_type'] == 'movie' %}| 🎬 {{ current_recommendations['imdb_type'] }} {% elif current_recommendations['imdb_type'] == 'series' %} | 📺 {{ current_recommendations['imdb_type'] }}{% endif %}
@@ -291,7 +292,7 @@
 
         </div>
         
-        <div class="movie-results-details">
+        <div class="current-recommendations-details">
         {% if netflix_id is defined %}
         {% if current_recommendations['netflix_top250'] is defined %}{% if movie_result['top250tv'] > 0 %} <p><a style="color:#FB3530">ℕ</a> Top 250 of Netflix TV </p> {% endif %} {% endif %}
         {% if current_recommendations['netflix_awards'] != '' %}🏆 {{ current_recommendations['netflix_awards'] }} {% endif %}{% endif %}

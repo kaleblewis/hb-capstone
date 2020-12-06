@@ -101,6 +101,12 @@
    }
 
   .movie-results-details {
+    width: 70%;
+    float: left;
+    /* border: 1px solid purple; */
+  }
+
+  .current-recommendations-details {
     width: 50%;
     float: left;
     /* border: 1px solid purple; */
@@ -223,7 +229,7 @@
   }
 
   #nav-search {
-    border: 1px solid greenyellow;
+    /* border: 1px solid greenyellow; */
     float: right;
     width: 59%;
     padding: 16px;
@@ -233,11 +239,12 @@
   #search-input {
     font-family: inherit;
     font-size: 100%;
-    height: 25px; 
+    height: 29px; 
     /* padding:10px; */
     border:0;
     box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
     border-radius:20px;
+    margin-bottom: 5px;
   }
 
 
@@ -247,15 +254,17 @@
     color: white;
     /* filter: invert(50%); */
     background-color:transparent;
-    border: 1px solid white;
-    height: 25px; 
-    width: 35px;
+    border: 2px solid white;
+    height: 28px; 
+    width: 28px;
     border-radius:20px;
+    margin-left: 5px;
+    margin-right: 15px;
  
   }
 
   .search-btn:hover {
-    color: #FB3530;
+    color: #fb5f30;
     /* text-align: center; */
     /* filter: invert(50%); */
     /* background-color: #FB3530; */
@@ -297,6 +306,85 @@ textarea:focus, input:focus, #start-rating-input:focus {
 
 
 
+/* input[type=radio].with-font,
+input[type=checkbox].with-font {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    padding-bottom: -10px;
+}
+
+input[type=radio].with-font ~ label:before,
+input[type=checkbox].with-font ~ label:before {
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f1db";
+    letter-spacing: 10px;
+    font-size: 1.2em;
+    color: #535353;
+    width: 1.4em;
+}
+
+input[type=radio].with-font:checked ~ label:before,
+input[type=checkbox].with-font:checked ~ label:before  {
+    content: "\f00c";
+    font-size: 1.2em;
+    color: #FB3530;
+    letter-spacing: 5px;
+}
+input[type=checkbox].with-font ~ label:before {        
+    content: "\f096";
+}
+input[type=checkbox].with-font:checked ~ label:before {
+    content: "\f046";        
+    color: #FB3530;
+}
+input[type=radio].with-font:focus ~ label:before,
+input[type=checkbox].with-font:focus ~ label:before,
+input[type=radio].with-font:focus ~ label,
+input[type=checkbox].with-font:focus ~ label
+{                
+    color: #FB3530;
+} */
+
+input[type=radio].with-font {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+  
+input[type=radio].with-font + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f1db";
+  letter-spacing: 10px;
+  font-size: 1.2em;
+  color: #555;
+}
+input[type=radio].with-font:checked + label:before {
+  content: "\f00c";
+  font-size: 1.2em;
+  color:#777;
+  letter-spacing: 5px;
+  width: 35px: 5px;
+}
+input[type=radio].with-font:focus + label:before {
+  font-weight: bold;
+  color: #fb5f30;
+}
+
+
+
   #nav-profile {
     /* border: 1px solid purple; */
     float: right;
@@ -307,7 +395,7 @@ textarea:focus, input:focus, #start-rating-input:focus {
     background: #FB3530;
     /* fill: #FB3530: */
 
-  }
+  }       
 
   /* The dropdown container itself */
   .dropdown {
@@ -486,6 +574,7 @@ textarea:focus, input:focus, #start-rating-input:focus {
     float: left;
     padding-right: 20px;
     padding-bottom: 20px;
+    padding-top: 10px;
   } 
 
   .opener {
