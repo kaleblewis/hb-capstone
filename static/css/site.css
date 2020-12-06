@@ -155,7 +155,35 @@
     /* margin: 20px; */
     /* padding: 20px; */
     /* text-align: center; */
+  }
 
+
+  .person-results-details {
+    width: 82%;
+    float: left;
+    /* border: 1px solid purple; */
+  }
+
+  .person-results-header-row {
+    /* border: 1px solid fuchsia; */
+    width: 100%;
+
+  }
+
+  .person-results-header-row-title{
+    /* border: 1px solid blue; */
+    width: 100%;
+    /* float: left; */
+  }
+
+  .person-results-header-row-pin {
+    /* border: 1px solid red; */
+    float: right;
+    margin-right: 30px;
+    margin-bottom: 10px;
+    /* margin: 20px; */
+    /* padding: 20px; */
+    /* text-align: center; */
   }
 
   .movie-results-header-row-pin img{
@@ -579,6 +607,12 @@ input[type=radio].with-font:focus + label:before {
     width: 90%;
     /* border: 1px solid blueviolet; */
     float: left;
+  }
+
+  #person-search-content-box {
+    border: 1px solid #777;
+    padding: 30px;
+    width: 85%;
   }
 
   .profile-detail-row {

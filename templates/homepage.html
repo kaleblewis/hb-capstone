@@ -402,7 +402,78 @@
 
 
     {% elif session['render-search-results'] == "many" %}
+
+
+    {% if current_recommendations['biography'] is defined %}
+    {% if current_recommendations['biography'] != [] %}
+
+      <div class="movie-results" id="person-search-content-box">
+
+        <div class="movie-results-poster">{% if current_recommendations['biography']['profile_path'] is defined %}{% if current_recommendations['biography']['profile_path'] != None %} 
+            <img src="http://image.tmdb.org/t/p/w185/{{ current_recommendations['biography']['profile_path'] }}" width="40" height="60"> 
+            {% endif %}{% endif %}</div>
+            
+          <div class="person-results-details">
+            <div class="person-results-header-row">
+
+                <div class="person-results-header-row-pin">
+                  <button class="user-preference-btn" id="">
+                    <img src="/static/assets/pin.svg" width="20" height="20" alt="" class="tiny-icon">
+                    </button>
+                </div>
+
+
+            <div class="person-results-header-row-title">
+              <h2> {{ current_recommendations['biography']['name']}}  {% if current_recommendations['biography']['birthday'] is defined %}{% if current_recommendations['biography']['birthday'] != "" %}<span class="movie-year">
+                  {% if current_recommendations['biography']['deathday'] != None %}({{ current_recommendations['biography']['birthday'][:4]}}-{{ current_recommendations['biography']['deathday'][:4]}})
+                  {% else %} (Born: {{ current_recommendations['biography']['birthday']}}){% endif %}
+                  {% endif %}  {% endif %}  
+                  {% if current_recommendations['biography']['also_known_as'] != [] %}<br> <i>Also known as: {% for name in current_recommendations['biography']['also_known_as'] %} 
+                            {{ name }}
+                    {%- if not loop.last -%}, {% endif %}{% endfor %}</i></span> {% endif %}
+                </h2>
+            </div>
+
+            </div>
+
+             
+              <p><span class="movie-ratings"> 
+                {% if current_recommendations['biography']['known_for_department'] is defined %} Known for: {{ current_recommendations['biography']['known_for_department'] }} <br> {% endif %} 
+                {% if current_recommendations['biography']['place_of_birth'] is defined %} Place of birth:  {{ current_recommendations['biography']['place_of_birth'] }} <br> {% endif %} 
+              </span> </p>     
+              
+              
+
+              {% if current_recommendations['biography']['biography'] is defined %} <p><b>Biography:</b> <i>{{ current_recommendations['biography']['biography'] }} </i></p>{% endif %} 
+
+
+              {% if current_recommendations['biography']['imdb_id'] != None %}<a href="https://www.imdb.com/name/{{ current_recommendations['biography']['imdb_id'] }}"><i class="fas fa-photo-video"></i>  View more on IMDb</a>  {% endif %} 
+          
+
+  
+        </div>
+      
+            <div class="clear"></div>
+            
     
+
+              <div class="clear"></div>
+      </div> 
+      <div><p> </p></div>
+      <div><p></p></div>
+      <div><p></p></div>
+      <p></p>
+      <h1><p>
+      </p>
+      Available Filmography: </h1>
+
+
+
+
+    {% endif %}
+    {% endif %}
+
+
       {% for result_number, movie_result in current_recommendations.items() %}  
                   
         {% if result_number == 'error' %}

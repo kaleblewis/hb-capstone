@@ -1104,6 +1104,28 @@ def get_titles_with_keyword(keyword_id):
     return recommendations
 
 
+def get_person_bio_with_id(person_id):
+    """Return person's details from people_id.
+    
+    >>> get_person_bio_with_id('15309')['birthday']
+    '1963-10-14'
+    """
+
+    sort_by = "popularity.desc"
+
+    url = f"https://api.themoviedb.org/3/person/{person_id}?language=en-US&api_key={TMDB_API_KEY}"
+        # TODO:  decide how to wrangle the different TV/movie endpoints??
+    # https://developers.themoviedb.org/3/discover/tv-discover
+
+    response = requests.get(url)
+
+    search_results = json.loads(response.text)
+
+    search_results['person_id'] = person_id
+
+    return search_results
+
+
 def get_titles_with_person(person_id):
     """Return recommendations from people_id.
     
@@ -1123,10 +1145,29 @@ def get_titles_with_person(person_id):
 
     recommendations = dict()
     count = 1
+
+    recommendations['biography'] = get_person_bio_with_id(person_id)
     
     for index, title in enumerate(search_results['results']):
         recommendations[(index + 1)] = title
 
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print(recommendations)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    
     return recommendations
 
 
