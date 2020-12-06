@@ -172,8 +172,8 @@
 <label for="genre-input">Genre(s):</div>    
 </label>    
 <div class="search-parameters-values">  
-<input type="radio" class="with-font" id="genre_all" name="genre-input" value="any" >
-    <label for="any"> Any </label><br>
+<input type="radio" class="with-font" id="genre_any" name="genre-input" value="any" checked>
+    <label for="genre_any"> Any </label><br>
 {% for genre in all_genres %}
 <input type="radio" class="with-font genre-buttons" id="genre_{{genre['id']}}" name="genre-input" value="{{genre['id']}}">
 <label for="genre_{{genre['id']}}">{{genre['name']}}</label><br>

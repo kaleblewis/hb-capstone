@@ -271,8 +271,9 @@
  
   }
 
-  .search-btn:hover {
+  #search-btn:hover {
     color: #fb5f30;
+    border-color: #fb5f30;
     /* text-align: center; */
     /* filter: invert(50%); */
     /* background-color: #FB3530; */
@@ -281,6 +282,21 @@
   }
 
 
+  #submit-input {
+    width: 65%;
+    padding:10px;
+    border-radius:20px;
+    font-family: inherit;
+    font-size: 100%;
+    color: #555;
+    border: 1px solid #555;
+    margin-left: 40px;
+  }
+
+  #submit-input:hover {
+    color: #fb5f30;
+    border-color: #fb5f30;
+  }
 
   select {
     width: 85%;
