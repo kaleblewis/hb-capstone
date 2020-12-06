@@ -172,11 +172,11 @@
 <label for="genre-input">Genre(s):</div>    
 </label>    
 <div class="search-parameters-values">  
-  <div><input type="radio" class="with-font" id="genre_all" name="genre-input" value="any" >
-    <label for="any"> Any </label></div><br>
-
+<input type="radio" class="with-font" id="genre_all" name="genre-input" value="any" >
+    <label for="any"> Any </label><br>
 {% for genre in all_genres %}
-<div><input type="radio" class="with-font" id="genre_{{genre['id']}}" name="genre-input" value="{{genre['id']}}"><label for="genre_{{genre['id']}}">{{genre['name']}}</label></div><br>
+<input type="radio" class="with-font genre-buttons" id="genre_{{genre['id']}}" name="genre-input" value="{{genre['id']}}">
+<label for="genre_{{genre['id']}}">{{genre['name']}}</label><br>
 {% endfor %}
 </div>
 </div>   
