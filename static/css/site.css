@@ -103,7 +103,7 @@
   .movie-results-details {
     width: 50%;
     float: left;
-    border: 1px solid purple;
+    /* border: 1px solid purple; */
   }
 
   .movie-ratings {
@@ -136,10 +136,18 @@
   .movie-results-header-row-pin{
     /* border: 1px solid red; */
     float: right;
+    margin-right: 30px;
+    margin-bottom: 10px;
     /* margin: 20px; */
-    padding: 20px;
-    text-align: center;
-    width: 6%;
+    /* padding: 20px; */
+    /* text-align: center; */
+
+  }
+
+  .movie-results-header-row-pin img{
+    /* border: 1px solid red; */
+    width: 30px;
+    height: 30px;
 
   }
 
@@ -413,7 +421,7 @@
   .movie-image {
     width: 500px;
     height: auto;
-    border: 1px solid lawngreen;
+    /* border: 1px solid lawngreen; */
     float: left;
     padding-right: 20px;
     padding-bottom: 20px;
