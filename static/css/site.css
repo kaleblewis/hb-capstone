@@ -25,6 +25,14 @@
     display: none;
   }
 
+  
+  i.fa-lock {
+    color: #FB3530;
+    height: 15px;
+    width: 15px;
+  }
+
+
   .flash-msg {
     color:#666666;
     font-size: 18px;
@@ -494,7 +502,8 @@ input[type=radio].with-font:focus + label:before {
   .user-preference-search-parameters .tiny-icon {
     height: 15px;
     width: 15px;
-    filter: invert(50%);
+    color: #555;
+    /* filter: invert(50%); */
   }
 
   #flashed_search_term {
@@ -598,6 +607,7 @@ input[type=radio].with-font:focus + label:before {
     height: 175px;
     width: auto;
   }
+
 
 
 
