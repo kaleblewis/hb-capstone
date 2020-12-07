@@ -7,7 +7,7 @@ import sys
 import requests
 import json
 from flask.json import jsonify
-
+import urllib, hashlib
 from urllib.parse import quote, unquote
 from sqlalchemy import update
 
@@ -93,6 +93,20 @@ def update_user_password(user_id, password):
     db.session.commit()
 
     return "success"
+
+def get_user_gravitar(user_email):
+    """Fetch user info/photo from Gravitar."""
+    #https://libgravatar.readthedocs.io/en/latest/
+    #https://en.gravatar.com/site/implement/profiles/json/
+    #https://en.gravatar.com/site/implement/hash/
+
+    email = user_email
+    default = "https://www.example.com/default.jpg"
+    size = 40
+    
+    # construct the url
+    gravatar_url = "https://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
+    gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
 
 
 #*############################################################################*#
@@ -1167,7 +1181,7 @@ def get_titles_with_person(person_id):
     print()
     print()
     print()
-    
+
     return recommendations
 
 

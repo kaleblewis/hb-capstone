@@ -16,8 +16,14 @@
     padding: none;
   }
 
+
   .opener i.fas {
-    color: #FB3530;
+    color: #FF3E24;
+    padding-right: 15px;
+  }
+
+  .opener i.fa-user-edit{
+    color: #777;
     padding-right: 15px;
   }
 
@@ -27,7 +33,7 @@
 
   
   i.fa-lock {
-    color: #FB3530;
+    color: #FF3E24;
     height: 15px;
     width: 15px;
   }
@@ -48,7 +54,7 @@
   }
 
   a:hover {
-    color:#FB3530;
+    color:#FF3E24;
     text-decoration: underline;
     /* font-weight: lighter; */
   }
@@ -61,7 +67,7 @@
   }
 
   .search-result a:hover {
-    /* color:#FB3530; */
+    /* color:#FF3E24; */
     text-decoration: underline;
   }
 
@@ -186,6 +192,11 @@
     /* text-align: center; */
   }
 
+
+.h1-padded {
+  padding:30px;
+}
+
   .movie-results-header-row-pin img{
     /* border: 1px solid red; */
     width: 30px;
@@ -299,13 +310,28 @@
  
   }
 
+  .profile-btn {
+    border: 2px solid white;
+    height: 28px; 
+    width: 28px;
+    border-radius:20px;
+    margin-left: 5px;
+    margin-right: 15px;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.29);
+    background-clip: content-box;
+    background-image: url("https://en.gravatar.com/userimage/66639934/c16823530d20ba0b725833daf060a515.png");
+   
+  }
+
+
+
   #search-btn:hover {
-    color: #fb5f30;
-    border-color: #fb5f30;
+    color: #FF3E24;
+    border-color: #FF3E24;
     /* text-align: center; */
     /* filter: invert(50%); */
-    /* background-color: #FB3530; */
-    /* border: 2px solid #FB3530; */
+    /* background-color: #FF3E24; */
+    /* border: 2px solid #FF3E24; */
 
   }
 
@@ -322,8 +348,8 @@
   }
 
   #submit-input:hover {
-    color: #fb5f30;
-    border-color: #fb5f30;
+    color: #FF3E24;
+    border-color: #FF3E24;
   }
 
   select {
@@ -349,11 +375,11 @@
 
 
   input:hover, select:hover, textarea:hover, #start-rating-input:hover {
-    color: #FB3530;
+    color: #FF3E24;
 }
 
 textarea:focus, input:focus, #start-rating-input:focus {
-    color: #FB3530;
+    color: #FF3E24;
 }
 
 
@@ -386,7 +412,7 @@ input[type=radio].with-font:checked + label:before {
 }
 input[type=radio].with-font:focus + label:before {
   font-weight: bold;
-  color: #fb5f30;
+  color: #FF3E24;
 }
 
 
@@ -402,8 +428,8 @@ input[type=radio].with-font:focus + label:before {
   }
 
   #nav-bar-profile.dropdown:hover {
-    background: #FB3530;
-    /* fill: #FB3530: */
+    background: #FF3E24;
+    /* fill: #FF3E24: */
 
   }       
 
@@ -428,7 +454,7 @@ input[type=radio].with-font:focus + label:before {
   
   /* Add a red background color to navbar links on hover */
   .navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: #FB3530;                                                   /*  HB red!!! :D  */
+    background-color: #FF3E24;                                                   /*  HB red!!! :D  */
     color: white
   }
   
@@ -460,6 +486,7 @@ input[type=radio].with-font:focus + label:before {
   /* Add a grey background color to dropdown links on hover */
   .dropdown-content a:hover {
     background-color: #ddd;
+    color: #FF3E24;
   }
   
   /* Show the dropdown menu on hover */
@@ -615,11 +642,18 @@ input[type=radio].with-font:focus + label:before {
     width: 85%;
   }
 
+
+  .profile-section-row {
+    margin: none;
+  }
+
   .profile-detail-row {
     /* font-size: larger; */
     width: 99%;
-    border: 1px solid fuchsia;
-    float: left;
+    /* border: 1px solid fuchsia; */
+    /* float: left; */
+    padding-left: 45px;
+    padding-bottom: 15px;
 
   }
 
@@ -627,28 +661,62 @@ input[type=radio].with-font:focus + label:before {
   .profile-detail-icon {
     /* font-size: larger; */
     width: 30px;
-    border: 1px solid teal;
+    /* border: 1px solid teal; */
+    float: left;
+    /* color: #777; */
+  }
+
+  .fa-user-edit:hover {
+    /* font-size: larger; */
+    width: 30px;
+    /* border: 1px solid teal; */
+    color: #FF3E24;
+  }
 
     
-  }
 
   .profile-detail-title {
     /* font-size: larger; */
     width: 20%;
-    border: 1px solid blue;
-
-    
+    /* border: 1px solid blue; */
+    float: left;
+    /* font-size: larger; */
+    font-weight: bolder;
   }
 
   .profile-detail-value {
     /* font-size: larger; */
-    width: 99%;
-    border: 1px solid orange;
-    float: left;
+    /* width: 99%; */
+    /* border: 1px solid orange; */
+    /* float: left; */
     
   }
 
 
+  .gravitar {
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.29);
+    border-radius:50px;
+    height: 80px;
+    width: 80px;
+    border: 2px solid #FF3E24;
+    background-clip: content-box;
+    background-image: url("https://en.gravatar.com/userimage/66639934/c16823530d20ba0b725833daf060a515.png");
+    margin-top: 50px;
+    margin-left: 70px;
+  }
+
+  .edit-gravitar-image {
+    float:right;
+    margin-right: 35px;
+    border: 1 solid red;
+  }
+
+
+  .profile-detail-configured {
+    color: #FF3E24;
+    font-size: larger;
+  }
+  
   .movie-results-expandable-row {
     font-size: larger;
     width: 99%;
@@ -688,8 +756,6 @@ input[type=radio].with-font:focus + label:before {
     height: 175px;
     width: auto;
   }
-
-
 
 
 

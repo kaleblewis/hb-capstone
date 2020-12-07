@@ -6,286 +6,205 @@
 {% endblock %}
 
 {% block body %}
+
+
+<div id="search-result" class="row">
+
+  <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 title-summary"> -->
+
+
+{% block sidebar %}
+<div class="sidebar">
+<p></p>
+<div class="placeholder"></div>
+
+
+<div><div class="gravitar"></div> <div class="edit-gravitar-image"><i class="fas fa-user-edit edit-gravitar-image"></i></div></div>
+
+</div></div>
+{% endblock %}
+  
+  
+  
+{% block content %}
 <div class="content" id="main-search-content-box">
   
   <div class="search-result-box">
     <p></p>
     <div class="placeholder">.</div>
 
+      <!-- <h1> {{ user.fname }} </h1> -->
 
 
-    <h1> {{ user.fname }} </h1>
-    <div class="profile-section-row"> 
-
+      <div class="profile-detail-row"></div>
+      <div class="profile-detail-row"></div>
     
-      <div class="opener">
-  
-        <h3> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>  <b> Account information</h3></b> 
-
-        <div class="hidden-div">
-
-        <div class="profile-detail-row">
-          <div class="hidden-div profile-detail-icon"><i class="fas fa-user-edit"></i></div>
-          <div class="hidden-div profile-detail-title">Username (email address)</div>
-          <div class="hidden-div profile-detail-value">{{ user.email }})</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="clear"></div>
-
-    <p><b>Preferred name:</b> {{ user.fname }} </p>
-    <p><b>Member since:</b>	{{ user.user_since.strftime('%B %Y') }} </p>
-    <p><b>Linked streaming accounts:</b>  </p>
-    {# <p><b>Share personal URL to connect:</b> <a ef="/@{{ user.purl_name }}">"/@{{ user.purl_name }}" </a></p> #}
-    {#    <p><b>Friend network:</b>  </p> #}
-    <br>
-</div></div></div>
-
-
-    <div class="profile-section-row"> 
-    {% if user.preferences %} 
-
-    <div class="opener">
-
-      <h3> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>    Default search preferences </h3>
-      <div class="hidden-div profile-detail-row">
-
-    <p><b>subtitles language(s):</b> {{ user.preferences[-1].subtitle }} </p>
-    <p><b>audio language(s):</b>  {{ user.preferences[-1].audio }} </p>
-    
-    <p><b>release date range "from when?": </b> {{ user.preferences[-1].eyear }} </p>
-    <p><b>release date range "to when?": </b> {{ user.preferences[-1].syear }} </p>
-
-    <p><b>runtime/duration:</b>  {{ user.preferences[-1].duration }}  </p>
-
-    <p><b>genre(s):</b>  {% for obj in user_genres %}
-    {% for field in obj.__table__.columns._data.keys() %}
-    {% if field == 'genre_name' %}
-    {{ obj[field] }}<br>
-    {% endif %}
-
-
-    {% endfor %}
-  {% endfor %}	</p>  
-
-    <p><b>maturity rating:</b>  {{ user.preferences[-1].matlevel }} 	</p>
-
-    <p><b>viewing location:</b>  {{ user.preferences[-1].location.name }} 	</p>
-    
-    <br>
-  </div>  </div> </div>  {% endif %}
-
-
-    <h3>update your name:</h3>
-              
-              <form action='/updateuserfname' method="POST">
-                <div class="form-group">
-    
-              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
-                
-              <label for="name-field"></label>
-              <input type="text"
-                  id="name-input"
-                  name="name-input"
-                  placeholder="What's your name?"
-                  required
-                  autofocus />
-
-              <input type="submit" value="update your name" />
-
-                </div>
-            </form>
-
-
-
-{#
-    <h3>update your share-able social networking URL which can be used to
-      connect with your friends & family:</h3>
-              
-              <form action='/updateuserpurl' method="POST">
-                <div class="form-group">
-    
-              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
-                
-              <label for="purl-name-input"></label>
-              <input type="text"
-                  id="purl-name-input"
-                  name="purl-name-input"
-                  placeholder=" {{ user.id }}  "
-                  required
-                  autofocus />
-
-              <input type="submit" value="update your share-able URL" />
-              <p i>Note: Your custom URL must contain 3-100 letters or numbers. 
-                Please do not use spaces, symbols, or special characters.</p>
-
-                </div>
-            </form>
-
-   #}
-
-    
-    <h3>update your username/email address:</h3>
-              
-              <form action='/updateuseremail' method="POST">
-                <div class="form-group">
-    
-              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
-                
-              <label for="email-field"></label>
-              <input type="text"
-                  id="email-input"
-                  name="email-input"
-                  placeholder="new email address"
-                  required
-                  autofocus />
-
-              <input type="submit" value="update your email" />
-
-                </div>
-            </form>
-
-    <>
-
-
-    
-    <h3>update your password:</h3>
-              
-              <form action='/updateuserpassword' method="POST">
-                <div class="form-group">
-    
-              <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
-                
-              <label for="current-password"></label>
-              <input type="current-password"
-                  id="current-password"
-                  name="current-password"
-                  placeholder="current password"
-                  required
-                  autofocus />
-                  
-              <label for="new-password-1"></label>        
-              <input type="new-password"
-                  id="new-password-1"
-                  name="new-password-1"
-                  placeholder="new password"
-                  required
-                  autofocus />
-
-              <label for="new-password-2"></label>      
-              <input type="new-password"
-                  id="new-password-2"
-                  name="new-password-2"
-                  placeholder="re-type new password"
-                  required
-                  autofocus />
-
-              <input type="submit" value="update your password" />
-
-                </div>
-            </form>
-
-    <>
-
-
-
-
-    <h3>update your default search parameters below:</h3>
+      <div class="profile-section-row"> 
+      
+        <div class="opener">
           
-          <form action='/adduserpreferences' method="POST">
-            <div class="form-group">
+          <h1> <i class="fas fa-chevron-right hide"></i><i class="fas fa-chevron-down"></i>Account information</h1>
 
-          <input id="user-id" name="user-id" type="hidden" value="{{ user.id }}">
+          <div class="profile-detail-row">
 
-          <label for="preferred-subtitle">Select your default subtitles:</label>
-          <select id="preferred-subtitle" name="preferred-subtitle">
-            <option value="any" selected>any/all</option>
-            {% for key, value in languages.items() %}
-              {% if key == 'subtitles' %}
-                {% for item in value %}
-              <option value="{{item}}">{{item}}</option>  
-              {% endfor %}
-              {% endif %}
-            {% endfor %}
-          </select>
-<br>
-          <br>
-          <label for="preferred-audio">Select your default audio:</label>
-          <select id="preferred-audio" name="preferred-audio">
-            <option value="any" selected>any/all</option>
-            {% for key, value in languages.items() %}
-              {% if key == 'audio' %}
-                {% for item in value %}
-              <option value="{{item}}">{{item}}</option>  
-              {% endfor %}
-              {% endif %}
-            {% endfor %}
-          </select>
+            <div class="profile-detail-row">
+              <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+              <div class="profile-detail-title">Username (email address)</div>
+              <div class="profile-detail-value">{{ user.email }}</div>
+            </div>
 
-<br>
-          <label for="date-range-start">Select your default production date "from when?":</label>           
-          <select id="date-range-start" name="date-range-start">
-            <option value="all" selected>any/all</option>
-            <option value="new">released within past year</option>
-            <option value="2years">released within previous 2 years</option>
-            <option value="5years">released within previous 5 years</option>
-            <option value="2000">on or after 2000</option>
-            <option value="1990">on or after 1990</option>
-            <option value="1980">on or after 1980</option>
-            <option value="1970">on or after 1970</option>
-            <option value="1960">on or after 1960</option>
-            <option value="1950">on or after 1950</option>
-            <option value="1940">on or after 1940</option>
-            <option value="1930">on or after 1930</option>
-            <option value="1920">on or after 1920</option>
-            <option value="1910">on or after 1910</option>
-          </select>
-<br>        
-          <label for="date-range-end">Select your default production date "to when?":</label>           
-          <select id="date-range-end" name="date-range-end">
-            <option value="all" selected>any/all</option>
-            <option value="new">released within past year</option>
-            <option value="2000">up until 2000</option>
-            <option value="1990">up until 1990</option>
-            <option value="1980">up until 1980</option>
-            <option value="1970">up until 1970</option>
-            <option value="1960">up until 1960</option>
-            <option value="1950">up until 1950</option>
-            <option value="1940">up until 1940</option>
-            <option value="1930">up until 1930</option>
-            <option value="1920">up until 1920</option>
-            <option value="1910">up until 1910</option>
-          </select>
-<br>
-          <label for="duration-input">select your maximum duration in minutes:</label>
-          <input type="number"
-              id="duration-input"
-              name="duration-input"
-              placeholder="minutes"
-              min="2" 
-              max="80000"
-              value="42" />
-<br>
-          <label for="genre-input">Select your default genre(s):</label>         
-          <select id="genre-input" name="genre-input">
-            <option value="all" selected>any/all</option>
-            {% for genre in all_genres %}
-              <option value="{{ genre['id'] }}">{{ genre['name'] }}</option>
-          {% endfor %}
-          </select>
-<br>
-<input type="submit" value="submit preferences" id="submit-input"/>
-</div>
+            <div class="profile-detail-row">
+              <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+              <div class="profile-detail-title">Preferred first name</div>
+              <div class="profile-detail-value">{{ user.fname }}</div>
+            </div>
+
+            <div class="profile-detail-row">
+              <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+              <div class="profile-detail-title">Member since</div>
+              <div class="profile-detail-value">{{ user.user_since.strftime('%B %Y') }} </div>
+            </div>
+
+            <div class="profile-detail-row"></div>
+
+          </div>
+        </div>
+
+        <div class="clear"></div>
 
 
-{% endblock %}
 
+        <div class="profile-section-row"> 
+          {% if user.preferences %} 
+            <div class="opener">
+      
+              <h1> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>Default search preferences </h1>
+              <div class="hidden-div profile-detail-row">
+
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Type of production</div>
+                  <div class="profile-detail-value profile-detail-configured">Movies</div>
+                </div>
+
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Duration</div>
+                  <div class="profile-detail-value">any</div>
+                </div>
+                
+                <div class="profile-detail-row"></div>
+                
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Spoken language(s)</div>
+                  <div class="profile-detail-value">{{ user.preferences[-1].subtitle }} </div>
+                </div>
+    
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Dubbed language(s)</div>
+                  <div class="profile-detail-value">{{ user.preferences[-1].subtitle }} </div>
+                </div>
+    
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Subtitle language(s)</div>
+                  <div class="profile-detail-value">{{ user.preferences[-1].subtitle }} </div>
+                </div>
+    
+                <div class="profile-detail-row"></div>
+
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Release date range (minimum)</div>
+                  <div class="profile-detail-value"> {{ user.preferences[-1].syear }}</div>
+                </div>
+    
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Release date range (maximum)</div>
+                  <div class="profile-detail-value"> {{ user.preferences[-1].eyear }}</div>
+                </div>
+
+                <div class="profile-detail-row"></div>
+
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Score (minimum)</div>
+                  <div class="profile-detail-value profile-detail-configured"> 3 </div>
+                </div>
+    
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit tiny-icon"></i></div>
+                  <div class="profile-detail-title">Score (maximum)</div>
+                  <div class="profile-detail-value"> {{ user.preferences[-1].eyear }}</div>
+                </div>
+
+                <div class="profile-detail-row"></div>
+    
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Genre(s)</div>
+                  <div class="profile-detail-value">{{ user.preferences[-1].subtitle }}  </div>
+                </div>
+    
+                <div class="profile-detail-row"></div>
+    
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Maturity rating level</div>
+                  <div class="profile-detail-value">{{ user.preferences[-1].subtitle }}  </div>
+                </div>
+    
+                <div class="profile-detail-row"></div>
+    
+                <div class="profile-detail-row">
+                  <div class="profile-detail-icon tiny-icon"><i class="fas fa-user-edit profile-detail-icon" color="#777777"></i></div>
+                  <div class="profile-detail-title">Viewing location</div>
+                  <div class="profile-detail-value profile-detail-configured"> {{ user.preferences[-1].location.name }} </div>
+                </div>
+    
+                <div class="profile-detail-row"></div>
+  
+              </div> 
+            </div>  
+          {% endif %}
+          </div>
+
+
+
+          <div class="profile-section-row"> 
+            <div class="opener">
+      
+              <h1>  <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>Linked streaming accounts</h1>
+              <div class="hidden-div profile-detail-row"></div>
+
+
+          <div class="profile-section-row"> 
+            <div class="opener">
+      
+              <h1> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>Watchlist settings</h1>
+              <div class="hidden-div profile-detail-row"></div>
+                
+          <div class="profile-section-row"> 
+            <div class="opener">
+      
+              <h1> <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-down hide"></i>Friend network settings</h1>
+              <div class="hidden-div profile-detail-row">
+                  <div class="profile-detail-icon"><i class="fas fa-user-edit"></i></div>
+                  <div class="profile-detail-title">Share personal URL to connect:</div>
+                  <div class="profile-detail-value"><a ef="/@{{ user.purl_name }}">/@{{ user.purl_name }} </a> </div>
+                <div class="profile-detail-row"></div>
+              </div>
+    
+                
+              {% endblock %}
+  {% endblock %}
 
 
 {% block js %}
 
-
-<script src="/static/js/app.js"></script>
+      <script src="/static/js/app.js"></script>
 
 {% endblock %}
