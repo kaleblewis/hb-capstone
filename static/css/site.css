@@ -109,7 +109,7 @@
   }
 
   .current-recommendations-details {
-    width: 50%;
+    width: 55%;
     float: left;
     /* border: 1px solid purple; */
   }
@@ -564,7 +564,7 @@
 
   .movie-results-synopsis-row {
     font-size: larger;
-    width: 90%;
+    width: 99%;
     /* border: 1px solid blueviolet; */
     float: left;
   }
@@ -624,7 +624,7 @@
   .edit-gravitar-image {
     float:right;
     margin-right: 35px;
-    border: 1 solid red;
+    border: 1 solid #FF3E24;
   }
 
   .profile-detail-configured {
@@ -656,7 +656,7 @@
   #carousel-wrapper {
     /* border: 1px solid red; */
     height: 198px;
-    width: 80%; 
+    width: 95%; 
     overflow: hidden;
     overflow-x: scroll;
     margin-left: 30px;
@@ -677,6 +677,16 @@
   textarea:focus,
   button:focus {
       outline: none;
+  }
+
+  #splash {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 60%;
+    height: auto;
+    /* margin-top: 30%; Half the height */
+    margin-left: -30%; /* Half the width */
   }
 
   /* SCREEN SIZE VARIATIONS */

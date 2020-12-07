@@ -282,7 +282,7 @@
         <br> <br> 
           <!-- ⭐ ⭐ ⭐ ★ ★ -->
 
-          {% if current_recommendations['imdb_id'] != None %}🎞️  <a href="https://www.imdb.com/title/{{ current_recommendations['imdb_id'] }}">View trailer on IMDb</a>  {% endif %} 
+          {% if current_recommendations['imdb_id'] != None %}<i class="fas fa-photo-video"></i>  <a href="https://www.imdb.com/title/{{ current_recommendations['imdb_id'] }}">View trailer on IMDb</a>  {% endif %} 
           {% if current_recommendations['flatrate'] != None %} {% for service in current_recommendations['flatrate'] %} {% if service['provider_name'] == 'Netflix' %}
           | 📽️ <a href="https://www.netflix.com/title/{{ current_recommendations['netflix_id'] }}">Watch now on Netflix</a> 
             {% endif %} {% endfor %} {% endif %} 
@@ -541,7 +541,7 @@
 </div>
   {% endif %}
 
-
+<img src="/static/assets/Venn.png" id="splash" />
 </div>
 </div>
 
