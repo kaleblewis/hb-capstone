@@ -541,7 +541,10 @@
 </div>
   {% endif %}
 
-<img src="/static/assets/Venn.png" id="splash" />
+
+  {% if session['render-search-results'] == "splash" %}
+    <img src="/static/assets/Venn.png" id="splash" />
+  {% endif %}
 </div>
 </div>
 

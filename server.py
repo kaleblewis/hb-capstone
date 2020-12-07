@@ -35,6 +35,8 @@ def homepage():
     
     all_genres = crud.get_stored_genres()
     
+    session['render-search-results'] = "splash"
+
     try:
         session['logged_in']
 
